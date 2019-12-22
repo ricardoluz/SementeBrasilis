@@ -1,0 +1,23 @@
+.tdNomeProduto{
+    /* border-style: solid; */
+    /* border-width: 1px; */
+    width: 150px;
+}
+.tdQtde{
+  /* border-style: solid;  */
+  /* border-color: indianred;  */
+  /* border-width: 1px; */
+  padding: 0px; 
+  /* height: 30px; */
+}
+
+.mffQtde{
+    width: 100px; 
+    padding-right: 3px;
+}
+
+.tdUnidade{
+    color: chocolate;
+    font-style: normal;
+    font-size: smaller
+}

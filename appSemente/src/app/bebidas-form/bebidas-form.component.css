@@ -1,0 +1,11 @@
+.teste{
+    /* display: block; */
+    margin: 20px;
+    padding: 18px;
+    border: 1px solid rgb(241, 192, 28);
+    border-radius: 5px;
+}
+
+.hidden_ {
+  display: none;
+}
