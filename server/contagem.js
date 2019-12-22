@@ -41,7 +41,7 @@ var contagemSchema = new Schema({
     dataContagem: Date,
     dataContagemOrdem: String,
     linhaProduto: [linhaSchema],
-    teste: String,
+    // teste: String,
 }, { versionKey: false });
 
 
