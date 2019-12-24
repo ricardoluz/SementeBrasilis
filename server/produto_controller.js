@@ -5,7 +5,7 @@ var Produto = require('./produto');
 
 // xxx
 router.get('/', (req, res) => {
-    Produto.find().exec((err, prods) => {
+    Produto.find().sort({tipoProduto:  1, nomeProduto: 1}).exec((err, prods) => {
         if (err)
             res.status(500).send(err);
         else
@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
     console.log('Produto - post');
-    console.log(req.body);
+    // console.log(req.body);
     let p = new Produto({
         nomeProduto: req.body.nomeProduto,
         grupoProduto: req.body.grupoProduto,

@@ -37,9 +37,8 @@ var linhaSchema = new Schema({
 
 var contagemSchema = new Schema({
 
-    // _id: String,
     dataContagem: Date,
-    dataContagemOrdem: String,
+    // dataContagemOrdem: String,
     linhaProduto: [linhaSchema],
     // teste: String,
 }, { versionKey: false });

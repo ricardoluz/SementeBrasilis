@@ -2,8 +2,14 @@
 <div layout="column" fxFlex="96">
     <form class="example-form" [formGroup]='contagemForm' (ngSubmit)="salvarContagem()">
 
-        <mat-form-field>
+        <!-- <mat-form-field>
             <input matInput type="datetime" style="text-align: right;" formControlName="dataContagem">
+        </mat-form-field> -->
+
+        <mat-form-field>
+            <input matInput [matDatepicker]="myDatepicker" formControlName="dataContagem" class="datePicker">
+            <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+            <mat-datepicker #myDatepicker></mat-datepicker>
         </mat-form-field>
 
         <table formArrayName="linhaProduto">

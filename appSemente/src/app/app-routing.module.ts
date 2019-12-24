@@ -6,6 +6,8 @@ import { RoutesComponent } from './testes/routes/routes.component';
 import { BebidasFormComponent } from './bebidas-form/bebidas-form.component';
 import { ContagemComponent } from './contagem/contagem.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { PedidoComponent } from './pedido/pedido.component';
+import { ContagemListaComponent } from './contagem-lista/contagem-lista.component';
 
 
 const appRoutes: Routes = [
@@ -13,6 +15,8 @@ const appRoutes: Routes = [
   { path: 'inicial', component: RoutesComponent },
   { path: 'produtos', component: BebidasFormComponent },
   { path: 'contagem', component: ContagemComponent },
+  { path: 'listaContagem', component: ContagemListaComponent },
+  { path: 'pedido', component: PedidoComponent },
   { path: '', pathMatch: 'full', redirectTo: 'inicial' },
   { path: '**', component: PageNotFoundComponent }
 ];

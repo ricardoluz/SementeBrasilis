@@ -14,6 +14,20 @@ router.get('/', (req, res) => {
     })
 })
 
+
+// Obtenção da lista com id e data da contagem
+
+router.get('/lista', (req, res) => {
+    // db.student.find({}, {roll:1, _id:0})
+    Contagem.find({},{_id:1, dataContagem: 1}).exec((err, prods) => {
+        if (err)
+            res.status(500).send(err);
+        else
+            res.status(200).send(prods);
+        console.log('get contagem/lista - ok')
+    })
+})
+
 router.post('/', (req, res) => {
 
     let p = new Contagem(req.body);

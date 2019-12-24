@@ -66,7 +66,7 @@ export class BebidasFormComponent implements OnInit {
 
   bebidas: Bebida[] = [];     // FIXME: Acertar a interface de Bebidas, ou verificar um modo de utilizar apenas o formBuilder
 
-  bebidasTmp$: Observable<Bebida[]>;
+  // bebidasTmp$: Observable<Bebida[]>;
 
   grupoProduto: GrupoProduto[] = [];
   unidadeMedida: UnidadeMedida[] = [];
@@ -96,7 +96,7 @@ export class BebidasFormComponent implements OnInit {
         (err) => { console.log(err); }
       );
 
-    this.bebidasTmp$ = this.bebidaService.bebidas$;
+    // this.bebidasTmp$ = this.bebidaService.bebidas$;
 
   }
 

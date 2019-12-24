@@ -22,6 +22,9 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { Routes2Component } from './testes/routes2/routes2.component';
 import { UsoObservableComponent } from './testes/uso-observable/uso-observable.component';
+import { MAT_DATE_LOCALE } from '@angular/material';
+import { PedidoComponent } from './pedido/pedido.component';
+import { ContagemListaComponent } from './contagem-lista/contagem-lista.component';
 
 // const appRoutes: Routes = [
 
@@ -42,6 +45,8 @@ import { UsoObservableComponent } from './testes/uso-observable/uso-observable.c
     RoutesComponent,
     // Routes2Component,
     PageNotFoundComponent,
+    PedidoComponent,
+    ContagemListaComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,7 +59,10 @@ import { UsoObservableComponent } from './testes/uso-observable/uso-observable.c
     // RouterModule.forRoot(appRoutes),
     AppRoutingModule,
   ],
-  providers: [DatePipe],
+  providers: [
+    DatePipe,
+    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

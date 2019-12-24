@@ -12,7 +12,10 @@ export class ContagemService {
   readonly url = 'http://localhost:3000/contagem';
 
   private contagemSubject$: BehaviorSubject<Contagem[]> = new BehaviorSubject<Contagem[]>(null);
+  private contagemListaSubject$: BehaviorSubject<Contagem[]> = new BehaviorSubject<Contagem[]>(null);
   private loaded = false;
+
+  private contagemLista: Contagem[] = [];
 
   constructor(private http: HttpClient) { }
 
@@ -21,7 +24,7 @@ export class ContagemService {
       this.http.get<Contagem[]>(this.url)
         .pipe(
           filter(([resultado]) => resultado != null),
-            tap(() => console.log('get - Contagem')),
+          tap(() => console.log('get - Contagem')),
           //   delay(1000)
         )
         .subscribe(this.contagemSubject$);
@@ -29,6 +32,27 @@ export class ContagemService {
     }
     return this.contagemSubject$.asObservable();
   }
+
+  getLista(): Observable<Contagem[]> {
+
+    this.http.get<Contagem[]>(`${this.url}/lista`)
+      .pipe(
+        filter((resultad1) => resultad1 != null),
+        tap(() => console.log('get - Lista de Contagem')),
+      )
+      .subscribe(this.contagemListaSubject$);
+
+    console.log(this.contagemListaSubject$);
+    console.log(this.contagemListaSubject$.asObservable);
+
+    return this.contagemListaSubject$.asObservable();
+
+    // .subscribe(
+    //   (retorno) => { this.contagemListaSubject$ = retorno; },
+    //   (err => { console.log(err); })
+    // );
+  }
+
 
   add(contagem: Contagem): Observable<Contagem> {
     console.log('Contagem adicionada');
