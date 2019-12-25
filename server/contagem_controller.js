@@ -19,7 +19,8 @@ router.get('/', (req, res) => {
 
 router.get('/lista', (req, res) => {
     // db.student.find({}, {roll:1, _id:0})
-    Contagem.find({},{_id:1, dataContagem: 1}).exec((err, prods) => {
+    // Produto.find().sort({ tipoProduto: 1, nomeProduto: 1 }).exec((err, prods)
+    Contagem.find({},{_id:1, dataContagem: 1}).sort({dataContagem: -1}).exec((err, prods) => {
         if (err)
             res.status(500).send(err);
         else
@@ -44,6 +45,15 @@ router.post('/', (req, res) => {
             console.log('ok');
             res.status(200).send(prod);
         }
+    })
+})
+
+router.delete('/:id', (req, res) => {
+    Contagem.deleteOne({ _id: req.params.id }, (err) => {
+        if (err)
+            res.status(500).send(err);
+        else
+            res.status(200).send({});
     })
 })
 

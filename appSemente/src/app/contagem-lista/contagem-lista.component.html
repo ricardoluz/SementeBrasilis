@@ -1,1 +1,19 @@
-<p>contagem-lista works!</p>
+<h1>Contagens efetuadas</h1>
+<mat-list *ngIf="contagemLista?.length >= 1" class="info-card mat-elevation-z8"
+    style="margin-top: 30px; margin-left: 60px; width: 500px; padding-right: 40px;">
+    <h3 mat-subheader>Lista</h3>
+    <mat-list-item *ngFor="let item of contagemLista">
+        <mat-icon mat-list-icon>folder</mat-icon>
+        <h4 mat-line>{{ item.dataContagem | date :'dd/MM/yyyy' }}</h4>
+        <!-- <h4 mat-line>{{ item.dataContagem | Date }}</h4> -->
+        <button mat-icon-button color="accent" (click)="delete(item)">
+            <mat-icon>delete</mat-icon>
+        </button>
+        <button mat-icon-button color="primary" (click)="edit(item)"> 
+            <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="primary" (click)="edit(item)">
+            (<mat-icon>format_list_numbered_rtl</mat-icon>Pedido)
+        </button>
+    </mat-list-item>
+</mat-list>

@@ -42,8 +42,8 @@ export class ContagemService {
       )
       .subscribe(this.contagemListaSubject$);
 
-    console.log(this.contagemListaSubject$);
-    console.log(this.contagemListaSubject$.asObservable);
+    // console.log(this.contagemListaSubject$);
+    // console.log(this.contagemListaSubject$.asObservable);
 
     return this.contagemListaSubject$.asObservable();
 
@@ -61,5 +61,18 @@ export class ContagemService {
       .pipe(
         // tap((beb: Contagem) => { this.contagemSubject$.getValue().push(beb); console.log(beb); }),
       );
+  }
+
+  del(toDelete: Contagem): Observable<any> {
+    return this.http.delete(`${this.url}/${toDelete._id}`)
+      .pipe(
+        tap(() => {
+          const objectTmp = this.contagemListaSubject$.getValue();
+          const i = objectTmp.findIndex(d => d._id === toDelete._id);
+          if (i >= 0) {
+            objectTmp.splice(i, 1);
+          }
+        }
+        ));
   }
 }

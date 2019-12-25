@@ -1,5 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule} from '@angular/core';
+
+import { MAT_DATE_LOCALE } from '@angular/material';
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
+registerLocaleData(localePt, 'pt-BR');
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -7,9 +13,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
-
-import { Routes, RouterModule } from '@angular/router';
-// import {PageNotFoundComponent} from 'a'
 
 import { DatePipe } from '@angular/common';
 
@@ -22,25 +25,15 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { Routes2Component } from './testes/routes2/routes2.component';
 import { UsoObservableComponent } from './testes/uso-observable/uso-observable.component';
-import { MAT_DATE_LOCALE } from '@angular/material';
 import { PedidoComponent } from './pedido/pedido.component';
 import { ContagemListaComponent } from './contagem-lista/contagem-lista.component';
 
-// const appRoutes: Routes = [
-
-//   { path: 'inicial', component: RoutesComponent },
-//   { path: 'produtos', component: BebidasFormComponent },
-//   { path: 'contagem', component: ContagemComponent },
-//   { path: '', pathMatch: 'full', redirectTo: 'inicial' },
-//   { path: '**', component: PageNotFoundComponent }
-// ];
 
 @NgModule({
   declarations: [
     AppComponent,
     BebidasFormComponent,
     ContagemComponent,
-    // AppRoutingModule
     // UsoObservableComponent,
     RoutesComponent,
     // Routes2Component,
@@ -56,12 +49,12 @@ import { ContagemListaComponent } from './contagem-lista/contagem-lista.componen
     FlexLayoutModule,
     ReactiveFormsModule,
     HttpClientModule,
-    // RouterModule.forRoot(appRoutes),
     AppRoutingModule,
   ],
   providers: [
     DatePipe,
     { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
+    { provide: LOCALE_ID, useValue: 'pt-BR' }
   ],
   bootstrap: [AppComponent]
 })
