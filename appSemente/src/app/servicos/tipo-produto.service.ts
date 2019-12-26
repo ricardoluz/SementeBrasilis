@@ -18,7 +18,7 @@ export class TipoProdutoService {
     this.tipoProduto.push({ _id: 'CocaCola', grupoProduto: 'Bebidas', tipoProduto: 'Coca-Cola Lata' });
     this.tipoProduto.push({ _id: 'CocaCola', grupoProduto: 'Bebidas', tipoProduto: 'Coca-Cola Pet' });
 
-    console.log(this.tipoProduto);
+    // console.log(this.tipoProduto);
 
     return this.tipoProduto;
 

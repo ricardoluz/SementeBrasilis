@@ -29,6 +29,7 @@ export class BebidasService {
         .subscribe(this.bebidasSubject$);
       this.loaded = true;
     }
+    console.log(this.bebidasSubject$);
     return this.bebidasSubject$.asObservable();
   }
 

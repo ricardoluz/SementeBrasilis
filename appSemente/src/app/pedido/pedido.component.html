@@ -1,1 +1,56 @@
-<p>pedido works!</p>
+<div *ngIf="pedidoForm">
+
+    teste
+    <!-- <ng-container *ngFor="let item of pedidoForm">
+      aa
+    </ng-container> -->
+</div>
+t1
+<div layout="column" fxFlex="96">
+    <form class="example-form" [formGroup]='getForm()' (ngSubmit)="salvarContagem()">
+        <label>{{ dataContagem }} xxx</label>
+        <mat-form-field>
+            <input matInput [matDatepicker]="myDatepicker" formControlName="dataContagem" class="datePicker">
+            <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+            <mat-datepicker #myDatepicker></mat-datepicker>
+        </mat-form-field>
+
+        <table formArrayName="linhaProduto">
+
+            <ng-container *ngFor="let item of produtos; let i= index" [formGroupName]="i">
+                <tr>
+
+                    <td class="tdNomeProduto">
+
+                        <label>{{ item.nomeProduto }}</label>
+                        aa
+
+                    </td>
+
+                    <!-- <td class="tdQtde">
+                        <mat-form-field class="mffQtde">
+                            <input matInput type="number" style="text-align: right;" formControlName="q1">
+                        </mat-form-field>
+                        <span class="tdUnidade">{{ item.estoque.unEstoque1}} (s)</span>
+                    </td>
+
+
+                    <td class="tdProduto">
+                        <mat-form-field class="mffQtde">
+                            <input matInput type="number" style="text-align: right" formControlName="q2">
+                        </mat-form-field>
+                        <span class="tdUnidade">{{ item.estoque.unEstoque2}} (s)</span>
+                    </td> -->
+
+                </tr>
+            </ng-container>
+            <!-- </tbody> -->
+        </table>
+
+        <br>
+        <!-- <button mat-raised-button type="submit" (click)= salvarContagem()>Salvar Contagem </button> -->
+        <button mat-raised-button type="submit">Salvar Contagem </button>
+        <button mat-raised-button type="button" (click)="tmp()">Salvar Contagem </button>
+
+    </form>
+</div>

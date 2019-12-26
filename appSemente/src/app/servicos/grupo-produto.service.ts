@@ -17,7 +17,7 @@ export class GrupoProdutoService {
     // this.grupoProduto.push({ _id: 'CocaCola', grupoProduto: 'Bebidas' });
     // this.grupoProduto.push({ _id: 'CocaCola', grupoProduto: 'Bebidas' });
 
-    console.log(this.grupoProduto);
+    // console.log(this.grupoProduto);
 
     return this.grupoProduto;
 

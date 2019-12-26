@@ -19,91 +19,38 @@ export class PedidoComponent implements OnInit {
   constructor(
     private contagemService: ContagemService,
     private formBuilder: FormBuilder,
-  ) { }
+  ) {
+
+    this.pedidoForm = this.formBuilder.group({
+      dataContagem: Date(),
+      linhaProduto: this.formBuilder.array([])
+    });
+  }
 
   ngOnInit() {
 
     this.criarPedido();
+    console.log(this.pedidoForm);
 
+  }
+
+  tmp() {
+    console.log('xxxx');
+    // this.criarPedido();
   }
 
   criarPedido() {
 
-    // this.contagem = this.contagemService.getContagem('5e03705a04d89323d9804799');
-    // console.log(this.contagem);
-    // console.log(Object.keys(this.contagem.linhaProduto));
-
-    // Object.keys(object).length;
-    // console.log(this.contagem.linhaProduto.nomeProduto.length);
-
-    this.pedidoForm = this.formBuilder.group({
-      dataContagem: Date(),
-      linhaProduto: this.formBuilder.array([
-        this.formBuilder.group({
-          nomeProduto: [''],
-          q1: [0],
-          un1: [''],
-          q2: [0],
-          un2: [''],
-          unCompra: [''],
-          qmin: [''],
-          qPedido: [0]
-        })
-      ])
-    });
+    const control: FormArray = this.pedidoForm.get(`linhaProduto`) as FormArray;
 
     this.contagemService.getContagem_v02('5e03705a04d89323d9804799')
       .subscribe(
         (prods) => {
-          // console.log(prods);
           if (prods) {
-            // console.log(prods);
-            // this.pedidoForm.patchValue(prods, { onlySelf: false });
-            // Object.assign(this.pedidoForm, prods);
-            // console.log(this.pedidoForm);
-            // console.log(Object.values(prods));
-
-
             const tmp = Object.values(prods);
-            console.log(tmp[0].dataContagem);
-            console.log(tmp[0].linhaProduto.length);
-            // this.getIds(tmp[0].linhaProduto);
-            // this.getIds(tmp);
-            // this.getIds(Object(prods));
-
-
-            // // tslint:disable-next-line: prefer-for-of
-            // for (let index = 0; index < tmp[0].linhaProduto.length; index++) {
-            //   console.log(tmp[0].linhaProduto[index].nomeProduto);
-            // }
-
             for (const iterator of tmp[0].linhaProduto) {
-              console.log(iterator);
-              console.log(iterator.nomeProduto);
-
+              control.push(this.addEqp_v01(iterator));
             }
-
-            // // console.log(tmp.keys);
-            // tmp.forEach(element => {
-            //   console.log(element);
-            //   console.log('...');
-            // });
-
-            // let res: string = null;
-            // for (const key in tmp) {
-            //   if (tmp.hasOwnProperty(key)) {
-            //     // const element = tmp[key];
-            //     console.log(tmp[key]);
-            //     // console.log(key);
-            //     res += tmp[key];
-            //   }
-            // }
-            // console.log(res);
-
-
-            // for (const tmp of prods) {
-            //   control.push(this.addEqp_v01(tmp));
-            // }
           }
         },
         (err) => {
@@ -111,15 +58,29 @@ export class PedidoComponent implements OnInit {
         }
       );
 
-
-
-    const control: FormArray = this.pedidoForm.get(`linhaProduto`) as FormArray;
-
-
-
-
-
+    // return this.pedidoForm;
   }
+
+  getForm() {
+    return this.pedidoForm;
+  }
+
+  addEqp_v01(prod: any) {
+    // console.log(prod);
+    const group = this.formBuilder.group({
+      nomeProduto: [prod.nomeProduto],
+      q1: [prod.q1],
+      un1: [prod.un1],
+      q2: [prod.q2],
+      un2: [prod.un2],
+      unCompra: [prod.unCompra],
+      qmin: [prod.qmin],
+      qPedido: [0]
+    });
+    // console.log(group);
+    return group;
+  }
+
 
   getIds(obj) {
     console.log('xxx');
