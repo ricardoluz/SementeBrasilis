@@ -49,7 +49,6 @@ export class ContagemComponent implements OnInit {
     this.contagemForm = this.formBuilder.group({
       // dataContagem: this.dataPipe.transform(Date(), 'dd/MM/yyyy'),
       dataContagem: Date(),
-      linhaProduto: this.formBuilder.array([])
     });
 
     const control: FormArray = this.contagemForm.get(`linhaProduto`) as FormArray;

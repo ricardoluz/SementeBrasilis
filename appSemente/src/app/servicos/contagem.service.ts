@@ -12,10 +12,13 @@ export class ContagemService {
   readonly url = 'http://localhost:3000/contagem';
 
   private contagemSubject$: BehaviorSubject<Contagem[]> = new BehaviorSubject<Contagem[]>(null);
+  private contagemIndividualSubject$: BehaviorSubject<Contagem> = new BehaviorSubject<Contagem>(null);
   private contagemListaSubject$: BehaviorSubject<Contagem[]> = new BehaviorSubject<Contagem[]>(null);
   private loaded = false;
 
   private contagemLista: Contagem[] = [];
+  private contagem: Contagem = null;
+
 
   constructor(private http: HttpClient) { }
 
@@ -51,6 +54,43 @@ export class ContagemService {
     //   (retorno) => { this.contagemListaSubject$ = retorno; },
     //   (err => { console.log(err); })
     // );
+  }
+
+
+
+  //
+  // Retonar um contagem específica (byId).
+  //
+
+  getContagem(id: string): Contagem {
+
+    this.http.get<Contagem>(`${this.url}/${id}`)
+      .pipe(
+        // filter(([resultado]) => resultado != null),
+        tap(() => console.log('get - Contagem')),
+        //   delay(1000)
+      )
+      .subscribe(
+        (retorno) => { this.contagem = retorno; },
+        (err) => console.log(err)
+      );
+
+    return this.contagem;
+  }
+
+  getContagem_v02(id: string): Observable<Contagem> {
+
+    this.http.get<Contagem>(`${this.url}/${id}`)
+      .pipe(
+        // filter(([resultado]) => resultado != null),
+        tap(() => console.log('get - Contagem')),
+        //   delay(1000)
+      )
+      .subscribe(
+        this.contagemIndividualSubject$
+      );
+
+    return this.contagemIndividualSubject$;
   }
 
 

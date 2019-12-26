@@ -4,6 +4,10 @@ var Schema = mongoose.Schema;
 
 // TODO: Inserir as validações necessárias no esquema de dados (ou alterar via Mongo).
 
+var contagemSchema = new Schema({
+    dataContagem: Date,
+    linhaProduto: [linhaSchema],
+}, { versionKey: false });
 
 var linhaSchema = new Schema({
     nomeProduto: String,
@@ -14,13 +18,8 @@ var linhaSchema = new Schema({
     un2: String,
     rlEstoqueCompra2: Number,
     unCompra: String,
-    qmin: Number
+    qmin: Number,
+    qPedido: Number
 })
-
-var contagemSchema = new Schema({
-    dataContagem: Date,
-    linhaProduto: [linhaSchema],
-}, { versionKey: false });
-
 
 module.exports = mongoose.model("Contagem", contagemSchema);
