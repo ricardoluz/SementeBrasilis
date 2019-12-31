@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material';
 
 import { Contagem } from '../interfaces/contagem';
 import { ContagemService } from '../servicos/contagem.service';
+import { Pedido } from '../interfaces/pedido';
 
 @Component({
   selector: 'app-pedido',
@@ -13,6 +14,7 @@ import { ContagemService } from '../servicos/contagem.service';
 export class PedidoComponent implements OnInit {
 
   contagem: Contagem = null;
+  pedido: Pedido;
   pedidoForm: FormGroup;
   private snackBar: MatSnackBar;
 
@@ -31,7 +33,8 @@ export class PedidoComponent implements OnInit {
 
     this.criarPedido();
     console.log(this.pedidoForm);
-
+    // this.criarPedido_v02();
+    // console.log(this.contagem);
   }
 
   tmp() {
@@ -43,7 +46,9 @@ export class PedidoComponent implements OnInit {
 
     const control: FormArray = this.pedidoForm.get(`linhaProduto`) as FormArray;
 
-    this.contagemService.getContagem_v02('5e03705a04d89323d9804799')
+    this.contagemService.getContagem_v02('5e0b25d91f5d7d411ee99493')
+    // 5e03705a04d89323d9804799
+    // 5e0b25d91f5d7d411ee99493
       .subscribe(
         (prods) => {
           if (prods) {
@@ -51,6 +56,9 @@ export class PedidoComponent implements OnInit {
             for (const iterator of tmp[0].linhaProduto) {
               control.push(this.addEqp_v01(iterator));
             }
+
+            this.pedidoForm.patchValue(prods[0]);
+            console.log(this.pedidoForm);
           }
         },
         (err) => {
@@ -61,11 +69,13 @@ export class PedidoComponent implements OnInit {
     // return this.pedidoForm;
   }
 
+
   getForm() {
     return this.pedidoForm;
   }
 
   addEqp_v01(prod: any) {
+
     // console.log(prod);
     const group = this.formBuilder.group({
       nomeProduto: [prod.nomeProduto],
@@ -77,7 +87,7 @@ export class PedidoComponent implements OnInit {
       qmin: [prod.qmin],
       qPedido: [0]
     });
-    // console.log(group);
+
     return group;
   }
 

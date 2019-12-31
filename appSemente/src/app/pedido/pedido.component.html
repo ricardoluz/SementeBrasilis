@@ -1,14 +1,5 @@
-<div *ngIf="pedidoForm">
-
-    teste
-    <!-- <ng-container *ngFor="let item of pedidoForm">
-      aa
-    </ng-container> -->
-</div>
-t1
 <div layout="column" fxFlex="96">
-    <form class="example-form" [formGroup]='getForm()' (ngSubmit)="salvarContagem()">
-        <label>{{ dataContagem }} xxx</label>
+    <form class="example-form" [formGroup]='pedidoForm' (ngSubmit)="salvarContagem()">
         <mat-form-field>
             <input matInput [matDatepicker]="myDatepicker" formControlName="dataContagem" class="datePicker">
             <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
@@ -17,13 +8,18 @@ t1
 
         <table formArrayName="linhaProduto">
 
-            <ng-container *ngFor="let item of produtos; let i= index" [formGroupName]="i">
+            <ng-container *ngFor="let item of pedidoForm.get('linhaProduto').controls let i= index" [formGroupName]="i">
                 <tr>
 
                     <td class="tdNomeProduto">
 
-                        <label>{{ item.nomeProduto }}</label>
-                        aa
+                        {{ item.controls.nomeProduto.value }}
+                        //
+                        {{ item.controls.q1.value }}
+                        //
+                        {{ item.controls.q1.value * 10}}
+
+                        
 
                     </td>
 
@@ -50,7 +46,6 @@ t1
         <br>
         <!-- <button mat-raised-button type="submit" (click)= salvarContagem()>Salvar Contagem </button> -->
         <button mat-raised-button type="submit">Salvar Contagem </button>
-        <button mat-raised-button type="button" (click)="tmp()">Salvar Contagem </button>
 
     </form>
 </div>
