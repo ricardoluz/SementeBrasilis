@@ -47,8 +47,6 @@ export class PedidoComponent implements OnInit {
     const control: FormArray = this.pedidoForm.get(`linhaProduto`) as FormArray;
 
     this.contagemService.getContagem_v02('5e0b25d91f5d7d411ee99493')
-    // 5e03705a04d89323d9804799
-    // 5e0b25d91f5d7d411ee99493
       .subscribe(
         (prods) => {
           if (prods) {

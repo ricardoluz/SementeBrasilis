@@ -14,24 +14,28 @@
 
         <table formArrayName="linhaProduto">
 
-            <ng-container *ngFor="let item of produtos; let i= index" [formGroupName]="i">
+            <!-- <ng-container *ngFor="let item of produtos; let i= index" [formGroupName]="i"> -->
+            <ng-container *ngFor="let item of contagemForm.get('linhaProduto').controls; let i= index" [formGroupName]="i">
+                <!-- // pedidoForm.get('linhaProduto').controls -->
 
                 <tr>
 
                     <td class="tdNomeProduto">
 
-                        <label>{{ item.nomeProduto }}</label>
+                        <label>{{ item.controls.nomeProduto.value }}</label>
                         <!-- <mat-form-field class="tdNomeProduto"> -->
                             <!-- <input matInput type="text" style="text-align: right;" disabled= "true" formControlName="nomeProduto" value={{item.nomeProduto}}> -->
                         <!-- </mat-form-field> -->
                         <!-- {{item.nomeProduto}} -->
+                        a
                     </td>
 
                     <td class="tdQtde">
                         <mat-form-field class="mffQtde">
                             <input matInput type="number" style="text-align: right;" formControlName="q1">
                         </mat-form-field>
-                        <span class="tdUnidade">{{ item.estoque.unEstoque1}} (s)</span>
+                        <!-- <span class="tdUnidade">{{ item.estoque.unEstoque1}} (s)</span> -->
+                        <span class="tdUnidade">{{ item.un1 }} (s)</span>
                     </td>
 
 
@@ -39,7 +43,7 @@
                         <mat-form-field class="mffQtde">
                             <input matInput type="number" style="text-align: right" formControlName="q2">
                         </mat-form-field>
-                        <span class="tdUnidade">{{ item.estoque.unEstoque2}} (s)</span>
+                        <span class="tdUnidade">{{ item.un2}} (s)</span>
                     </td>
 
                 </tr>

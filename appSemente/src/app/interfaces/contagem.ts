@@ -9,7 +9,8 @@ export interface Contagem {
         q2: number;
         un2: string;
         unCompra: string;
-        qmin: number
+        qmin: number;
+        qTotal: number
     };
 
 }

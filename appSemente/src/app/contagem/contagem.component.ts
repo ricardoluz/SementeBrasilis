@@ -23,10 +23,11 @@ import { DatePipe } from '@angular/common';
 export class ContagemComponent implements OnInit {
 
 
-  produtos: Bebida[] = [];
+  // produtos: Bebida[] = [];
   // contagem: Contagem[] = [];
 
   contagemForm: FormGroup;
+
   private snackBar: MatSnackBar;
   private unsubscribe$: Subject<any> = new Subject();
 
@@ -59,7 +60,7 @@ export class ContagemComponent implements OnInit {
       .subscribe(
         (prods) => {
           console.log(prods);
-          this.produtos = prods;
+          // this.produtos = prods;
           if (prods) {
             for (const tmp of prods) {
               control.push(this.addEqp_v01(tmp));
@@ -77,10 +78,13 @@ export class ContagemComponent implements OnInit {
       nomeProduto: [prod.nomeProduto],
       q1: [0],
       un1: [prod.estoque.unEstoque1],
+      rel1: [prod.estoque.rlEstoqueCompra1],
       q2: [0],
       un2: [prod.estoque.unEstoque2],
+      rel2: [prod.estoque.rlEstoqueCompra2],
       unCompra: [prod.unCompra],
-      qmin: [prod.qtdeMinima]
+      qmin: [prod.qtdeMinima],
+      qTotal: [0]
     });
     return group;
   }
@@ -118,8 +122,16 @@ export class ContagemComponent implements OnInit {
   salvarContagem() {
 
     // console.log(this.contagemForm);
+    for (const iterator of this.contagemForm.get('linhaProduto').value) {
+      console.log(iterator);
+      console.log(iterator.q1 / iterator.rel1 + iterator.q2 / iterator.rel2);
+      iterator.qTotal = (iterator.q1 / iterator.rel1 + iterator.q2 / iterator.rel2);
+      // console.log(iterator.1);
+    }
 
     const teste: Contagem = Object.assign({}, this.contagemForm.value);
+
+
 
     // console.log(teste);
     // console.log(this.contagemForm.value);
@@ -128,7 +140,9 @@ export class ContagemComponent implements OnInit {
     //   console.log(i, ' - ', Object.values(teste.linhaProduto)[i]);
     // }
 
-    // this.contagemService.add(this.contagemForm.value)
+    // return;
+
+
     this.contagemService.add(teste)
       .subscribe(
         (dep) => {
@@ -138,6 +152,7 @@ export class ContagemComponent implements OnInit {
           // this.notify('aaaa');
         },
         (err) => console.error(err));
+
   }
 
 
