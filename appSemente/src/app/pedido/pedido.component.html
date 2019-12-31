@@ -14,24 +14,33 @@
                     <td class="tdNomeProduto">
 
                         {{ item.controls.nomeProduto.value }}
-                        //
-                        {{ item.controls.q1.value }}
-                        //
-                        {{ item.controls.q1.value * 10}}
-
-                        
-
                     </td>
 
-                    <!-- <td class="tdQtde">
+                    <td class="tdInfo"> 
+                        {{ item.controls.q1.value }} {{ item.controls.un1.value }}(s)
+                         + 
+                         {{ item.controls.q2.value}} {{ item.controls.un2.value }}(s)
+                         =
+                         {{ item.controls.qTotal.value}} {{ item.controls.un1.value }} (s)
+                    </td>
+
+                    <td class="tdInfo"> 
+                        Mínima desejada: {{ item.controls.qMinima.value}}
+                    </td>
+                    <td class="tdInfo">
+                        <!-- Sugestão: {{ item.controls.qMinima.value - item.controls.qTotal.value}} -->
+                        Sugestão: {{ item.controls.qSugestao.value }}
+                    </td>
+
+                    <td class="tdQtde">
                         <mat-form-field class="mffQtde">
-                            <input matInput type="number" style="text-align: right;" formControlName="q1">
+                            <input matInput type="number" style="text-align: right;" formControlName="qPedido">
                         </mat-form-field>
-                        <span class="tdUnidade">{{ item.estoque.unEstoque1}} (s)</span>
+                        <span class="tdUnidade">{{ item.controls.un1.value }} (s)</span>
                     </td>
 
 
-                    <td class="tdProduto">
+                    <!-- <td class="tdProduto">
                         <mat-form-field class="mffQtde">
                             <input matInput type="number" style="text-align: right" formControlName="q2">
                         </mat-form-field>

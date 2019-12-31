@@ -23,33 +23,41 @@ export class PedidoComponent implements OnInit {
     private formBuilder: FormBuilder,
   ) {
 
-    this.pedidoForm = this.formBuilder.group({
-      dataContagem: Date(),
-      linhaProduto: this.formBuilder.array([])
-    });
   }
 
   ngOnInit() {
 
     this.criarPedido();
-    console.log(this.pedidoForm);
-    // this.criarPedido_v02();
-    // console.log(this.contagem);
+
   }
 
-  tmp() {
-    console.log('xxxx');
-    // this.criarPedido();
-  }
+  // tmp() {
+  //   console.log('xxxx');
+  //   // this.criarPedido();
+  // }
 
   criarPedido() {
 
-    const control: FormArray = this.pedidoForm.get(`linhaProduto`) as FormArray;
+    // Criar uma casca do formBuilder para 'enganar' o formulário.
+    this.pedidoForm = this.formBuilder.group({
+      dataContagem: Date(),
+      linhaProduto: this.formBuilder.array([])
+    });
 
-    this.contagemService.getContagem_v02('5e0b25d91f5d7d411ee99493')
+    this.contagemService.getContagem_v02('5e0bbc23ab000c4ab913142e')
       .subscribe(
         (prods) => {
           if (prods) {
+
+            // Ler os dados reais para o formBuilder.
+
+            this.pedidoForm = this.formBuilder.group({
+              dataContagem: prods.dataContagem,
+              linhaProduto: this.formBuilder.array([])
+            });
+
+            const control: FormArray = this.pedidoForm.get(`linhaProduto`) as FormArray;
+
             const tmp = Object.values(prods);
             for (const iterator of tmp[0].linhaProduto) {
               control.push(this.addEqp_v01(iterator));
@@ -63,13 +71,6 @@ export class PedidoComponent implements OnInit {
           console.log(err);
         }
       );
-
-    // return this.pedidoForm;
-  }
-
-
-  getForm() {
-    return this.pedidoForm;
   }
 
   addEqp_v01(prod: any) {
@@ -82,13 +83,26 @@ export class PedidoComponent implements OnInit {
       q2: [prod.q2],
       un2: [prod.un2],
       unCompra: [prod.unCompra],
-      qmin: [prod.qmin],
-      qPedido: [0]
+      qMinima: [prod.qMinima],
+      qTotal: [prod.qTotal],
+      qSugestao: [this.arredPedido(prod.qMinima - prod.qTotal, 0)],
+      qPedido: [this.arredPedido(prod.qMinima - prod.qTotal, 0)]
     });
 
     return group;
   }
 
+  arredPedido(numero: number, numCasaDecimais: number) {
+    let numTmp = numero * Math.pow(10, numCasaDecimais);
+    numTmp = Math.round(numTmp) / Math.pow(10, numCasaDecimais);
+    if (numTmp < 0)  { numTmp = 0; }
+    return numTmp;
+  }
+
+
+  // getForm() {
+  //   return this.pedidoForm;
+  // }
 
   getIds(obj) {
     console.log('xxx');

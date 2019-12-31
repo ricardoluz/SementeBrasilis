@@ -83,7 +83,7 @@ export class ContagemComponent implements OnInit {
       un2: [prod.estoque.unEstoque2],
       rel2: [prod.estoque.rlEstoqueCompra2],
       unCompra: [prod.unCompra],
-      qmin: [prod.qtdeMinima],
+      qMinima: [prod.qtdeMinima],
       qTotal: [0]
     });
     return group;
@@ -125,7 +125,7 @@ export class ContagemComponent implements OnInit {
     for (const iterator of this.contagemForm.get('linhaProduto').value) {
       console.log(iterator);
       console.log(iterator.q1 / iterator.rel1 + iterator.q2 / iterator.rel2);
-      iterator.qTotal = (iterator.q1 / iterator.rel1 + iterator.q2 / iterator.rel2);
+      iterator.qTotal = this.arred(iterator.q1 / iterator.rel1 + iterator.q2 / iterator.rel2, 2);
       // console.log(iterator.1);
     }
 
@@ -158,6 +158,12 @@ export class ContagemComponent implements OnInit {
 
   notify(msg: string) {
     this.snackBar.open(msg, 'OK', { duration: 3000 });
+  }
+
+  arred(numero: number, numCasaDecimais: number){
+    let numTmp = numero * Math.pow( 10,  numCasaDecimais);
+    numTmp = Math.round(numTmp) / Math.pow(10, numCasaDecimais);
+    return numTmp;
   }
 
 

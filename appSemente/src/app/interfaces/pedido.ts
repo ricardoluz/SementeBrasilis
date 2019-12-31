@@ -9,7 +9,7 @@ export interface Pedido {
         q2: number;
         un2: string;
         unCompra: string;
-        qmin: number
+        qMinima: number
         qPedido: number
     };
 }

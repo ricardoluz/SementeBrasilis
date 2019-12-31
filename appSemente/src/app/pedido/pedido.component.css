@@ -1,0 +1,29 @@
+.datePicker{
+    text-align: right;
+    /* background-color: aqua; */
+}
+
+.tdNomeProduto{
+    /* border-style: solid; */
+    /* border-width: 1px; */
+    width: 250px;
+    padding: 3px;
+}
+.tdInfo{
+  border-style: solid; 
+  border-color: indianred; 
+  border-width: 1px;
+  padding: 10px; 
+  /* height: 30px; */
+}
+
+.mffQtde{
+    width: 100px; 
+    padding-right: 3px;
+}
+
+.tdUnidade{
+    color: chocolate;
+    font-style: normal;
+    font-size: smaller
+}

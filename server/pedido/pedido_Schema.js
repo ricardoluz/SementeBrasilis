@@ -18,7 +18,7 @@ var linhaSchema = new Schema({
     un2: String,
     rlEstoqueCompra2: Number,
     unCompra: String,
-    qmin: Number,
+    qMinima: Number,
     qPedido: Number
 })
 
