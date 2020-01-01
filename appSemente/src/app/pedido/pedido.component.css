@@ -3,27 +3,41 @@
     /* background-color: aqua; */
 }
 
+.formClass{
+    color: #000;
+}
 .tdNomeProduto{
-    /* border-style: solid; */
-    /* border-width: 1px; */
     width: 250px;
     padding: 3px;
 }
 .tdInfo{
-  border-style: solid; 
-  border-color: indianred; 
-  border-width: 1px;
-  padding: 10px; 
+  border-style: dotted ; 
+  border-color: #929292; 
+  border-width: 1px 0px 0px 1px;
+  padding: 10px;
+  color: #505050;
+  font-style: normal;
+  font-size: small;
   /* height: 30px; */
 }
 
+.tdInfoLabel{
+    color: #929292;
+}
+
 .mffQtde{
-    width: 100px; 
-    padding-right: 3px;
+    width: 70px; 
+    padding-right: 5px;
 }
 
 .tdUnidade{
     color: chocolate;
     font-style: normal;
     font-size: smaller
+}
+
+.spanError{
+    font-style: italic;
+    color: darksalmon;
+    font-size: smaller;
 }

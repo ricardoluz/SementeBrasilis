@@ -1,4 +1,3 @@
-
 <div layout="column" fxFlex="96">
     <form class="example-form" [formGroup]='contagemForm' (ngSubmit)="salvarContagem()">
 
@@ -15,27 +14,24 @@
         <table formArrayName="linhaProduto">
 
             <!-- <ng-container *ngFor="let item of produtos; let i= index" [formGroupName]="i"> -->
-            <ng-container *ngFor="let item of contagemForm.get('linhaProduto').controls; let i= index" [formGroupName]="i">
+            <ng-container *ngFor="let item of contagemForm.get('linhaProduto').controls; let i= index"
+                [formGroupName]="i">
                 <!-- // pedidoForm.get('linhaProduto').controls -->
 
                 <tr>
 
                     <td class="tdNomeProduto">
-
                         <label>{{ item.controls.nomeProduto.value }}</label>
-                        <!-- <mat-form-field class="tdNomeProduto"> -->
-                            <!-- <input matInput type="text" style="text-align: right;" disabled= "true" formControlName="nomeProduto" value={{item.nomeProduto}}> -->
-                        <!-- </mat-form-field> -->
-                        <!-- {{item.nomeProduto}} -->
-                        a
                     </td>
 
                     <td class="tdQtde">
                         <mat-form-field class="mffQtde">
                             <input matInput type="number" style="text-align: right;" formControlName="q1">
                         </mat-form-field>
-                        <!-- <span class="tdUnidade">{{ item.estoque.unEstoque1}} (s)</span> -->
-                        <span class="tdUnidade">{{ item.un1 }} (s)</span>
+                        <span class="tdUnidade">{{ item.controls.un1.value }} (s)</span>
+                        <mat-error *ngIf="item.controls.q1.hasError('min') ">
+                            <span class="spanError">Valor deve ser maior que 0.</span>
+                        </mat-error>
                     </td>
 
 
@@ -43,7 +39,10 @@
                         <mat-form-field class="mffQtde">
                             <input matInput type="number" style="text-align: right" formControlName="q2">
                         </mat-form-field>
-                        <span class="tdUnidade">{{ item.un2}} (s)</span>
+                        <span class="tdUnidade">{{ item.controls.un2.value }} (s)</span>
+                        <mat-error *ngIf="item.controls.q2.hasError('min') ">
+                            <span class="spanError">Valor deve ser maior que 0.</span>
+                        </mat-error>
                     </td>
 
                 </tr>
@@ -53,7 +52,10 @@
 
         <br>
         <!-- <button mat-raised-button type="submit" (click)= salvarContagem()>Salvar Contagem </button> -->
-        <button mat-raised-button type="submit">Salvar Contagem </button>
+        <!-- <button mat-raised-button type="submit">Salvar Contagem </button> -->
+        <button mat-button color="primary" type="submit" [disabled]="!contagemForm.valid">
+            <mat-icon>done</mat-icon>Salvar Contagem
+        </button>
 
     </form>
 </div>

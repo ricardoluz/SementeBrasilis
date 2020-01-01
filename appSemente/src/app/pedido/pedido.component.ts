@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 
 import { Contagem } from '../interfaces/contagem';
@@ -86,7 +86,7 @@ export class PedidoComponent implements OnInit {
       qMinima: [prod.qMinima],
       qTotal: [prod.qTotal],
       qSugestao: [this.arredPedido(prod.qMinima - prod.qTotal, 0)],
-      qPedido: [this.arredPedido(prod.qMinima - prod.qTotal, 0)]
+      qPedido: [this.arredPedido(prod.qMinima - prod.qTotal, 0), Validators.min(0)]
     });
 
     return group;

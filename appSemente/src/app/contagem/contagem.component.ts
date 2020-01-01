@@ -4,9 +4,7 @@ import { Subject, BehaviorSubject } from 'rxjs';
 import { Bebida } from './../interfaces/bebida';
 import { BebidasService } from '../servicos/bebidas.service';
 import { Contagem } from '../interfaces/contagem';
-import { takeUntil } from 'rxjs/internal/operators/takeUntil';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
-import { tap, map } from 'rxjs/operators';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ContagemService } from '../servicos/contagem.service';
 import { MatSnackBar } from '@angular/material';
 
@@ -42,7 +40,6 @@ export class ContagemComponent implements OnInit {
   ngOnInit() {
 
     this.lerProdutos();
-    console.log(this.contagemForm);
 
   }
 
@@ -76,10 +73,10 @@ export class ContagemComponent implements OnInit {
   addEqp_v01(prod: Bebida) {
     const group = this.formBuilder.group({
       nomeProduto: [prod.nomeProduto],
-      q1: [0],
+      q1: [0, Validators.min(0)],
       un1: [prod.estoque.unEstoque1],
       rel1: [prod.estoque.rlEstoqueCompra1],
-      q2: [0],
+      q2: [0, Validators.min(0)],
       un2: [prod.estoque.unEstoque2],
       rel2: [prod.estoque.rlEstoqueCompra2],
       unCompra: [prod.unCompra],

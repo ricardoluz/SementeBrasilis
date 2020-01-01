@@ -1,5 +1,8 @@
 <div layout="column" fxFlex="96">
-    <form class="example-form" [formGroup]='pedidoForm' (ngSubmit)="salvarContagem()">
+
+    <form class="info-card mat-elevation-z8" [formGroup]='pedidoForm' (ngSubmit)="salvarContagem()"
+        style="margin-top: 30px; margin-left: 30px; padding-left: 20px;padding-bottom: 20px;">
+        
         <mat-form-field>
             <input matInput [matDatepicker]="myDatepicker" formControlName="dataContagem" class="datePicker">
             <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
@@ -16,45 +19,41 @@
                         {{ item.controls.nomeProduto.value }}
                     </td>
 
-                    <td class="tdInfo"> 
-                        {{ item.controls.q1.value }} {{ item.controls.un1.value }}(s)
-                         + 
-                         {{ item.controls.q2.value}} {{ item.controls.un2.value }}(s)
-                         =
-                         {{ item.controls.qTotal.value}} {{ item.controls.un1.value }} (s)
-                    </td>
-
-                    <td class="tdInfo"> 
-                        Mínima desejada: {{ item.controls.qMinima.value}}
-                    </td>
-                    <td class="tdInfo">
-                        <!-- Sugestão: {{ item.controls.qMinima.value - item.controls.qTotal.value}} -->
-                        Sugestão: {{ item.controls.qSugestao.value }}
-                    </td>
-
                     <td class="tdQtde">
                         <mat-form-field class="mffQtde">
                             <input matInput type="number" style="text-align: right;" formControlName="qPedido">
                         </mat-form-field>
                         <span class="tdUnidade">{{ item.controls.un1.value }} (s)</span>
+                        <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
+                        <mat-error *ngIf="item.controls.qPedido.hasError('min') ">
+                            <span class="spanError">Valor deve ser maior que 0.</span>
+                        </mat-error>
                     </td>
 
-
-                    <!-- <td class="tdProduto">
-                        <mat-form-field class="mffQtde">
-                            <input matInput type="number" style="text-align: right" formControlName="q2">
-                        </mat-form-field>
-                        <span class="tdUnidade">{{ item.estoque.unEstoque2}} (s)</span>
-                    </td> -->
+                    <td class="tdInfo">
+                        <span class="tdInfoLabel">Estoque:</span>
+                        <!-- {{ item.controls.qTotal.value}} {{ item.controls.un1.value }} (s) -->
+                        {{ item.controls.qTotal.value}} = [
+                        {{ item.controls.q1.value }} {{ item.controls.un1.value }}(s)
+                        +
+                        {{ item.controls.q2.value}} {{ item.controls.un2.value }}(s)
+                        ]
+                        <br><br>
+                        <span class="tdInfoLabel">Mínima desejada:</span> {{ item.controls.qMinima.value}}
+                        <br>
+                        <span class="tdInfoLabel">Sugestão:</span> {{ item.controls.qSugestao.value }}
+                    </td>
 
                 </tr>
             </ng-container>
-            <!-- </tbody> -->
+
         </table>
 
         <br>
-        <!-- <button mat-raised-button type="submit" (click)= salvarContagem()>Salvar Contagem </button> -->
-        <button mat-raised-button type="submit">Salvar Contagem </button>
+
+        <button mat-button color="primary" type="submit" [disabled]="!pedidoForm.valid">
+            <mat-icon>done</mat-icon>Salvar Contagem
+        </button>
 
     </form>
 </div>

@@ -26,3 +26,9 @@
     font-style: normal;
     font-size: smaller
 }
+
+.spanError{
+    font-style: italic;
+    color: darksalmon;
+    font-size: smaller;
+}
