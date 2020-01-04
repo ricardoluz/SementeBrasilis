@@ -1,30 +1,23 @@
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
-import { Observable, Subject } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+
 
 import { ContagemService } from '../servicos/contagem.service';
 import { Contagem } from '../interfaces/contagem';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-contagem-lista',
   templateUrl: './contagem-lista.component.html',
   styleUrls: ['./contagem-lista.component.css']
 })
-export class ContagemListaComponent implements OnInit {
+export class ContagemListaComponent implements OnInit, OnDestroy {
 
   contagemLista: Contagem[];
-  private unsubscribe$: Subject<any> = new Subject();
-
-
-  // contagemListaForm = this.fb.group({
-  //   _id: [''],
-  //   dataContagem: ['']
-  // });
+  private unsubscribe$ = new Subject<void>();
 
   constructor(
-    // private fb: FormBuilder,
     private contagemService: ContagemService,
     private snackBar: MatSnackBar
   ) { }
@@ -55,9 +48,19 @@ export class ContagemListaComponent implements OnInit {
     // this.blnEdicao = false;
   }
 
+  edit(){
+    alert('Função em desenvolvimento.');
+  }
+
 
   notify(msg: string) {
     this.snackBar.open(msg, 'OK', { duration: 3000 });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+    console.log('OnDestroy');
   }
 
 }

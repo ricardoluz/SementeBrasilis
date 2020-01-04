@@ -24,11 +24,14 @@ router.get('/lista', (req, res) => {
     // db.student.find({}, {roll:1, _id:0})
     // Produto.find().sort({ tipoProduto: 1, nomeProduto: 1 }).exec((err, prods)
     Contagem.find({}, { _id: 1, dataContagem: 1 }).sort({ dataContagem: -1 }).exec((err, prods) => {
-        if (err)
+        if (err) {
+            console.log('get contagem/lista - error');
             res.status(500).send(err);
-        else
+        }
+        else {
+            console.log('get contagem/lista - ok');
             res.status(200).send(prods);
-        console.log('get contagem/lista - ok')
+        }
     })
 })
 // ---
@@ -42,11 +45,13 @@ router.get('/lista', (req, res) => {
 router.get('/:id', (req, res) => {
     Contagem.find({ _id: req.params.id }).exec((err, prods) => {
         if (err) {
+            console.log('get contagem id: ', req.params.id, ' - erro')
             res.status(500).send(err);
         }
         else {
             res.status(200).send(prods);
-            console.log('get contagem id: ' , req.params.id, ' - ok')
+            console.log('get contagem id: ', req.params.id, ' - ok')
+            // console.log(prods);
         }
     })
 })

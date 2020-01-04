@@ -12,8 +12,9 @@
         <button mat-icon-button color="primary" (click)="edit(item)"> 
             <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button color="primary" (click)="edit(item)">
+        <!-- <button mat-icon-button color="primary" (click)="edit(item)">
             (<mat-icon>format_list_numbered_rtl</mat-icon>Pedido)
-        </button>
+        </button> -->
+        <a mat-button routerLink="/pedido/{{ item._id }}">(<mat-icon>format_list_numbered_rtl</mat-icon>Pedido)</a>
     </mat-list-item>
 </mat-list>

@@ -1,10 +1,6 @@
 <div layout="column" fxFlex="96">
     <form class="example-form" [formGroup]='contagemForm' (ngSubmit)="salvarContagem()">
 
-        <!-- <mat-form-field>
-            <input matInput type="datetime" style="text-align: right;" formControlName="dataContagem">
-        </mat-form-field> -->
-
         <mat-form-field>
             <input matInput [matDatepicker]="myDatepicker" formControlName="dataContagem" class="datePicker">
             <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
@@ -13,10 +9,8 @@
 
         <table formArrayName="linhaProduto">
 
-            <!-- <ng-container *ngFor="let item of produtos; let i= index" [formGroupName]="i"> -->
             <ng-container *ngFor="let item of contagemForm.get('linhaProduto').controls; let i= index"
                 [formGroupName]="i">
-                <!-- // pedidoForm.get('linhaProduto').controls -->
 
                 <tr>
 

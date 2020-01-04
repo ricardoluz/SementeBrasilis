@@ -1,6 +1,6 @@
 <div layout="column" fxFlex="96">
 
-    <form class="info-card mat-elevation-z8" [formGroup]='pedidoForm' (ngSubmit)="salvarContagem()"
+    <form class="info-card mat-elevation-z8" [formGroup]='pedidoForm' (ngSubmit)="gravarPedido()"
         style="margin-top: 30px; margin-left: 30px; padding-left: 20px;padding-bottom: 20px;">
         
         <mat-form-field>
@@ -52,7 +52,7 @@
         <br>
 
         <button mat-button color="primary" type="submit" [disabled]="!pedidoForm.valid">
-            <mat-icon>done</mat-icon>Salvar Contagem
+            <mat-icon>done</mat-icon>Salvar Pedido
         </button>
 
     </form>

@@ -1,62 +1,61 @@
-import { Component, OnInit } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 
 import { Contagem } from '../interfaces/contagem';
 import { ContagemService } from '../servicos/contagem.service';
 import { Pedido } from '../interfaces/pedido';
+import { ActivatedRoute, Router } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-pedido',
   templateUrl: './pedido.component.html',
   styleUrls: ['./pedido.component.css']
 })
-export class PedidoComponent implements OnInit {
+export class PedidoComponent implements OnInit, OnDestroy {
 
-  contagem: Contagem = null;
-  pedido: Pedido;
   pedidoForm: FormGroup;
+
   private snackBar: MatSnackBar;
+
+  private unsubscribe$ = new Subject<void>();
 
   constructor(
     private contagemService: ContagemService,
     private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
   ) {
 
   }
 
   ngOnInit() {
 
-    this.criarPedido();
+    const idContagem = this.route.snapshot.paramMap.get('id');
+    this.criarPedido(idContagem);
 
   }
 
-  // tmp() {
-  //   console.log('xxxx');
-  //   // this.criarPedido();
-  // }
+  criarPedido(idContagemTmp: string) {
 
-  criarPedido() {
-
-    // Criar uma casca do formBuilder para 'enganar' o formulário.
+    // Criar uma casca do formBuilder para o formulário.
     this.pedidoForm = this.formBuilder.group({
       dataContagem: Date(),
       linhaProduto: this.formBuilder.array([])
     });
 
-    this.contagemService.getContagem_v02('5e0bbc23ab000c4ab913142e')
+    const control: FormArray = this.pedidoForm.get(`linhaProduto`) as FormArray;
+
+    this.contagemService.getContagem_v02(idContagemTmp)
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (prods) => {
           if (prods) {
 
             // Ler os dados reais para o formBuilder.
 
-            this.pedidoForm = this.formBuilder.group({
-              dataContagem: prods.dataContagem,
-              linhaProduto: this.formBuilder.array([])
-            });
-
-            const control: FormArray = this.pedidoForm.get(`linhaProduto`) as FormArray;
+            this.pedidoForm.get('dataContagem').setValue(prods.dataContagem);
 
             const tmp = Object.values(prods);
             for (const iterator of tmp[0].linhaProduto) {
@@ -64,7 +63,7 @@ export class PedidoComponent implements OnInit {
             }
 
             this.pedidoForm.patchValue(prods[0]);
-            console.log(this.pedidoForm);
+            // console.log(this.pedidoForm);
           }
         },
         (err) => {
@@ -92,32 +91,58 @@ export class PedidoComponent implements OnInit {
     return group;
   }
 
+  gravarPedido() {
+    let pedidoTmp = '';
+    pedidoTmp += 'Data Pedido' + this.pedidoForm.get('dataContagem').value;
+    pedidoTmp += '\n';
+
+    for (const iterator of this.pedidoForm.get('linhaProduto').value) {
+      if (iterator.qPedido > 0) {
+        pedidoTmp += iterator.nomeProduto;
+        pedidoTmp += '.'.repeat(40 - (iterator.nomeProduto).length);
+        pedidoTmp += ' [ ' + iterator.qPedido + ' ]';
+        pedidoTmp += '\n';
+      }
+      // console.log(pedidoTmp);
+
+    }
+
+
+
+    console.log(pedidoTmp);
+  }
+
   arredPedido(numero: number, numCasaDecimais: number) {
     let numTmp = numero * Math.pow(10, numCasaDecimais);
     numTmp = Math.round(numTmp) / Math.pow(10, numCasaDecimais);
-    if (numTmp < 0)  { numTmp = 0; }
+    if (numTmp < 0) { numTmp = 0; }
     return numTmp;
   }
 
+  ngOnDestroy(): void {
+    console.log('OnDestroy');
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
   // getForm() {
   //   return this.pedidoForm;
   // }
 
-  getIds(obj) {
-    console.log('xxx');
-    // tslint:disable-next-line: forin
-    for (const x in obj) {
-      // console.log(typeof obj[x]);
-      console.log(x);
-      console.log(obj[x]);
-      if (typeof obj[x] === 'object') {
-        this.getIds(obj[x]);
-      } else if (x === 'id') {
-        console.log(obj.id);
-      }
-    }
-  }
+  // getIds(obj) {
+  //   console.log('xxx');
+  //   // tslint:disable-next-line: forin
+  //   for (const x in obj) {
+  //     // console.log(typeof obj[x]);
+  //     console.log(x);
+  //     console.log(obj[x]);
+  //     if (typeof obj[x] === 'object') {
+  //       this.getIds(obj[x]);
+  //     } else if (x === 'id') {
+  //       console.log(obj.id);
+  //     }
+  //   }
+  // }
 
 
 

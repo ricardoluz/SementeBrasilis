@@ -10,6 +10,7 @@ import { MatSnackBar } from '@angular/material';
 
 
 import { DatePipe } from '@angular/common';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-contagem',
@@ -19,10 +20,6 @@ import { DatePipe } from '@angular/common';
 
 
 export class ContagemComponent implements OnInit {
-
-
-  // produtos: Bebida[] = [];
-  // contagem: Contagem[] = [];
 
   contagemForm: FormGroup;
 
@@ -39,29 +36,31 @@ export class ContagemComponent implements OnInit {
 
   ngOnInit() {
 
-    this.lerProdutos();
+    this.criarFormContagem();
 
   }
 
-  lerProdutos() {
+  criarFormContagem() {
 
     this.contagemForm = this.formBuilder.group({
-      // dataContagem: this.dataPipe.transform(Date(), 'dd/MM/yyyy'),
-      dataContagem: Date(),
+      dataContagem: new Date().toISOString(),
       linhaProduto: this.formBuilder.array([])
     });
 
     const control: FormArray = this.contagemForm.get(`linhaProduto`) as FormArray;
 
     this.bebidaService.get()
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (prods) => {
-          console.log(prods);
-          // this.produtos = prods;
+
           if (prods) {
+
             for (const tmp of prods) {
               control.push(this.addEqp_v01(tmp));
             }
+
+            console.log(this.contagemForm);
           }
         },
         (err) => {
@@ -118,29 +117,20 @@ export class ContagemComponent implements OnInit {
 
   salvarContagem() {
 
-    // console.log(this.contagemForm);
+    // Atualizar a quantidade Total no formBuilder.
     for (const iterator of this.contagemForm.get('linhaProduto').value) {
       console.log(iterator);
       console.log(iterator.q1 / iterator.rel1 + iterator.q2 / iterator.rel2);
       iterator.qTotal = this.arred(iterator.q1 / iterator.rel1 + iterator.q2 / iterator.rel2, 2);
-      // console.log(iterator.1);
     }
 
-    const teste: Contagem = Object.assign({}, this.contagemForm.value);
+
+    // Criar um objeto Contagem a partir do FormBuilder
+    const contagemGravavao: Contagem = Object.assign({}, this.contagemForm.value);
 
 
-
-    // console.log(teste);
-    // console.log(this.contagemForm.value);
-
-    // for (let i = 0, len = Object.values(this.produtos).length; i < len; i++) {
-    //   console.log(i, ' - ', Object.values(teste.linhaProduto)[i]);
-    // }
-
-    // return;
-
-
-    this.contagemService.add(teste)
+    // Gravar a contagem
+    this.contagemService.add(contagemGravavao)
       .subscribe(
         (dep) => {
           console.log(dep);
@@ -157,8 +147,8 @@ export class ContagemComponent implements OnInit {
     this.snackBar.open(msg, 'OK', { duration: 3000 });
   }
 
-  arred(numero: number, numCasaDecimais: number){
-    let numTmp = numero * Math.pow( 10,  numCasaDecimais);
+  arred(numero: number, numCasaDecimais: number) {
+    let numTmp = numero * Math.pow(10, numCasaDecimais);
     numTmp = Math.round(numTmp) / Math.pow(10, numCasaDecimais);
     return numTmp;
   }

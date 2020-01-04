@@ -16,7 +16,7 @@ const appRoutes: Routes = [
   { path: 'produtos', component: BebidasFormComponent },
   { path: 'contagem', component: ContagemComponent },
   { path: 'listaContagem', component: ContagemListaComponent },
-  { path: 'pedido', component: PedidoComponent },
+  { path: 'pedido/:id', component: PedidoComponent },
   { path: '', pathMatch: 'full', redirectTo: 'inicial' },
   { path: '**', component: PageNotFoundComponent }
 ];

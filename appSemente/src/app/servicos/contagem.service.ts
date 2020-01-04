@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 import { Contagem } from '../interfaces/contagem';
-import { tap, filter } from 'rxjs/operators';
+import { tap, filter, takeUntil } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +18,8 @@ export class ContagemService {
 
   private contagemLista: Contagem[] = [];
   private contagem: Contagem = null;
+
+  private unsubscribe$ = new Subject<void>();
 
 
   constructor(private http: HttpClient) { }
@@ -62,29 +64,33 @@ export class ContagemService {
   // Retonar um contagem específica (byId).
   //
 
-  getContagem(id: string): Contagem {
+  // getContagem(id: string): Contagem {
 
-    this.http.get<Contagem>(`${this.url}/${id}`)
-      .pipe(
-        // filter(([resultado]) => resultado != null),
-        tap(() => console.log('get - Contagem')),
-        //   delay(1000)
-      )
-      .subscribe(
-        (retorno) => { this.contagem = retorno; },
-        (err) => console.log(err)
-      );
+  //   this.http.get<Contagem>(`${this.url}/${id}`)
+  //     .pipe(
+  //       // filter(([resultado]) => resultado != null),
+  //       tap(() => console.log('get - Contagem')),
+  //       //   delay(1000)
+  //     )
+  //     .subscribe(
+  //       (retorno) => {
+  //         this.contagem = retorno;
+  //         console.log('p1')
+  //         return this.contagem;
+  //       },
+  //       (err) => console.log(err)
+  //     );
 
-    return this.contagem;
-  }
+  //   return this.contagem;
+  // }
 
   getContagem_v02(id: string): Observable<Contagem> {
 
     this.http.get<Contagem>(`${this.url}/${id}`)
       .pipe(
         // filter(([resultado]) => resultado != null),
+        takeUntil(this.unsubscribe$),
         tap(() => console.log('get - Contagem')),
-        //   delay(1000)
       )
       .subscribe(
         this.contagemIndividualSubject$
@@ -115,4 +121,10 @@ export class ContagemService {
         }
         ));
   }
+
+  // Z_ngOnDestroy(): void {
+  //   this.unsubscribe$.next();
+  //   this.unsubscribe$.complete();
+  //   console.log('OnDestroy - Servico');
+  // }
 }
