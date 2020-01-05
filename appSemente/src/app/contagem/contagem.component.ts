@@ -1,16 +1,14 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subject, BehaviorSubject } from 'rxjs';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { Bebida } from './../interfaces/bebida';
 import { BebidasService } from '../servicos/bebidas.service';
-import { Contagem } from '../interfaces/contagem';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ContagemService } from '../servicos/contagem.service';
-import { MatSnackBar } from '@angular/material';
 
-
-import { DatePipe } from '@angular/common';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-contagem',
@@ -19,11 +17,11 @@ import { takeUntil } from 'rxjs/operators';
 })
 
 
-export class ContagemComponent implements OnInit , OnDestroy {
+export class ContagemComponent implements OnInit, OnDestroy {
 
   contagemForm: FormGroup;
 
-  private snackBar: MatSnackBar;
+  // private snackBar: MatSnackBar;
   private unsubscribe$: Subject<any> = new Subject();
 
   constructor(
@@ -31,7 +29,7 @@ export class ContagemComponent implements OnInit , OnDestroy {
     private contagemService: ContagemService,
 
     private formBuilder: FormBuilder,
-    private dataPipe: DatePipe
+    private snackBar: MatSnackBar,
   ) { }
 
   ngOnInit() {
@@ -49,7 +47,7 @@ export class ContagemComponent implements OnInit , OnDestroy {
 
     const control: FormArray = this.contagemForm.get(`linhaProduto`) as FormArray;
 
-    this.bebidaService.get_v02()
+    this.bebidaService.get()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (prods) => {
@@ -86,62 +84,28 @@ export class ContagemComponent implements OnInit , OnDestroy {
   }
 
 
-  // save() {
-  //   console.log('save_v02 - 01t');
-  //   if (this.blnEdicao) {
-  //     this.bebidaService.update(this.bebidaForm.value)
-  //       .subscribe(
-  //         (dep) => {
-  //           const notifyTmp = dep.nomeProduto + ' - Alterada.';
-  //           this.notify(notifyTmp);
-  //         },
-  //         (err) => {
-  //           this.notify('Error');
-  //           console.error(err);
-  //         }
-  //       );
-  //   } else {
-  //     this.bebidaService.add(this.bebidaForm.value)
-  //       .subscribe(
-  //         (dep) => {
-  //           console.log(dep);
-  //           const notifyTmp = dep.nomeProduto + ' - Inserida.';
-  //           this.notify(notifyTmp);
-  //         },
-  //         (err) => console.error(err));
-  //   }
-
-  //   this.clearFields();
-  //   this.blnEdicao = false;
-  // }
-
   salvarContagem() {
 
     // Atualizar a quantidade Total no formBuilder.
     for (const iterator of this.contagemForm.get('linhaProduto').value) {
-      console.log(iterator);
-      console.log(iterator.q1 / iterator.rel1 + iterator.q2 / iterator.rel2);
       iterator.qTotal = this.arred(iterator.q1 / iterator.rel1 + iterator.q2 / iterator.rel2, 2);
     }
 
-
-    // Criar um objeto Contagem a partir do FormBuilder
-    const contagemGravavao: Contagem = Object.assign({}, this.contagemForm.value);
-
-
     // Gravar a contagem
-    this.contagemService.add(contagemGravavao)
+    this.contagemService.add(this.contagemForm.value)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((dep) => {
-        console.log(dep);
-        // const notifyTmp = dep.dataContagem + ' - Inserida.';
-        // console.log(notifyTmp);
-        // const notifyTmp = 'Contagem inserida.';
-        // this.notify(notifyTmp);
-      }, (err) => console.error(err));
+      .subscribe(
 
-    // this.notify('ss');
+        sucess => {
 
+          const notifyTmp: string = 'Contagem de : ' +  formatDate(sucess.dataContagem, 'shortDate', 'pt-br')  + ' - Inserida.';
+          this.notify(notifyTmp);
+        },
+
+        error => {
+          return console.error(error.message);
+        }
+      );
   }
 
 

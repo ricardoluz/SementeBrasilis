@@ -24,7 +24,7 @@ export class ContagemListaComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.contagemService.getLista_v02()
+    this.contagemService.getListaContagem()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (retorno) => {

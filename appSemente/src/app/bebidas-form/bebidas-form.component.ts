@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, COMPILER_OPTIONS, OnDestroy } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material';
-import { takeUntil, tap } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { FormBuilder, Validators, FormGroup, NgForm } from '@angular/forms';
 
 import { Bebida } from '../interfaces/bebida';
@@ -74,78 +74,81 @@ export class BebidasFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
+    // TODO: Rever a necessidade para limpar os valores.
     this.grupoProduto = this.grupoProdutoService.get();
     this.tipoProduto = this.tipoProdutoService.get();
     this.unidadeMedida = this.unidadeMedidaService.get();
 
-    this.bebidaService.get_v02()
+    this.bebidaService.get()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (retorno) => { this.bebidas = retorno; },
         (err) => { console.log(err); }
       );
 
-    // this.bebidasTmp$ = this.bebidaService.bebidas$;
-
   }
 
   ngOnDestroy() {
-    console.warn('OnDestroy - bebidas-form');
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
-    console.warn('OnDestroy executado');
   }
 
   onSubmit() {
-    // console.log('OnSubmit');
-    // console.log(this.bebidaForm.get('nomeProduto').value);
-    this.save();
-  }
-
-  save() {
-    console.log('save_v02 - 01t');
+    // console.log('save_v02 - 01t');
     if (this.blnEdicao) {
       this.bebidaService.update_v02(this.bebidaForm.value)
-        .pipe(
-          tap((d: Bebida) => {
-            console.log(d);
+        .subscribe(
+
+          success => {
+
             const i = this.bebidas.findIndex(d2 => {
-              return d2._id === d._id;
+              return d2._id === success._id;
             });
             if (i >= 0) {
-              // bebidas[i].nomeProduto = d.nomeProduto;
-              this.bebidas[i] = d;
+              this.bebidas[i] = success;
             }
-          })
-        )
-        .subscribe(
-          (dep) => {
-            const notifyTmp = dep.nomeProduto + ' - Alterada.';
+
+            const notifyTmp = success.nomeProduto + ' - Alterada.';
             this.notify(notifyTmp);
+
+            this.clearFields();
+            this.blnEdicao = false;
           },
-          (err) => {
-            this.notify('Error');
-            console.error(err);
+
+          error => {
+            this.notify('Erro ao alterar : ' + this.bebidaForm.get('nomeProduto').value);
+            console.error(error.mensage);
           }
         );
-    } else {
-      this.bebidaService.add(this.bebidaForm.value)
-        .subscribe(
-          (dep) => {
-            console.log(dep);
-            const notifyTmp = dep.nomeProduto + ' - Inserida.';
-            this.notify(notifyTmp);
-          },
-          (err) => console.error(err));
-    }
 
-    this.clearFields();
-    this.blnEdicao = false;
+    } else {
+
+      this.bebidaService.add(this.bebidaForm.value)
+        .pipe(
+          takeUntil(this.unsubscribe$)
+        )
+        .subscribe(
+
+          sucess => {
+            this.bebidas.push(sucess);
+            const notifyTmp = sucess.nomeProduto + ' - Inserida.';
+            this.notify(notifyTmp);
+
+            this.clearFields();
+            this.blnEdicao = false;
+          },
+
+          error => {
+            this.notify('Erro ao adicionar : ' + this.bebidaForm.get('nomeProduto').value);
+            console.error(error.mensage);
+          }
+        );
+    }
   }
 
   edit(prmEdicao: Bebida) {
     this.blnEdicao = true;
-    console.log(prmEdicao);
+    // console.log(prmEdicao);
     this.bebidaForm.patchValue(prmEdicao);
     this.frmPosicaoInicial.nativeElement.focus();
   }
@@ -153,12 +156,31 @@ export class BebidasFormComponent implements OnInit, OnDestroy {
 
   delete(beb: Bebida) {
 
+    // TODO: Limpar o formulário caso o produto editado seja apagado.
     // this.clearFields();
 
     this.bebidaService.del(beb)
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
       .subscribe(
-        () => this.notify(beb.nomeProduto + ' - foi apagada.'),
-        (err) => this.notify(err.error.msg)
+
+        sucess => {
+          this.notify(beb.nomeProduto + ' - foi apagada.');
+
+          const i = this.bebidas.findIndex(d2 => {
+            return d2._id === beb._id;
+          });
+          if (i >= 0) {
+            this.bebidas.splice(i, 1);
+          }
+
+        },
+
+        error => {
+          this.notify('Erro ao apagar : ' + beb.nomeProduto);
+          console.log(error.message);
+        }
       );
 
     // this.blnEdicao = false;
@@ -166,7 +188,6 @@ export class BebidasFormComponent implements OnInit, OnDestroy {
 
   clearFields() {
 
-    console.log('clearFields_p01');
     this.blnEdicao = false;
 
     this.frmPosicaoInicial.nativeElement.focus();

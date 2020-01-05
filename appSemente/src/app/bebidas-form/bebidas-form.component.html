@@ -24,7 +24,7 @@
             Nome da bebida é necessário.
           </mat-error>
           <mat-error *ngIf="bebidaForm.controls.nomeProduto.hasError('minlength')">
-            O Nome da bebida deve conter {{ bebidaForm.controls.nomeProduto.errors.minlength.requiredLength }}
+            Deve conter {{ bebidaForm.controls.nomeProduto.errors.minlength.requiredLength }}
             ou mais caracteres.
             Atual: {{ bebidaForm.controls.nomeProduto.errors.minlength.actualLength}}
           </mat-error>
