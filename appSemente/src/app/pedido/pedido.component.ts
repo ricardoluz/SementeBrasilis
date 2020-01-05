@@ -1,6 +1,6 @@
-import { Observable, Subject } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { Subject } from 'rxjs';
 import { MatSnackBar } from '@angular/material';
 
 import { Contagem } from '../interfaces/contagem';
@@ -8,6 +8,7 @@ import { ContagemService } from '../servicos/contagem.service';
 import { Pedido } from '../interfaces/pedido';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-pedido',
@@ -41,13 +42,14 @@ export class PedidoComponent implements OnInit, OnDestroy {
 
     // Criar uma casca do formBuilder para o formulário.
     this.pedidoForm = this.formBuilder.group({
-      dataContagem: Date(),
+      dataContagem: new Date().toISOString(),
+      dataPedido: new Date().toISOString(),
       linhaProduto: this.formBuilder.array([])
     });
 
     const control: FormArray = this.pedidoForm.get(`linhaProduto`) as FormArray;
 
-    this.contagemService.getContagem_v02(idContagemTmp)
+    this.contagemService.getContagem_v03(idContagemTmp)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (prods) => {
@@ -93,8 +95,10 @@ export class PedidoComponent implements OnInit, OnDestroy {
 
   gravarPedido() {
     let pedidoTmp = '';
-    pedidoTmp += 'Data Pedido' + this.pedidoForm.get('dataContagem').value;
+    pedidoTmp += 'Data Contagem: ' + formatDate(this.pedidoForm.get('dataContagem').value, 'shortDate', 'pt-br');
     pedidoTmp += '\n';
+    pedidoTmp += 'Data Pedido: ' + formatDate(this.pedidoForm.get('dataPedido').value, 'shortDate', 'pt-br');
+    pedidoTmp += '\n\n';
 
     for (const iterator of this.pedidoForm.get('linhaProduto').value) {
       if (iterator.qPedido > 0) {
@@ -103,13 +107,9 @@ export class PedidoComponent implements OnInit, OnDestroy {
         pedidoTmp += ' [ ' + iterator.qPedido + ' ]';
         pedidoTmp += '\n';
       }
-      // console.log(pedidoTmp);
-
     }
 
-
-
-    console.log(pedidoTmp);
+    alert(pedidoTmp);
   }
 
   arredPedido(numero: number, numCasaDecimais: number) {

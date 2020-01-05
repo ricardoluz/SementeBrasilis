@@ -19,18 +19,24 @@ export class BebidasService {
 
   constructor(private http: HttpClient) { }
 
-  get(): Observable<Bebida[]> {
-    if (!this.loaded) {
-      this.http.get<Bebida[]>(this.url)
-        // .pipe(
-        //   tap((x) => console.log(x)),
-        //   delay(1000)
-        // )
-        .subscribe(this.bebidasSubject$);
-      this.loaded = true;
-    }
-    console.log(this.bebidasSubject$);
-    return this.bebidasSubject$.asObservable();
+  // get(): Observable<Bebida[]> {
+  //   if (!this.loaded) {
+  //     this.http.get<Bebida[]>(this.url)
+  //       // .pipe(
+  //       //   tap((x) => console.log(x)),
+  //       //   delay(1000)
+  //       // )
+  //       .subscribe(this.bebidasSubject$);
+  //     this.loaded = true;
+  //   }
+  //   console.log(this.bebidasSubject$);
+  //   return this.bebidasSubject$.asObservable();
+  // }
+
+  get_v02(): Observable<Bebida[]> {
+
+    return this.http.get<Bebida[]>(this.url);
+
   }
 
   add(bebida: Bebida): Observable<Bebida> {
@@ -55,20 +61,27 @@ export class BebidasService {
         ));
   }
 
-  update(prmUpdate: Bebida): Observable<Bebida> {
-    // console.warn(prmUpdate);
-    return this.http.patch<Bebida>(`${this.url}/${prmUpdate._id}`, prmUpdate)
-      .pipe(
-        tap((d) => {
-          const bebidas = this.bebidasSubject$.getValue();
-          const i = bebidas.findIndex(d2 => {
-            return d2._id === prmUpdate._id;
-          });
-          if (i >= 0) {
-            // bebidas[i].nomeProduto = d.nomeProduto;
-            bebidas[i] = d;
-          }
-        })
-      );
+  // update(prmUpdate: Bebida): Observable<Bebida> {
+  //   // console.warn(prmUpdate);
+  //   return this.http.patch<Bebida>(`${this.url}/${prmUpdate._id}`, prmUpdate)
+  //     .pipe(
+  //       tap((d) => {
+  //         const bebidas = this.bebidasSubject$.getValue();
+  //         const i = bebidas.findIndex(d2 => {
+  //           return d2._id === prmUpdate._id;
+  //         });
+  //         if (i >= 0) {
+  //           // bebidas[i].nomeProduto = d.nomeProduto;
+  //           bebidas[i] = d;
+  //         }
+  //       })
+  //     );
+  // }
+
+  update_v02(prmUpdate: Bebida): Observable<Bebida> {
+
+    return this.http.patch<Bebida>(`${this.url}/${prmUpdate._id}`, prmUpdate);
+
   }
+
 }

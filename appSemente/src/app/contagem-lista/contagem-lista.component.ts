@@ -24,7 +24,7 @@ export class ContagemListaComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.contagemService.getLista()
+    this.contagemService.getLista_v02()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (retorno) => {
@@ -40,6 +40,7 @@ export class ContagemListaComponent implements OnInit, OnDestroy {
     // this.clearFields();
 
     this.contagemService.del(item)
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         () => this.notify(item.dataContagem + ' - foi apagado.'),
         (err) => this.notify(err.error.msg)
@@ -48,7 +49,7 @@ export class ContagemListaComponent implements OnInit, OnDestroy {
     // this.blnEdicao = false;
   }
 
-  edit(){
+  edit() {
     alert('Função em desenvolvimento.');
   }
 

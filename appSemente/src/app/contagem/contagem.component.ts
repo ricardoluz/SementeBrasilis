@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, BehaviorSubject } from 'rxjs';
 
 import { Bebida } from './../interfaces/bebida';
@@ -19,7 +19,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 
 
-export class ContagemComponent implements OnInit {
+export class ContagemComponent implements OnInit , OnDestroy {
 
   contagemForm: FormGroup;
 
@@ -49,7 +49,7 @@ export class ContagemComponent implements OnInit {
 
     const control: FormArray = this.contagemForm.get(`linhaProduto`) as FormArray;
 
-    this.bebidaService.get()
+    this.bebidaService.get_v02()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (prods) => {
@@ -131,14 +131,16 @@ export class ContagemComponent implements OnInit {
 
     // Gravar a contagem
     this.contagemService.add(contagemGravavao)
-      .subscribe(
-        (dep) => {
-          console.log(dep);
-          // const notifyTmp = dep.dataContagem + ' - Inserida.';
-          // const notifyTmp = 'Contagem inserida.';
-          // this.notify('aaaa');
-        },
-        (err) => console.error(err));
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((dep) => {
+        console.log(dep);
+        // const notifyTmp = dep.dataContagem + ' - Inserida.';
+        // console.log(notifyTmp);
+        // const notifyTmp = 'Contagem inserida.';
+        // this.notify(notifyTmp);
+      }, (err) => console.error(err));
+
+    // this.notify('ss');
 
   }
 
@@ -153,14 +155,10 @@ export class ContagemComponent implements OnInit {
     return numTmp;
   }
 
-
-  // FIXME: Rever a passagem por esta função
-  // tslint:disable-next-line: use-lifecycle-interface
-  // ngOnDestroy(): void {
-  //   console.warn('OnDestroy - contagem');
-  //   this.unsubscribe$.next();
-  //   this.unsubscribe$.complete();
-  //   console.warn('OnDestroy executado');
-  // }
+  ngOnDestroy(): void {
+    console.log('OnDestroy');
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
 }

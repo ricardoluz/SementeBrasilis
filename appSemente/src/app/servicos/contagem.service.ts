@@ -58,6 +58,15 @@ export class ContagemService {
     // );
   }
 
+  getLista_v02(): Observable<Contagem[]> {
+
+    return this.http.get<Contagem[]>(`${this.url}/lista`)
+      .pipe(
+        filter((resultad1) => resultad1 != null),
+        tap(() => console.log('get - Lista de Contagem')),
+      );
+
+  }
 
 
   //
@@ -97,6 +106,18 @@ export class ContagemService {
       );
 
     return this.contagemIndividualSubject$;
+  }
+
+  getContagem_v03(id: string): Observable<Contagem> {
+
+    return this.http.get<Contagem>(`${this.url}/${id}`)
+      .pipe(
+        // filter(([resultado]) => resultado != null),
+        takeUntil(this.unsubscribe$),
+        tap(() => console.log('get - Contagem')),
+      );
+
+
   }
 
 

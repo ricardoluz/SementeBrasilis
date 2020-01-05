@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef, COMPILER_OPTIONS } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, COMPILER_OPTIONS, OnDestroy } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import { FormBuilder, Validators, FormGroup, NgForm } from '@angular/forms';
 
 import { Bebida } from '../interfaces/bebida';
@@ -22,7 +22,7 @@ import { TipoProdutoService } from './../servicos/tipo-produto.service';
   styleUrls: ['./bebidas-form.component.css']
 })
 
-export class BebidasFormComponent implements OnInit {
+export class BebidasFormComponent implements OnInit, OnDestroy {
 
   @ViewChild('formDirective', { static: false }) private formDirective: NgForm;
   @ViewChild('posicaoInicial', { static: false }) private frmPosicaoInicial: ElementRef;
@@ -50,17 +50,6 @@ export class BebidasFormComponent implements OnInit {
     }),
     unVenda: [''],
     qtdeVenda: [1, [Validators.min(1)]]
-
-    // firstName: ['', [Validators.required, Validators.minLength(5)]],
-    // lastName: [''],
-    // birth: [new Date(), [Validators.required]],
-    // age: [0, [Validators.required, Validators.max(150), Validators.min(0)]],
-    // email: ['', [Validators.required, Validators.email]],
-    // street: ['', [Validators.required]],
-    // city: ['', [Validators.required]],
-    // state: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]],
-    // phone1: ['', [Validators.required]],
-    // phone2: ['', [Validators.required]],
   });
 
 
@@ -89,7 +78,7 @@ export class BebidasFormComponent implements OnInit {
     this.tipoProduto = this.tipoProdutoService.get();
     this.unidadeMedida = this.unidadeMedidaService.get();
 
-    this.bebidaService.get()
+    this.bebidaService.get_v02()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (retorno) => { this.bebidas = retorno; },
@@ -100,8 +89,6 @@ export class BebidasFormComponent implements OnInit {
 
   }
 
-  // FIXME: Rever a passagem por esta função
-  // tslint:disable-next-line: use-lifecycle-interface
   ngOnDestroy() {
     console.warn('OnDestroy - bebidas-form');
     this.unsubscribe$.next();
@@ -118,7 +105,19 @@ export class BebidasFormComponent implements OnInit {
   save() {
     console.log('save_v02 - 01t');
     if (this.blnEdicao) {
-      this.bebidaService.update(this.bebidaForm.value)
+      this.bebidaService.update_v02(this.bebidaForm.value)
+        .pipe(
+          tap((d: Bebida) => {
+            console.log(d);
+            const i = this.bebidas.findIndex(d2 => {
+              return d2._id === d._id;
+            });
+            if (i >= 0) {
+              // bebidas[i].nomeProduto = d.nomeProduto;
+              this.bebidas[i] = d;
+            }
+          })
+        )
         .subscribe(
           (dep) => {
             const notifyTmp = dep.nomeProduto + ' - Alterada.';
