@@ -8,6 +8,7 @@ import { ContagemComponent } from './contagem/contagem.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { PedidoComponent } from './pedido/pedido.component';
 import { ContagemListaComponent } from './contagem-lista/contagem-lista.component';
+import { PedidoApresentacaoComponent } from './pedido/pedido-apresentacao/pedido-apresentacao.component';
 
 
 const appRoutes: Routes = [
@@ -17,6 +18,7 @@ const appRoutes: Routes = [
   { path: 'contagem', component: ContagemComponent },
   { path: 'listaContagem', component: ContagemListaComponent },
   { path: 'pedido/:id', component: PedidoComponent },
+  { path: 'pedidoApresentacao/:id', component: PedidoApresentacaoComponent },
   { path: '', pathMatch: 'full', redirectTo: 'inicial' },
   { path: '**', component: PageNotFoundComponent }
 ];

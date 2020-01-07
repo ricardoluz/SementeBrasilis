@@ -21,7 +21,6 @@ export class ContagemComponent implements OnInit, OnDestroy {
 
   contagemForm: FormGroup;
 
-  // private snackBar: MatSnackBar;
   private unsubscribe$: Subject<any> = new Subject();
 
   constructor(

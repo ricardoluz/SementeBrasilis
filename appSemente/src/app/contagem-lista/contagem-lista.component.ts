@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -12,6 +13,7 @@ import { Contagem } from '../interfaces/contagem';
   templateUrl: './contagem-lista.component.html',
   styleUrls: ['./contagem-lista.component.css']
 })
+
 export class ContagemListaComponent implements OnInit, OnDestroy {
 
   contagemLista: Contagem[];
@@ -29,7 +31,7 @@ export class ContagemListaComponent implements OnInit, OnDestroy {
       .subscribe(
         (retorno) => {
           this.contagemLista = retorno;
-          console.log(retorno);
+          // console.log(retorno);
         },
         (err) => { console.log(err); }
       );
@@ -37,13 +39,26 @@ export class ContagemListaComponent implements OnInit, OnDestroy {
 
   delete(item: Contagem) {
 
-    // this.clearFields();
-
-    this.contagemService.del(item)
+    this.contagemService.delContagem(item)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
-        () => this.notify(item.dataContagem + ' - foi apagado.'),
-        (err) => this.notify(err.error.msg)
+
+        sucess => {
+          this.notify('Contegem : ' + formatDate(item.dataContagem, 'shortDate', 'pt-br') + ' - foi apagada.');
+
+          const i = this.contagemLista.findIndex(d2 => {
+            return d2._id === item._id;
+          });
+          if (i >= 0) {
+            this.contagemLista.splice(i, 1);
+          }
+        },
+
+        error => {
+          this.notify('Erro ao apagar a contagem : ' + formatDate(item.dataContagem, 'shortDate', 'pt-br'));
+          console.error(error.message);
+        }
+
       );
 
     // this.blnEdicao = false;

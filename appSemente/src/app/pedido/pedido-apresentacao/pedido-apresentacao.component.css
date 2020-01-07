@@ -1,0 +1,22 @@
+.pedidoTable{
+    margin-left: 30px;
+    /* border-style: dotted;
+    border-width: 1px; */
+}
+
+.tdNomeProduto{
+    border-style: dotted;
+    border-width: 1px;
+    width: 280px;
+}
+.tdQtdePedido{
+    border-style: dotted;
+    border-width: 1px;
+    width: 90px;
+}
+
+.tdUnidade{
+    color: chocolate;
+    font-style: normal;
+    font-size: smaller
+}

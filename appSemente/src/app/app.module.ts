@@ -23,10 +23,10 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 
 import { AppRoutingModule } from './app-routing.module';
 
-import { Routes2Component } from './testes/routes2/routes2.component';
-import { UsoObservableComponent } from './testes/uso-observable/uso-observable.component';
 import { PedidoComponent } from './pedido/pedido.component';
 import { ContagemListaComponent } from './contagem-lista/contagem-lista.component';
+import { PedidoApresentacaoComponent } from './pedido/pedido-apresentacao/pedido-apresentacao.component';
+
 
 
 @NgModule({
@@ -40,6 +40,7 @@ import { ContagemListaComponent } from './contagem-lista/contagem-lista.componen
     PageNotFoundComponent,
     PedidoComponent,
     ContagemListaComponent,
+    PedidoApresentacaoComponent,
   ],
   imports: [
     BrowserModule,

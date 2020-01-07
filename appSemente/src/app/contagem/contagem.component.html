@@ -1,8 +1,8 @@
-<div layout="column" fxFlex="96">
+<div layout="column" fxFlex="96" class="info-card mat-elevation-z8" style="margin-top: 30px; margin-left: 30px; width: 300px; padding-top: 30px; padding-left: 30px; padding-right: 40px;">
     <form class="example-form" [formGroup]='contagemForm' (ngSubmit)="salvarContagem()">
 
         <mat-form-field>
-            <input matInput [matDatepicker]="myDatepicker" formControlName="dataContagem" class="datePicker">
+            <input matInput [matDatepicker]="myDatepicker" placeholder="Data da Contagem" formControlName="dataContagem" class="datePicker">
             <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
             <mat-datepicker #myDatepicker></mat-datepicker>
         </mat-form-field>

@@ -1,0 +1,22 @@
+
+<ng-container *ngIf="pedido">
+
+    <mat-list class="info-card mat-elevation-z8"
+        style="margin-top: 30px; margin-left: 60px; width: 600px; padding-right: 40px;">
+        <!-- <h2>Contagens efetuadas</h1> -->
+        <h3 mat-subheader>Pedido</h3>
+        {{ pedido.dataPedido | date: 'dd/MM/yyyy' }}
+
+        <table class="pedidoTable">
+            <tr *ngFor="let item of pedido.linhaProduto">
+                <td class="tdNomeProduto">{{ item.nomeProduto }}</td>
+                <td class="tdQtdePedido">
+                    {{ item.qPedido }}
+                    <span class="tdUnidade">{{ item.unCompra }}(s)</span>
+                </td>
+            </tr>
+        </table>
+
+
+    </mat-list>
+</ng-container>

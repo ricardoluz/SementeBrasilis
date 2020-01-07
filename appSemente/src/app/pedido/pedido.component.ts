@@ -1,12 +1,13 @@
+import { PedidoService } from './../servicos/pedido.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { MatSnackBar } from '@angular/material';
 
-import { Contagem } from '../interfaces/contagem';
+
 import { ContagemService } from '../servicos/contagem.service';
 import { Pedido } from '../interfaces/pedido';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { formatDate } from '@angular/common';
 
@@ -19,14 +20,15 @@ export class PedidoComponent implements OnInit, OnDestroy {
 
   pedidoForm: FormGroup;
 
-  private snackBar: MatSnackBar;
 
   private unsubscribe$ = new Subject<void>();
 
   constructor(
     private contagemService: ContagemService,
+    private pedidoService: PedidoService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
+    private snackBar: MatSnackBar
   ) {
 
   }
@@ -49,7 +51,7 @@ export class PedidoComponent implements OnInit, OnDestroy {
 
     const control: FormArray = this.pedidoForm.get(`linhaProduto`) as FormArray;
 
-    this.contagemService.getContagem_v03(idContagemTmp)
+    this.contagemService.getContagem(idContagemTmp)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (prods) => {
@@ -76,7 +78,6 @@ export class PedidoComponent implements OnInit, OnDestroy {
 
   addEqp_v01(prod: any) {
 
-    // console.log(prod);
     const group = this.formBuilder.group({
       nomeProduto: [prod.nomeProduto],
       q1: [prod.q1],
@@ -95,9 +96,9 @@ export class PedidoComponent implements OnInit, OnDestroy {
 
   gravarPedido() {
     let pedidoTmp = '';
-    pedidoTmp += 'Data Contagem: ' + formatDate(this.pedidoForm.get('dataContagem').value, 'shortDate', 'pt-br');
+    pedidoTmp += 'Data Contagem: ' + formatDate(this.pedidoForm.get('dataContagem').value, 'Date', 'pt-br');
     pedidoTmp += '\n';
-    pedidoTmp += 'Data Pedido: ' + formatDate(this.pedidoForm.get('dataPedido').value, 'shortDate', 'pt-br');
+    pedidoTmp += 'Data Pedido: ' + formatDate(this.pedidoForm.get('dataPedido').value, 'Date', 'pt-br');
     pedidoTmp += '\n\n';
 
     for (const iterator of this.pedidoForm.get('linhaProduto').value) {
@@ -110,6 +111,30 @@ export class PedidoComponent implements OnInit, OnDestroy {
     }
 
     alert(pedidoTmp);
+
+    this.pedidoService.add(this.pedidoForm.value)
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe(
+
+        sucess => {
+          // this.bebidas.push(sucess);
+          const notifyTmp = sucess.dataPedido + ' - Inserida.';
+          this.notify(notifyTmp);
+
+          // this.clearFields();
+          // this.blnEdicao = false;
+        },
+
+        error => {
+          this.notify('Erro ao adicionar : ' + formatDate(this.pedidoForm.get('dataPedido').value, 'shortDate', 'pt-br'));
+          console.error(error.mensage);
+        }
+      );
+
+
+
   }
 
   arredPedido(numero: number, numCasaDecimais: number) {
@@ -119,32 +144,16 @@ export class PedidoComponent implements OnInit, OnDestroy {
     return numTmp;
   }
 
+
+  notify(msg: string) {
+    this.snackBar.open(msg, 'OK', { duration: 3000 });
+  }
+
+
   ngOnDestroy(): void {
-    console.log('OnDestroy');
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
-
-  // getForm() {
-  //   return this.pedidoForm;
-  // }
-
-  // getIds(obj) {
-  //   console.log('xxx');
-  //   // tslint:disable-next-line: forin
-  //   for (const x in obj) {
-  //     // console.log(typeof obj[x]);
-  //     console.log(x);
-  //     console.log(obj[x]);
-  //     if (typeof obj[x] === 'object') {
-  //       this.getIds(obj[x]);
-  //     } else if (x === 'id') {
-  //       console.log(obj.id);
-  //     }
-  //   }
-  // }
-
-
 
 }
 

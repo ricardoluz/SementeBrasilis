@@ -58,7 +58,7 @@ router.get('/:id', (req, res) => {
 
 
 //
-//
+// Salvar uma contagem
 //
 
 router.post('/', (req, res) => {
@@ -79,6 +79,9 @@ router.post('/', (req, res) => {
         }
     })
 })
+
+//
+// Excluir uma contagem
 
 router.delete('/:id', (req, res) => {
     Contagem.deleteOne({ _id: req.params.id }, (err) => {

@@ -12,11 +12,6 @@ export class BebidasService {
 
   readonly url = 'http://localhost:3000/produto';
 
-  // private bebidasSubject$: BehaviorSubject<Bebida[]> = new BehaviorSubject<Bebida[]>(null);
-  // public bebidas$ = this.bebidasSubject$.asObservable();
-
-  // private loaded = false;
-
   constructor(private http: HttpClient) { }
 
   get() {

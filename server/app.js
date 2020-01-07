@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 
 const contagem_controller = require('./contagem_controller');
 const produto_controller = require('./produto_controller');
+const pedido_controller = require('./pedido/pedido_controller');
 
 const app = express();
 
@@ -48,5 +49,6 @@ mongoose.connect(
 
 app.use('/produto', produto_controller);
 app.use('/contagem', contagem_controller);
+app.use('/pedido', pedido_controller);
 
 app.listen(3000);
