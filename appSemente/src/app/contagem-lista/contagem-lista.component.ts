@@ -64,7 +64,7 @@ export class ContagemListaComponent implements OnInit, OnDestroy {
     // this.blnEdicao = false;
   }
 
-  edit() {
+  edit(id: string) {
     alert('Função em desenvolvimento.');
   }
 

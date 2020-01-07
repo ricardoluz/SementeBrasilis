@@ -9,7 +9,7 @@
 
         <table formArrayName="linhaProduto">
 
-            <ng-container *ngFor="let item of contagemForm.get('linhaProduto').controls; let i= index"
+            <ng-container *ngFor="let item of contagemForm.get('linhaProduto')['controls']; let i= index"
                 [formGroupName]="i">
 
                 <tr>
