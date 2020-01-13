@@ -20,14 +20,14 @@
 
         <mat-form-field fxFlex="25">
           <input matInput type="text" #posicaoInicial formControlName="nomeProduto" placeholder="Nome do produto">
-          <mat-error *ngIf="bebidaForm.controls.nomeProduto.hasError('required')">
+          <!-- <mat-error *ngIf="bebidaForm.controls.nomeProduto.hasError('required')">
             Nome da bebida é necessário.
           </mat-error>
           <mat-error *ngIf="bebidaForm.controls.nomeProduto.hasError('minlength')">
             Deve conter {{ bebidaForm.controls.nomeProduto.errors.minlength.requiredLength }}
             ou mais caracteres.
             Atual: {{ bebidaForm.controls.nomeProduto.errors.minlength.actualLength}}
-          </mat-error>
+          </mat-error> -->
         </mat-form-field>
 
         <mat-form-field>
@@ -59,9 +59,9 @@
 
         <mat-form-field fxFlex="12">
           <input matInput type="number" formControlName="qtdeMinima" placeholder="Qtde Mínima">
-          <mat-error *ngIf="bebidaForm.controls.qtdeMinima.hasError('min')">
+          <!-- <mat-error *ngIf="bebidaForm.controls.qtdeMinima.hasError('min')">
             Deve ser maior que [{{ bebidaForm.controls.qtdeMinima.errors.min.min}}]
-          </mat-error>
+          </mat-error> -->
         </mat-form-field>
 
       </div>
@@ -78,9 +78,9 @@
 
           <mat-form-field>
             <input matInput type="number" formControlName="rlEstoqueCompra1" placeholder="Relação com Unidade Comprada">
-            <mat-error *ngIf="bebidaForm.controls.estoque.controls.rlEstoqueCompra1.hasError('min')">
-              Deve ser maior que [{{ bebidaForm.controls.estoque.controls.rlEstoqueCompra1.errors.min.min}}]
-            </mat-error>
+            <!-- <mat-error *ngIf="bebidaForm.controls.['estoque'].controls.rlEstoqueCompra1.hasError('min')">
+              Deve ser maior que [{{ bebidaForm.controls.['estoque'].controls.['rlEstoqueCompra1'].errors.min.min}}]
+            </mat-error> -->
           </mat-form-field>
         </div>
 
@@ -98,9 +98,9 @@
 
           <mat-form-field>
             <input matInput type="number" formControlName="rlEstoqueCompra2" placeholder="Relação com Unidade Comprada">
-            <mat-error *ngIf="bebidaForm.controls.estoque.controls.rlEstoqueCompra2.hasError('min')">
+            <!-- <mat-error *ngIf="bebidaForm.controls.estoque.controls.rlEstoqueCompra2.hasError('min')">
               Deve ser maior que [{{ bebidaForm.controls.estoque.controls.rlEstoqueCompra2.errors.min.min}}]
-            </mat-error>
+            </mat-error> -->
           </mat-form-field>
 
         </div>

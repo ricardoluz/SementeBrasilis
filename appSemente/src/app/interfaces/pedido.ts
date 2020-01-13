@@ -1,6 +1,7 @@
 export interface Pedido {
 
     _id?: string;
+    id: string;
     dataPedido: Date;
     dataContagem?: Date;
     linhaProduto: {

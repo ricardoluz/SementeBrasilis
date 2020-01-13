@@ -108,7 +108,6 @@ export class ContagemComponent implements OnInit, OnDestroy {
     this.contagemService.addContagem(p)
       .then(() => {
         const notifyTmp: string = 'Contagem [' + formatDate(p.dataContagem, 'shortDate', 'pt-br') + '] adicionada.';
-        this.snackBar.open('Contagem adicionada.', 'OK', { duration: 2000 });
         this.notify(notifyTmp);
         // this.clearFields();
       })

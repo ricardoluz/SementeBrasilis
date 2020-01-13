@@ -20,11 +20,11 @@ export class PedidoApresentacaoComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.pedidoService.getPedido('5e13a201aa530824d18ca88c')
+    this.pedidoService.getPedidoById('awccorERdLFgC1AhEBxu')
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (retorno) => {
-          this.pedido = retorno[0];
+          this.pedido = retorno;
         },
         (err) => { console.log(err); }
       );

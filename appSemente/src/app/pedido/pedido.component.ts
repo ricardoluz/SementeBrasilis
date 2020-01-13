@@ -44,7 +44,7 @@ export class PedidoComponent implements OnInit, OnDestroy {
 
     // Criar uma casca do formBuilder para o formulário.
     this.pedidoForm = this.formBuilder.group({
-      dataContagem: new Date('01/01/1990').toISOString(),
+      dataContagem: new Date().toISOString(),
       dataPedido: new Date().toISOString(),
       linhaProduto: this.formBuilder.array([])
     });
@@ -111,30 +111,42 @@ export class PedidoComponent implements OnInit, OnDestroy {
 
     alert(pedidoTmp);
 
-    this.pedidoService.add(this.pedidoForm.value)
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe(
+    this.addPedido(this.pedidoForm.value);
 
-        sucess => {
-          // this.bebidas.push(sucess);
-          const notifyTmp = sucess.dataPedido + ' - Inserida.';
-          this.notify(notifyTmp);
+    // this.pedidoService.add(this.pedidoForm.value)
+    //   .pipe(
+    //     takeUntil(this.unsubscribe$)
+    //   )
+    //   .subscribe(
 
-          // this.clearFields();
-          // this.blnEdicao = false;
-        },
+    //     sucess => {
+    //       // this.bebidas.push(sucess);
+    //       const notifyTmp = sucess.dataPedido + ' - Inserida.';
+    //       this.notify(notifyTmp);
 
-        error => {
-          this.notify('Erro ao adicionar : ' + formatDate(this.pedidoForm.get('dataPedido').value, 'shortDate', 'pt-br'));
-          console.error(error.mensage);
-        }
-      );
+    //       // this.clearFields();
+    //       // this.blnEdicao = false;
+    //     },
 
-
-
+    //     error => {
+    //       this.notify('Erro ao adicionar : ' + formatDate(this.pedidoForm.get('dataPedido').value, 'shortDate', 'pt-br'));
+    //       console.error(error.mensage);
+    //     }
+    //   );
   }
+
+  addPedido(p: Pedido) {
+    this.pedidoService.addPedido(p)
+      .then(() => {
+        const notifyTmp: string = 'Pedido [' + formatDate(p.dataPedido, 'shortDate', 'pt-br') + '] adicionado.';
+        this.notify(notifyTmp);
+      })
+      .catch((c) => {
+        const notifyTmp: string = 'Erro ao adicionar a Pedido.' + formatDate(p.dataPedido, 'shortDate', 'pt-br');
+        this.notify(notifyTmp);
+      });
+  }
+
 
   arredPedido(numero: number, numCasaDecimais: number) {
     let numTmp = numero * Math.pow(10, numCasaDecimais);

@@ -1,4 +1,3 @@
-import { Contagem } from './../interfaces/contagem';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { take } from 'rxjs/operators';
@@ -27,15 +26,8 @@ export class ContagemService {
     return this.contagemCollection.valueChanges();
   }
 
-  getContagemById(p: string): Observable<Contagem>  {
-    // p.id = this.afs.createId();     // Cria a string do ID.
+  getContagemById(p: string): Observable<Contagem> {
 
-    // console.log(this.contagemCollection.doc(p).get());
-    // return this.contagemCollection.doc(p.id).get();
-    // console.log(this.contagemCollection.doc(p).valueChanges());
-    // return this.contagemCollection.doc(p.id).valueChanges();
-
-    // return this.contagemCollection.doc<Contagem>('items/1').valueChanges();
     return this.contagemCollection.doc<Contagem>(p).valueChanges();
 
   }
