@@ -1,8 +1,10 @@
-<div layout="column" fxFlex="96" class="info-card mat-elevation-z8" style="margin-top: 30px; margin-left: 30px; width: 300px; padding-top: 30px; padding-left: 30px; padding-right: 40px;">
+<div layout="column" fxFlex="96" class="info-card mat-elevation-z8"
+    style="margin-top: 30px; margin-left: 30px; width: 300px; padding-top: 30px; padding-left: 30px; padding-right: 40px;">
     <form class="example-form" [formGroup]='contagemForm' (ngSubmit)="onSubmit()">
 
         <mat-form-field>
-            <input matInput [matDatepicker]="myDatepicker" placeholder="Data da Contagem" formControlName="dataContagem" class="datePicker">
+            <input matInput [matDatepicker]="myDatepicker" placeholder="Data da Contagem" formControlName="dataContagem"
+                class="datePicker">
             <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
             <mat-datepicker #myDatepicker></mat-datepicker>
         </mat-form-field>
@@ -30,13 +32,15 @@
 
 
                     <td class="tdProduto">
-                        <mat-form-field class="mffQtde">
-                            <input matInput type="number" style="text-align: right" formControlName="q2">
-                        </mat-form-field>
-                        <span class="tdUnidade">{{ item.controls.un2.value }} (s)</span>
-                        <mat-error *ngIf="item.controls.q2.hasError('min') ">
-                            <span class="spanError">Valor deve ser maior que 0.</span>
-                        </mat-error>
+                        <ng-container *ngIf="item.controls.un2.value">
+                            <mat-form-field class="mffQtde">
+                                <input matInput type="number" style="text-align: right" formControlName="q2">
+                            </mat-form-field>
+                            <span class="tdUnidade">{{ item.controls.un2.value }} (s)</span>
+                            <mat-error *ngIf="item.controls.q2.hasError('min') ">
+                                <span class="spanError">Valor deve ser maior que 0.</span>
+                            </mat-error>
+                        </ng-container>
                     </td>
 
                 </tr>
@@ -46,7 +50,6 @@
 
         <br>
         <!-- <button mat-raised-button type="submit" (click)= salvarContagem()>Salvar Contagem </button> -->
-        <!-- <button mat-raised-button type="submit">Salvar Contagem </button> -->
         <button mat-button color="primary" type="submit" [disabled]="!contagemForm.valid">
             <mat-icon>done</mat-icon>Salvar Contagem
         </button>

@@ -20,13 +20,11 @@ export class ProdutoService {
     return this.produtosCollection.valueChanges();
   }
 
-  getListaProdutos() {
+  // getListaProdutos() {
 
-    this.produtosCollection.snapshotChanges().pipe(map(teste => console.log(teste)));
-    return 0;
-  }
-
-
+  //   this.produtosCollection.snapshotChanges().pipe(map(teste => console.log(teste)));
+  //   return 0;
+  // }
 
   addProduto(p: Produto) {
     p.id = this.afs.createId();     // Cria a string do ID.
@@ -41,9 +39,9 @@ export class ProdutoService {
     return this.produtosCollection.doc(p.id).set(p);
   }
 
-  searchByName(name: string): Observable<Produto[]> {
-    return this.afs.collection<Produto>('products',
-      ref => ref.orderBy('name').startAt(name).endAt(name + '\uf8ff'))
-      .valueChanges();
-  }
+  // searchByName(name: string): Observable<Produto[]> {
+  //   return this.afs.collection<Produto>('products',
+  //     ref => ref.orderBy('name').startAt(name).endAt(name + '\uf8ff'))
+  //     .valueChanges();
+  // }
 }

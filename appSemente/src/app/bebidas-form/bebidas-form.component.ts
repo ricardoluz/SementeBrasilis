@@ -151,9 +151,9 @@ export class BebidasFormComponent implements OnInit, OnDestroy {
       });
   }
 
-  filter(event) {
-    this.filterProducts$ = this.produtoService.searchByName(event.target.value);
-  }
+  // filter(event) {
+  //   this.filterProducts$ = this.produtoService.searchByName(event.target.value);
+  // }
 
   // onSubmit_old_2020_01_12() {
   //   // console.log('save_v02 - 01t');

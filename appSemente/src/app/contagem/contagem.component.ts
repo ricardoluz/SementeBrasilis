@@ -88,7 +88,12 @@ export class ContagemComponent implements OnInit, OnDestroy {
 
     // Atualizar a quantidade Total no formBuilder.
     for (const iterator of this.contagemForm.get('linhaProduto').value) {
-      iterator.qTotal = this.arred(iterator.q1 / iterator.rel1 + iterator.q2 / iterator.rel2, 2);
+      iterator.qTotal = iterator.q1 / iterator.rel1;
+      if (!(iterator.un2 == null)) {
+        iterator.qTotal = iterator.qTotal + iterator.q2 / iterator.rel2;
+      }
+      iterator.qTotal = this.arred(iterator.qTotal, 2);
+      // iterator.qTotal = this.arred(iterator.q1 / iterator.rel1 + iterator.q2 / iterator.rel2, 2);
     }
 
     const p: Contagem = this.contagemForm.value;

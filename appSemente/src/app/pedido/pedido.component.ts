@@ -8,7 +8,7 @@ import { MatSnackBar } from '@angular/material';
 import { ContagemService } from '../servicos/contagem.service';
 import { Pedido } from '../interfaces/pedido';
 import { ActivatedRoute } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, take } from 'rxjs/operators';
 import { formatDate } from '@angular/common';
 
 @Component({
@@ -44,15 +44,15 @@ export class PedidoComponent implements OnInit, OnDestroy {
 
     // Criar uma casca do formBuilder para o formulário.
     this.pedidoForm = this.formBuilder.group({
-      dataContagem: new Date().toISOString(),
+      dataContagem: new Date('01/01/1990').toISOString(),
       dataPedido: new Date().toISOString(),
       linhaProduto: this.formBuilder.array([])
     });
 
     const control: FormArray = this.pedidoForm.get(`linhaProduto`) as FormArray;
 
-    this.contagemService.getContagem(idContagemTmp)
-      .pipe(takeUntil(this.unsubscribe$))
+    this.contagemService.getContagemById(idContagemTmp)
+      .pipe(takeUntil(this.unsubscribe$), take(1))
       .subscribe(
         (prods) => {
           if (prods) {
@@ -61,12 +61,11 @@ export class PedidoComponent implements OnInit, OnDestroy {
 
             this.pedidoForm.get('dataContagem').setValue(prods.dataContagem);
 
-            const tmp = Object.values(prods);
-            for (const iterator of tmp[0].linhaProduto) {
+            const tmp = Object.values(prods.linhaProduto);
+            for (const iterator of tmp) {
               control.push(this.addEqp_v01(iterator));
             }
-
-            this.pedidoForm.patchValue(prods[0]);
+            // this.pedidoForm.patchValue(prods[0]);
             // console.log(this.pedidoForm);
           }
         },

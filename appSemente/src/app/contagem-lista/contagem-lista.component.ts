@@ -1,4 +1,3 @@
-import { Contagem } from './../interfaces/contagem';
 import { formatDate } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
