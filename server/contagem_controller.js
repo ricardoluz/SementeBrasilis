@@ -8,9 +8,11 @@ router.get('/', (req, res) => {
     Contagem.find().exec((err, prods) => {
         if (err)
             res.status(500).send(err);
-        else
+        else {
             res.status(200).send(prods);
-        console.log('get contagem - ok')
+            console.log('get contagem - ok')
+            Contagem.db.close;
+        }
     })
 })
 // ---
@@ -31,6 +33,7 @@ router.get('/lista', (req, res) => {
         else {
             console.log('get contagem/lista - ok');
             res.status(200).send(prods);
+            Contagem.db.close;
         }
     })
 })
@@ -52,6 +55,7 @@ router.get('/:id', (req, res) => {
             res.status(200).send(prods);
             console.log('get contagem id: ', req.params.id, ' - ok')
             // console.log(prods);
+            Contagem.db.close;
         }
     })
 })

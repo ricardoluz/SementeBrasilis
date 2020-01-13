@@ -3,10 +3,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, take } from 'rxjs/operators';
 
 import { Bebida } from './../interfaces/bebida';
-import { BebidasService } from '../servicos/bebidas.service';
+
+import { Contagem } from './../interfaces/contagem';
+import { ProdutoService } from './../servicos/produto.service';
 import { ContagemService } from '../servicos/contagem.service';
 
 
@@ -24,7 +26,7 @@ export class ContagemComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subject<any> = new Subject();
 
   constructor(
-    private bebidaService: BebidasService,
+    private produtoService: ProdutoService,
     private contagemService: ContagemService,
 
     private formBuilder: FormBuilder,
@@ -46,8 +48,8 @@ export class ContagemComponent implements OnInit, OnDestroy {
 
     const control: FormArray = this.contagemForm.get(`linhaProduto`) as FormArray;
 
-    this.bebidaService.get()
-      .pipe(takeUntil(this.unsubscribe$))
+    this.produtoService.getProdutos()
+      .pipe(takeUntil(this.unsubscribe$), take(1))
       .subscribe(
         (prods) => {
 
@@ -82,6 +84,51 @@ export class ContagemComponent implements OnInit, OnDestroy {
     return group;
   }
 
+  onSubmit() {
+
+    // Atualizar a quantidade Total no formBuilder.
+    for (const iterator of this.contagemForm.get('linhaProduto').value) {
+      iterator.qTotal = this.arred(iterator.q1 / iterator.rel1 + iterator.q2 / iterator.rel2, 2);
+    }
+
+    const p: Contagem = this.contagemForm.value;
+    if (!p.id) {
+      this.addContagem(p);
+    } else {
+      this.updateContagem(p);
+    }
+  }
+
+  addContagem(p: Contagem) {
+    this.contagemService.addContagem(p)
+      .then(() => {
+        const notifyTmp: string = 'Contagem [' + formatDate(p.dataContagem, 'shortDate', 'pt-br') + '] adicionada.';
+        this.snackBar.open('Contagem adicionada.', 'OK', { duration: 2000 });
+        this.notify(notifyTmp);
+        // this.clearFields();
+      })
+      .catch((c) => {
+        const notifyTmp: string = 'Erro ao adicionar a Contagem.' + formatDate(p.dataContagem, 'shortDate', 'pt-br');
+        this.notify(notifyTmp);
+        // this.snackBar.open('Erro ao adicionar a Contagem.', 'OK', { duration: 2000 });
+      });
+  }
+
+  updateContagem(p: Contagem) {
+    this.contagemService.updateContagem(p)
+      .then(() => {
+        this.snackBar.open('Contagem atualizada', 'OK', { duration: 2000 });
+        // this.clearFields();
+      })
+      .catch((e) => {
+        console.log(e);
+        const notifyTmp: string = 'Erro ao adicionar a Contagem.' + formatDate(p.dataContagem, 'shortDate', 'pt-br');
+        this.notify(notifyTmp);
+        // this.snackBar.open('Error updating the product', 'OK', { duration: 2000 });
+      });
+
+  }
+
 
   salvarContagem() {
 
@@ -97,7 +144,7 @@ export class ContagemComponent implements OnInit, OnDestroy {
 
         sucess => {
 
-          const notifyTmp: string = 'Contagem de : ' +  formatDate(sucess.dataContagem, 'shortDate', 'pt-br')  + ' - Inserida.';
+          const notifyTmp: string = 'Contagem de : ' + formatDate(sucess.dataContagem, 'shortDate', 'pt-br') + ' - Inserida.';
           this.notify(notifyTmp);
         },
 

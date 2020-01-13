@@ -9,11 +9,13 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { PedidoComponent } from './pedido/pedido.component';
 import { ContagemListaComponent } from './contagem-lista/contagem-lista.component';
 import { PedidoApresentacaoComponent } from './pedido/pedido-apresentacao/pedido-apresentacao.component';
+import { TesteComponent } from './teste/teste.component';
 
 
 const appRoutes: Routes = [
 
   { path: 'inicial', component: RoutesComponent },
+  { path: 'teste', component: TesteComponent },
   { path: 'produtos', component: BebidasFormComponent },
   { path: 'contagem', component: ContagemComponent },
   { path: 'listaContagem', component: ContagemListaComponent },

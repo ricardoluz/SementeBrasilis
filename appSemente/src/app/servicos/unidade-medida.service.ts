@@ -17,6 +17,9 @@ export class UnidadeMedidaService {
 
   get(): UnidadeMedida[] {
 
+    this.unidadeMedida = [];    // TODO: temporário para retirar a repetição.
+
+    this.unidadeMedida.push({ _id: null, nomeUnidade: '* Vazia *' });
     this.unidadeMedida.push({ _id: 'Caixa', nomeUnidade: 'Caixa' });
     this.unidadeMedida.push({ _id: 'Unidade', nomeUnidade: 'Unidade' });
     this.unidadeMedida.push({ _id: 'Saco', nomeUnidade: 'Saco' });

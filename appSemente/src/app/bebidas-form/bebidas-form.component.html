@@ -71,17 +71,16 @@
         <div class="teste" formGroupName="estoque" fxFlex="24" fxLayout="column" fxLayoutAlign="start start">
           <mat-form-field>
             <mat-label>Unidade de Estoque</mat-label>
-            <!-- FIXME: Ler a lista a partir do BD. -->
             <mat-select formControlName="unEstoque1" placeholder="Unidade">
               <mat-option *ngFor="let oo of unidadeMedida" [value]="oo._id">{{oo.nomeUnidade}}</mat-option>
             </mat-select>
           </mat-form-field>
 
           <mat-form-field>
-            <input matInput type="number" formControlName="rlEstoqueCompra1" placeholder="Qtde Estoque 1">
-            <!-- <mat-error *ngIf="bebidaForm.controls.estoque.rlEstoqueCompra1.hasError('min')">
-              Deve ser maior que [{{ bebidaForm.controls.estoque.rlEstoqueCompra1.errors.min.min}}]
-            </mat-error> -->
+            <input matInput type="number" formControlName="rlEstoqueCompra1" placeholder="Relação com Unidade Comprada">
+            <mat-error *ngIf="bebidaForm.controls.estoque.controls.rlEstoqueCompra1.hasError('min')">
+              Deve ser maior que [{{ bebidaForm.controls.estoque.controls.rlEstoqueCompra1.errors.min.min}}]
+            </mat-error>
           </mat-form-field>
         </div>
 
@@ -98,10 +97,10 @@
           </mat-form-field>
 
           <mat-form-field>
-            <input matInput type="number" formControlName="rlEstoqueCompra2" placeholder="Qtde Estoque 2">
-            <!-- <mat-error *ngIf="bebidaForm.controls.estoque.rlEstoqueCompra1.hasError('min')">
-              Deve ser maior que [{{ bebidaForm.controls.estoque.rlEstoqueCompra1.errors.min.min}}]
-            </mat-error> -->
+            <input matInput type="number" formControlName="rlEstoqueCompra2" placeholder="Relação com Unidade Comprada">
+            <mat-error *ngIf="bebidaForm.controls.estoque.controls.rlEstoqueCompra2.hasError('min')">
+              Deve ser maior que [{{ bebidaForm.controls.estoque.controls.rlEstoqueCompra2.errors.min.min}}]
+            </mat-error>
           </mat-form-field>
 
         </div>
@@ -130,7 +129,7 @@
 
 <!-- <div fxLayout="row" fxFlex="70"> -->
 
-<mat-list *ngIf="bebidas?.length >= 1" class="info-card mat-elevation-z8"
+<!-- <mat-list *ngIf="bebidas?.length >= 1" class="info-card mat-elevation-z8"
   style="margin-top: 30px; margin-left: 60px; width: 500px;">
   <h3 mat-subheader>Bebidas</h3>
   <mat-list-item *ngFor="let bebida of bebidas">
@@ -143,7 +142,33 @@
       <mat-icon>edit</mat-icon>
     </button>
   </mat-list-item>
-</mat-list>
+</mat-list> -->
+
+<div>
+
+  <mat-list *ngIf="(produtos$ | async) as produtos; else loading" class="info-card mat-elevation-z8"
+    style="margin-top: 30px; margin-left: 60px; width: 500px;">
+    <h3 mat-subheader>Produtos</h3>
+    <mat-list-item *ngFor="let item of produtos">
+      <mat-icon mat-list-icon>folder</mat-icon>
+      <h4 mat-line>{{item.nomeProduto}}</h4>
+      <button mat-icon-button color="accent" (click)="delete(item)">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <button mat-icon-button color="primary" (click)="edit(item)">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </mat-list-item>
+  </mat-list>
+</div>
+
+
+<ng-template #loading>
+  <span>Carregando produtos ...</span>
+</ng-template>
+
+
+
 
 <!-- </div> -->
 

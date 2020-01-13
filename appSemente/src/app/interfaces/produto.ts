@@ -1,4 +1,4 @@
-export interface Bebida {
+export interface Produto {
     _id?: string;           // para o MongoDB
     id: string;             // para o Firebase
     nomeProduto: string;

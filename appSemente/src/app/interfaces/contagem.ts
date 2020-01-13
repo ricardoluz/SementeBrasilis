@@ -1,6 +1,7 @@
 export interface Contagem {
 
     _id?: string;
+    id?: string;
     dataContagem?: Date;
     linhaProduto: {
         nomeProduto: string;

@@ -13,6 +13,8 @@ export class GrupoProdutoService {
 
   get(): GrupoProduto[] {
 
+    this.grupoProduto = [];     // TODO: temporário para retirar a repetição.
+
     this.grupoProduto.push({ _id: 'Bebidas', grupoProduto: 'Bebidas' });
     // this.grupoProduto.push({ _id: 'CocaCola', grupoProduto: 'Bebidas' });
     // this.grupoProduto.push({ _id: 'CocaCola', grupoProduto: 'Bebidas' });

@@ -22,10 +22,16 @@ import { RoutesComponent } from './testes/routes/routes.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 import { AppRoutingModule } from './app-routing.module';
+import { AngularFireModule} from '@angular/fire';
+import { AngularFireDatabaseModule} from '@angular/fire/database';
+import { AngularFirestoreModule} from '@angular/fire/firestore';
 
 import { PedidoComponent } from './pedido/pedido.component';
 import { ContagemListaComponent } from './contagem-lista/contagem-lista.component';
 import { PedidoApresentacaoComponent } from './pedido/pedido-apresentacao/pedido-apresentacao.component';
+import { from } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { TesteComponent } from './teste/teste.component';
 
 
 
@@ -34,13 +40,12 @@ import { PedidoApresentacaoComponent } from './pedido/pedido-apresentacao/pedido
     AppComponent,
     BebidasFormComponent,
     ContagemComponent,
-    // UsoObservableComponent,
     RoutesComponent,
-    // Routes2Component,
     PageNotFoundComponent,
     PedidoComponent,
     ContagemListaComponent,
     PedidoApresentacaoComponent,
+    TesteComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,6 +56,8 @@ import { PedidoApresentacaoComponent } from './pedido/pedido-apresentacao/pedido
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFirestoreModule
   ],
   providers: [
     DatePipe,

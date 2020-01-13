@@ -1,3 +1,4 @@
+import { Contagem } from './../interfaces/contagem';
 import { formatDate } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -37,7 +38,18 @@ export class ContagemListaComponent implements OnInit, OnDestroy {
       );
   }
 
-  delete(item: Contagem) {
+  delete(p: Contagem) {
+    this.contagemService.deleteContagem(p)
+      .then(() => {
+        this.snackBar.open('Produto removido', 'OK', { duration: 2000 });
+      })
+      .catch((e) => {
+        console.log(e);
+        this.snackBar.open('Error when trying to remove the product', 'OK', { duration: 2000 });
+      });
+  }
+
+  delete_(item: Contagem) {
 
     this.contagemService.delContagem(item)
       .pipe(takeUntil(this.unsubscribe$))
