@@ -7,9 +7,9 @@ import { MatSnackBar } from '@angular/material';
 
 import { ContagemService } from '../servicos/contagem.service';
 import { Pedido } from '../interfaces/pedido';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil, take } from 'rxjs/operators';
-import { formatDate } from '@angular/common';
+import { formatDate, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-pedido',
@@ -28,6 +28,7 @@ export class PedidoComponent implements OnInit, OnDestroy {
     private pedidoService: PedidoService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
+    private router: Router,
     private snackBar: MatSnackBar
   ) {
 
@@ -44,8 +45,8 @@ export class PedidoComponent implements OnInit, OnDestroy {
 
     // Criar uma casca do formBuilder para o formulário.
     this.pedidoForm = this.formBuilder.group({
-      dataContagem: new Date().toISOString(),
-      dataPedido: new Date().toISOString(),
+      dataContagem: new Date(),
+      dataPedido: new Date(),
       linhaProduto: this.formBuilder.array([])
     });
 
@@ -95,9 +96,11 @@ export class PedidoComponent implements OnInit, OnDestroy {
 
   gravarPedido() {
     let pedidoTmp = '';
-    pedidoTmp += 'Data Contagem: ' + formatDate(this.pedidoForm.get('dataContagem').value, 'Date', 'pt-br');
+    // pedidoTmp += 'Data Contagem: ' + formatDate(this.pedidoForm.get('dataContagem').value, 'Date', 'pt-br');
+    pedidoTmp += 'Data Contagem: ' + this.pedidoForm.get('dataContagem').value.toDate().toLocaleDateString();
     pedidoTmp += '\n';
-    pedidoTmp += 'Data Pedido: ' + formatDate(this.pedidoForm.get('dataPedido').value, 'Date', 'pt-br');
+    // pedidoTmp += 'Data Pedido: ' + formatDate(this.pedidoForm.get('dataPedido').value, 'Date', 'pt-br');
+    pedidoTmp += 'Data Pedido: ' + this.pedidoForm.get('dataPedido').value.toLocaleDateString();
     pedidoTmp += '\n\n';
 
     for (const iterator of this.pedidoForm.get('linhaProduto').value) {
@@ -140,6 +143,8 @@ export class PedidoComponent implements OnInit, OnDestroy {
       .then(() => {
         const notifyTmp: string = 'Pedido [' + formatDate(p.dataPedido, 'shortDate', 'pt-br') + '] adicionado.';
         this.notify(notifyTmp);
+
+        this.router.navigateByUrl('/pedidoApresentacao/' + p.id);
       })
       .catch((c) => {
         const notifyTmp: string = 'Erro ao adicionar a Pedido.' + formatDate(p.dataPedido, 'shortDate', 'pt-br');

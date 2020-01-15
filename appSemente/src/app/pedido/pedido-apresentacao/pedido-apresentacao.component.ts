@@ -3,6 +3,7 @@ import { Pedido } from 'src/app/interfaces/pedido';
 import { PedidoService } from 'src/app/servicos/pedido.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-pedido-apresentacao',
@@ -16,11 +17,14 @@ export class PedidoApresentacaoComponent implements OnInit, OnDestroy {
 
   constructor(
     private pedidoService: PedidoService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
 
-    this.pedidoService.getPedidoById('awccorERdLFgC1AhEBxu')
+    const idPedido = this.route.snapshot.paramMap.get('id');
+
+    this.pedidoService.getPedidoById(idPedido )
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (retorno) => {

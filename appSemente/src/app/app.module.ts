@@ -29,7 +29,8 @@ import { AngularFirestoreModule} from '@angular/fire/firestore';
 import { PedidoComponent } from './pedido/pedido.component';
 import { ContagemListaComponent } from './contagem-lista/contagem-lista.component';
 import { PedidoApresentacaoComponent } from './pedido/pedido-apresentacao/pedido-apresentacao.component';
-import { from } from 'rxjs';
+// import { from } from 'rxjs';
+
 import { environment } from 'src/environments/environment';
 import { TesteComponent } from './teste/teste.component';
 
@@ -57,6 +58,7 @@ import { TesteComponent } from './teste/teste.component';
     HttpClientModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireDatabaseModule,
     AngularFirestoreModule
   ],
   providers: [

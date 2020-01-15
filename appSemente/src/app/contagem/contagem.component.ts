@@ -42,7 +42,8 @@ export class ContagemComponent implements OnInit, OnDestroy {
   criarFormContagem() {
 
     this.contagemForm = this.formBuilder.group({
-      dataContagem: new Date().toISOString(),
+      // dataContagem: new Date().toISOString(),
+      dataContagem: new Date(),
       linhaProduto: this.formBuilder.array([])
     });
 
