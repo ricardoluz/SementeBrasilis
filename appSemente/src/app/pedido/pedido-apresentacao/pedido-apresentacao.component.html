@@ -1,4 +1,4 @@
- <ng-container *ngIf="(pedido$ | async) as pedido">
+<ng-container *ngIf="(pedido$ | async) as pedido">
 
     <mat-list class="info-card mat-elevation-z8"
         style="margin-top: 30px; margin-left: 60px; width: 600px; padding-right: 40px;">
@@ -17,8 +17,18 @@
         </table>
 
 
-        <textarea>
+        <!-- <mat-form-field floatPlaceholder="auto" flex="100">
+            <textarea #txtsgWhatsApp matInput matTextareaAutosize required>
+                {{ pedidoString }}
+            </textarea>
+        </mat-form-field> -->
+
+        <!-- <button (click)="copyToCB()">copy</button> -->
+
+        <br><textarea #txtConfigFile>
             {{ pedidoString }}
-        </textarea> 
+        </textarea><br>
+        <button (click)="copyToCB()">copy</button>
+
     </mat-list>
 </ng-container>

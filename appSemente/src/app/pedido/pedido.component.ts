@@ -112,7 +112,7 @@ export class PedidoComponent implements OnInit, OnDestroy {
       }
     }
 
-    alert(pedidoTmp);
+    // alert(pedidoTmp);
 
     this.addPedido(this.pedidoForm.value);
 

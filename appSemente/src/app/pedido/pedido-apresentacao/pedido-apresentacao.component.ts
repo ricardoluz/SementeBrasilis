@@ -1,5 +1,5 @@
 import { ProdutoService } from './../../servicos/produto.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { Pedido } from 'src/app/interfaces/pedido';
 import { PedidoService } from 'src/app/servicos/pedido.service';
 import { Subject, BehaviorSubject, Observable } from 'rxjs';
@@ -12,6 +12,10 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./pedido-apresentacao.component.css']
 })
 export class PedidoApresentacaoComponent implements OnInit, OnDestroy {
+
+  // @ViewChild('txtMsgWhatsApp', {static: false}) txtMsgWhatsApp: ElementRef;
+  @ViewChild('txtConfigFile', { static: false }) txtConfigFile: ElementRef;
+  // @ViewChild('posicaoInicial', { static: false }) private frmPosicaoInicial: ElementRef;
 
   pedido: Pedido;
   pedidoString = '';
@@ -37,18 +41,47 @@ export class PedidoApresentacaoComponent implements OnInit, OnDestroy {
           let pedidoTmp = '';
           const tmp = Object.assign(retorno.linhaProduto);
           for (const iterator of tmp) {
-            pedidoTmp += '```' + iterator.nomeProduto;
-            pedidoTmp += '.'.repeat(40 - (iterator.nomeProduto).length);
-            pedidoTmp += ' [ ' + iterator.qPedido + ' ] ' + iterator.unCompra + '(s)';
-            pedidoTmp += '```\n';
+            if (iterator.qPedido > 0) {
+              pedidoTmp += '```' + iterator.nomeProduto;
+              pedidoTmp += '.'.repeat(40 - (iterator.nomeProduto).length);
+              pedidoTmp += ' [ ' + iterator.qPedido + ' ] ' + iterator.unCompra + '(s)';
+              pedidoTmp += '```\n';
+            }
           }
           console.log(pedidoTmp);
           this.pedidoString = pedidoTmp;
+          // this.txtMsgWhatsApp.nativeElement = pedidoTmp;
         },
         (err) => { console.log(err); }
       );
   }
 
+  // copyToCB_1() {
+  //   // if (this.txtMsgWhatsApp) {
+  //     // Select textarea text
+  //     this.txtMsgWhatsApp.nativeElement.select();
+
+  //     // Copy to the clipboard
+  //     document.execCommand('copy');
+
+
+  //     // Deselect selected textarea
+  //     this.txtMsgWhatsApp.nativeElement.setSelectionRange(0, 0);
+  //   // }
+  // }
+
+  copyToCB() {
+    if (this.txtConfigFile) {
+      // Select textarea text
+      this.txtConfigFile.nativeElement.select();
+
+      // Copy to the clipboard
+      document.execCommand('copy');
+
+      // Deselect selected textarea
+      this.txtConfigFile.nativeElement.setSelectionRange(0, 0);
+    }
+  }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
