@@ -18,18 +18,19 @@ export class PedidoService {
     // private http: HttpClient,
     private afs: AngularFirestore) { }
 
+  getListaPedido(): Observable<Pedido[]> {
+    return this.contagemCollection.valueChanges();
+  }
 
+  getPedidoById(p: string): Observable<Pedido> {
+    return this.contagemCollection.doc<Pedido>(p).valueChanges();
+  }
 
   addPedido(p: Pedido) {
     p.id = this.afs.createId();     // Cria a string do ID.
     return this.contagemCollection.doc(p.id).set(p);
   }
 
-  getPedidoById(p: string): Observable<Pedido> {
-
-    return this.contagemCollection.doc<Pedido>(p).valueChanges();
-
-  }
 
   // getListaPedido() {
 

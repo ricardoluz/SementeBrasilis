@@ -1,11 +1,10 @@
-
-<ng-container *ngIf="pedido">
+ <ng-container *ngIf="(pedido$ | async) as pedido">
 
     <mat-list class="info-card mat-elevation-z8"
         style="margin-top: 30px; margin-left: 60px; width: 600px; padding-right: 40px;">
         <!-- <h2>Contagens efetuadas</h1> -->
         <h3 mat-subheader>Pedido</h3>
-        {{ pedido.dataPedido | date: 'dd/MM/yyyy' }}
+        {{ pedido.dataPedido.toDate() | date: 'dd/MM/yyyy' }}
 
         <table class="pedidoTable">
             <tr *ngFor="let item of pedido.linhaProduto">
@@ -18,5 +17,8 @@
         </table>
 
 
+        <textarea>
+            {{ pedidoString }}
+        </textarea> 
     </mat-list>
 </ng-container>

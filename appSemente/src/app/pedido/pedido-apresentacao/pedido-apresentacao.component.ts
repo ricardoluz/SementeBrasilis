@@ -1,8 +1,9 @@
+import { ProdutoService } from './../../servicos/produto.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Pedido } from 'src/app/interfaces/pedido';
 import { PedidoService } from 'src/app/servicos/pedido.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, BehaviorSubject, Observable } from 'rxjs';
+import { takeUntil, map, tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -13,6 +14,9 @@ import { ActivatedRoute } from '@angular/router';
 export class PedidoApresentacaoComponent implements OnInit, OnDestroy {
 
   pedido: Pedido;
+  pedidoString = '';
+  pedido$: Observable<Pedido>;
+
   private unsubscribe$ = new Subject<void>();
 
   constructor(
@@ -24,11 +28,22 @@ export class PedidoApresentacaoComponent implements OnInit, OnDestroy {
 
     const idPedido = this.route.snapshot.paramMap.get('id');
 
-    this.pedidoService.getPedidoById(idPedido )
+    this.pedido$ = this.pedidoService.getPedidoById(idPedido);
+
+    this.pedidoService.getPedidoById(idPedido)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (retorno) => {
-          this.pedido = retorno;
+          let pedidoTmp = '';
+          const tmp = Object.assign(retorno.linhaProduto);
+          for (const iterator of tmp) {
+            pedidoTmp += '```' + iterator.nomeProduto;
+            pedidoTmp += '.'.repeat(40 - (iterator.nomeProduto).length);
+            pedidoTmp += ' [ ' + iterator.qPedido + ' ] ' + iterator.unCompra + '(s)';
+            pedidoTmp += '```\n';
+          }
+          console.log(pedidoTmp);
+          this.pedidoString = pedidoTmp;
         },
         (err) => { console.log(err); }
       );
