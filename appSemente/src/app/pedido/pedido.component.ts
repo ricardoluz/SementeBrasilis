@@ -88,7 +88,7 @@ export class PedidoComponent implements OnInit, OnDestroy {
       qMinima: [prod.qMinima],
       qTotal: [prod.qTotal],
       qSugestao: [this.arredPedido(prod.qMinima - prod.qTotal, 0)],
-      qPedido: [this.arredPedido(prod.qMinima - prod.qTotal, 0), Validators.min(0)]
+      qPedido: [this.arredPedido(prod.qMinima - prod.qTotal, 0), [Validators.required, Validators.min(0)]]
     });
 
     return group;

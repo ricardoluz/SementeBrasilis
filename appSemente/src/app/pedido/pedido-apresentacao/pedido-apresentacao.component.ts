@@ -5,6 +5,7 @@ import { PedidoService } from 'src/app/servicos/pedido.service';
 import { Subject, BehaviorSubject, Observable } from 'rxjs';
 import { takeUntil, map, tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-pedido-apresentacao',
@@ -40,15 +41,28 @@ export class PedidoApresentacaoComponent implements OnInit, OnDestroy {
         (retorno) => {
           let pedidoTmp = '';
           const tmp = Object.assign(retorno.linhaProduto);
+
+          // pedidoTmp += this.linhaWhatApp('*Semente Brasilis*');
+          // pedidoTmp += this.linhaWhatApp('*Código Loja: 253088*');
+          pedidoTmp += '*Semente Brasilis*\n';
+          pedidoTmp += '*Código Loja: 253088*\n';
+          // pedidoTmp += this.linhaWhatApp('-'.repeat(30));
+          pedidoTmp += '\n';
+
           for (const iterator of tmp) {
             if (iterator.qPedido > 0) {
-              pedidoTmp += '```' + iterator.nomeProduto;
-              pedidoTmp += '.'.repeat(40 - (iterator.nomeProduto).length);
-              pedidoTmp += ' [ ' + iterator.qPedido + ' ] ' + iterator.unCompra + '(s)';
-              pedidoTmp += '```\n';
+              // pedidoTmp += '```' + iterator.nomeProduto;
+              // pedidoTmp += '.'.repeat(40 - (iterator.nomeProduto).length);
+              // pedidoTmp += ' [ ' + iterator.qPedido + ' ] ' + iterator.unCompra + '(s)';
+              // pedidoTmp += '```\n';
+
+              pedidoTmp += this.linhaWhatApp(iterator.nomeProduto);
+              pedidoTmp += this.linhaWhatApp(' [ ' + iterator.qPedido + ' ] ' + iterator.unCompra + '(s)');
+              pedidoTmp += '\n';
             }
           }
-          console.log(pedidoTmp);
+          pedidoTmp += this.linhaWhatApp('. '.repeat(8));
+          // console.log(pedidoTmp);
           this.pedidoString = pedidoTmp;
           // this.txtMsgWhatsApp.nativeElement = pedidoTmp;
         },
@@ -56,6 +70,9 @@ export class PedidoApresentacaoComponent implements OnInit, OnDestroy {
       );
   }
 
+  linhaWhatApp(texto: string) {
+    return ('```' + texto + '```\n');
+  }
   // copyToCB_1() {
   //   // if (this.txtMsgWhatsApp) {
   //     // Select textarea text

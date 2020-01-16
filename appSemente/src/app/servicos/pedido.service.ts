@@ -13,6 +13,7 @@ export class PedidoService {
 
   readonly url = 'http://localhost:3000/pedido';
   private contagemCollection: AngularFirestoreCollection<Pedido> = this.afs.collection('pedidos');
+  private teste: AngularFirestore = this.afs;
 
   constructor(
     // private http: HttpClient,
@@ -22,14 +23,14 @@ export class PedidoService {
     return this.contagemCollection.valueChanges();
   }
 
-  getPedidoById(p: string): Observable<Pedido> {
-    return this.contagemCollection.doc<Pedido>(p).valueChanges();
-  }
+getPedidoById(p: string): Observable < Pedido > {
+  return this.contagemCollection.doc<Pedido>(p).valueChanges();
+}
 
-  addPedido(p: Pedido) {
-    p.id = this.afs.createId();     // Cria a string do ID.
-    return this.contagemCollection.doc(p.id).set(p);
-  }
+addPedido(p: Pedido) {
+  p.id = this.afs.createId();     // Cria a string do ID.
+  return this.contagemCollection.doc(p.id).set(p);
+}
 
 
   // getListaPedido() {
