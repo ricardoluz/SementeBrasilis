@@ -1,3 +1,4 @@
+import { Contagem } from './../interfaces/contagem';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { take } from 'rxjs/operators';
@@ -23,7 +24,12 @@ export class ContagemService {
 
 
   getListaContagem(): Observable<Contagem[]> {
-    return this.contagemCollection.valueChanges();
+    // return this.contagemCollection.valueChanges();
+
+    return this.afs.collection('contagens', ref =>
+      ref
+        .orderBy('dataContagem', 'desc'))
+      .valueChanges() as Observable<Contagem[]>;
   }
 
   getContagemById(p: string): Observable<Contagem> {

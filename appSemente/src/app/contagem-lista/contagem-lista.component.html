@@ -4,7 +4,7 @@
     <h3 mat-subheader>Lista</h3>
     <mat-list-item *ngFor="let item of contagemLista">
         <mat-icon mat-list-icon>folder</mat-icon>
-        <h4 mat-line>{{ item.dataContagem.toDate() | date: 'dd/MM/yyyy' }}</h4>
+        <h4 mat-line>{{ item.dataContagem.toDate() | date: 'dd/MM/yyyy HH:mm' }}</h4>
         <button mat-icon-button color="accent" (click)="delete(item)">
             <mat-icon>delete</mat-icon>
         </button>
