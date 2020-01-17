@@ -20,7 +20,13 @@ export class PedidoService {
     private afs: AngularFirestore) { }
 
   getListaPedido(): Observable<Pedido[]> {
-    return this.pedidoCollection.valueChanges();
+    // return this.pedidoCollection.valueChanges();
+
+    return this.afs.collection('pedidos', ref =>
+      ref
+        .orderBy('dataPedido', 'desc'))
+      .valueChanges() as Observable<Pedido[]>;
+
   }
 
   getPedidoById(p: string): Observable<Pedido> {

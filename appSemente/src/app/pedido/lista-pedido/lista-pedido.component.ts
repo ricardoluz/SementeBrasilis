@@ -37,7 +37,7 @@ export class ListaPedidoComponent implements OnInit {
       });
   }
 
-  edit(p: Pedido) {
+  enviarPedido(p: Pedido) {
     this.router.navigateByUrl('/pedidoApresentacao/' + p.id);
 
   }

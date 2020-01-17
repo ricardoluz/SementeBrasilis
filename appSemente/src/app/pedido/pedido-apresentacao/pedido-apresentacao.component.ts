@@ -62,6 +62,7 @@ export class PedidoApresentacaoComponent implements OnInit, OnDestroy {
           pedidoTmp += this.linhaWhatApp('. '.repeat(8));
           // console.log(pedidoTmp);
           this.pedidoString = pedidoTmp;
+          this.txtMsgWhatsApp.nativeElement.setSelectionRange(0, 0);
           // this.txtMsgWhatsApp.nativeElement = pedidoTmp;
         },
         (err) => { console.log(err); }
