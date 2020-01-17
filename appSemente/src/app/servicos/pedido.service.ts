@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 export class PedidoService {
 
   readonly url = 'http://localhost:3000/pedido';
-  private contagemCollection: AngularFirestoreCollection<Pedido> = this.afs.collection('pedidos');
+  private pedidoCollection: AngularFirestoreCollection<Pedido> = this.afs.collection('pedidos');
   private teste: AngularFirestore = this.afs;
 
   constructor(
@@ -20,17 +20,21 @@ export class PedidoService {
     private afs: AngularFirestore) { }
 
   getListaPedido(): Observable<Pedido[]> {
-    return this.contagemCollection.valueChanges();
+    return this.pedidoCollection.valueChanges();
   }
 
-getPedidoById(p: string): Observable < Pedido > {
-  return this.contagemCollection.doc<Pedido>(p).valueChanges();
-}
+  getPedidoById(p: string): Observable<Pedido> {
+    return this.pedidoCollection.doc<Pedido>(p).valueChanges();
+  }
 
-addPedido(p: Pedido) {
-  p.id = this.afs.createId();     // Cria a string do ID.
-  return this.contagemCollection.doc(p.id).set(p);
-}
+  addPedido(p: Pedido) {
+    p.id = this.afs.createId();     // Cria a string do ID.
+    return this.pedidoCollection.doc(p.id).set(p);
+  }
+
+  deletePedido(p: Pedido) {
+    return this.pedidoCollection.doc(p.id).delete();
+  }
 
 
   // getListaPedido() {

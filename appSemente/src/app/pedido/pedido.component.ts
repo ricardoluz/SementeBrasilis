@@ -94,51 +94,14 @@ export class PedidoComponent implements OnInit, OnDestroy {
     return group;
   }
 
+  // gravarPedido() {
+
+    // this.addPedido(this.pedidoForm.value);
+
+  // }
+
   gravarPedido() {
-    let pedidoTmp = '';
-    // pedidoTmp += 'Data Contagem: ' + formatDate(this.pedidoForm.get('dataContagem').value, 'Date', 'pt-br');
-    pedidoTmp += 'Data Contagem: ' + this.pedidoForm.get('dataContagem').value.toDate().toLocaleDateString();
-    pedidoTmp += '\n';
-    // pedidoTmp += 'Data Pedido: ' + formatDate(this.pedidoForm.get('dataPedido').value, 'Date', 'pt-br');
-    pedidoTmp += 'Data Pedido: ' + this.pedidoForm.get('dataPedido').value.toLocaleDateString();
-    pedidoTmp += '\n\n';
-
-    for (const iterator of this.pedidoForm.get('linhaProduto').value) {
-      if (iterator.qPedido > 0) {
-        pedidoTmp += iterator.nomeProduto;
-        pedidoTmp += '.'.repeat(40 - (iterator.nomeProduto).length);
-        pedidoTmp += ' [ ' + iterator.qPedido + ' ]';
-        pedidoTmp += '\n';
-      }
-    }
-
-    // alert(pedidoTmp);
-
-    this.addPedido(this.pedidoForm.value);
-
-    // this.pedidoService.add(this.pedidoForm.value)
-    //   .pipe(
-    //     takeUntil(this.unsubscribe$)
-    //   )
-    //   .subscribe(
-
-    //     sucess => {
-    //       // this.bebidas.push(sucess);
-    //       const notifyTmp = sucess.dataPedido + ' - Inserida.';
-    //       this.notify(notifyTmp);
-
-    //       // this.clearFields();
-    //       // this.blnEdicao = false;
-    //     },
-
-    //     error => {
-    //       this.notify('Erro ao adicionar : ' + formatDate(this.pedidoForm.get('dataPedido').value, 'shortDate', 'pt-br'));
-    //       console.error(error.mensage);
-    //     }
-    //   );
-  }
-
-  addPedido(p: Pedido) {
+    const p = this.pedidoForm.value;
     this.pedidoService.addPedido(p)
       .then(() => {
         const notifyTmp: string = 'Pedido [' + formatDate(p.dataPedido, 'shortDate', 'pt-br') + '] adicionado.';

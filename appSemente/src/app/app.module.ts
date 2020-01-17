@@ -33,6 +33,7 @@ import { PedidoApresentacaoComponent } from './pedido/pedido-apresentacao/pedido
 
 import { environment } from 'src/environments/environment';
 import { TesteComponent } from './teste/teste.component';
+import { ListaPedidoComponent } from './pedido/lista-pedido/lista-pedido.component';
 
 
 
@@ -47,6 +48,7 @@ import { TesteComponent } from './teste/teste.component';
     ContagemListaComponent,
     PedidoApresentacaoComponent,
     TesteComponent,
+    ListaPedidoComponent,
   ],
   imports: [
     BrowserModule,

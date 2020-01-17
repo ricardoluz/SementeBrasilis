@@ -9,6 +9,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { PedidoComponent } from './pedido/pedido.component';
 import { ContagemListaComponent } from './contagem-lista/contagem-lista.component';
 import { PedidoApresentacaoComponent } from './pedido/pedido-apresentacao/pedido-apresentacao.component';
+import { ListaPedidoComponent } from './pedido/lista-pedido/lista-pedido.component';
 // import { TesteComponent } from './teste/teste.component';
 
 
@@ -19,6 +20,7 @@ const appRoutes: Routes = [
   { path: 'produtos', component: BebidasFormComponent },
   { path: 'contagem', component: ContagemComponent },
   { path: 'listaContagem', component: ContagemListaComponent },
+  { path: 'listaPedido', component: ListaPedidoComponent },
   { path: 'pedido/:id', component: PedidoComponent },
   { path: 'pedidoApresentacao/:id', component: PedidoApresentacaoComponent },
   { path: '', pathMatch: 'full', redirectTo: 'inicial' },

@@ -20,3 +20,8 @@
     font-style: normal;
     font-size: smaller
 }
+
+textarea {
+    border: 0px solid #ffffff;
+    height: 0px;
+}

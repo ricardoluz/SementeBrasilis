@@ -16,19 +16,27 @@
             </tr>
         </table>
 
+        <br>
+        <a mat-button (click)="copyToCB()">
+            <mat-icon>share</mat-icon> Copiar para WhatsApp
+        </a>
+        <br>
+        
 
-        <!-- <mat-form-field floatPlaceholder="auto" flex="100">
-            <textarea #txtsgWhatsApp matInput matTextareaAutosize required>
+        <!-- <mat-form-field floatPlaceholder="auto" flex="200"> -->
+            <textarea matInput #txtMsgWhatsApp>
                 {{ pedidoString }}
             </textarea>
-        </mat-form-field> -->
+        <!-- </mat-form-field> -->
 
-        <!-- <button (click)="copyToCB()">copy</button> -->
-
-        <br><textarea #txtConfigFile>
-            {{ pedidoString }}
-        </textarea><br>
-        <button (click)="copyToCB()">copy</button>
+        <!-- <br>
+        <a mat-button (click)="copyToCB()">
+            <mat-icon>share</mat-icon> Copiar para WhatsApp
+        </a> -->
 
     </mat-list>
+    <br><br>
+    <a mat-button routerLink="/listaPedido">
+        <mat-icon>chevron_left</mat-icon>Lista Pedido
+    </a>
 </ng-container>

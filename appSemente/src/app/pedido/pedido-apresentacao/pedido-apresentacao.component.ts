@@ -14,9 +14,7 @@ import { formatDate } from '@angular/common';
 })
 export class PedidoApresentacaoComponent implements OnInit, OnDestroy {
 
-  // @ViewChild('txtMsgWhatsApp', {static: false}) txtMsgWhatsApp: ElementRef;
-  @ViewChild('txtConfigFile', { static: false }) txtConfigFile: ElementRef;
-  // @ViewChild('posicaoInicial', { static: false }) private frmPosicaoInicial: ElementRef;
+  @ViewChild('txtMsgWhatsApp', { static: false }) txtMsgWhatsApp: ElementRef;
 
   pedido: Pedido;
   pedidoString = '';
@@ -88,15 +86,16 @@ export class PedidoApresentacaoComponent implements OnInit, OnDestroy {
   // }
 
   copyToCB() {
-    if (this.txtConfigFile) {
+    if (this.txtMsgWhatsApp) {
       // Select textarea text
-      this.txtConfigFile.nativeElement.select();
+      this.txtMsgWhatsApp.nativeElement.select();
+
 
       // Copy to the clipboard
       document.execCommand('copy');
 
       // Deselect selected textarea
-      this.txtConfigFile.nativeElement.setSelectionRange(0, 0);
+      this.txtMsgWhatsApp.nativeElement.setSelectionRange(0, 0);
     }
   }
 
