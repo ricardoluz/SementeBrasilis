@@ -10,12 +10,17 @@ import { PedidoComponent } from './pedido/pedido.component';
 import { ContagemListaComponent } from './contagem-lista/contagem-lista.component';
 import { PedidoApresentacaoComponent } from './pedido/pedido-apresentacao/pedido-apresentacao.component';
 import { ListaPedidoComponent } from './pedido/lista-pedido/lista-pedido.component';
+import { ApoioComponent } from './apoio/apoio.component';
+import { GrupoProdutoRegistroComponent } from './apoio/grupo-produto-registro/grupo-produto-registro.component';
 // import { TesteComponent } from './teste/teste.component';
 
 
 const appRoutes: Routes = [
 
   { path: 'inicial', component: RoutesComponent },
+  { path: 'apoio', component: ApoioComponent },
+  { path: 'apoio/grupoProduto', component: GrupoProdutoRegistroComponent },
+
   // { path: 'teste', component: TesteComponent },
   { path: 'produtos', component: BebidasFormComponent },
   { path: 'contagem', component: ContagemComponent },

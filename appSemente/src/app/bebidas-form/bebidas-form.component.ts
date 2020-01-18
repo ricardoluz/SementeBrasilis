@@ -42,6 +42,8 @@ export class BebidasFormComponent implements OnInit, OnDestroy {
   // bebidasTmp$: Observable<Bebida[]>;
 
   grupoProduto: GrupoProduto[] = [];
+  grupoProduto$: Observable<GrupoProduto[]>;
+
   unidadeMedida: UnidadeMedida[] = [];
   tipoProduto: TipoProduto[] = [];
 
@@ -60,7 +62,7 @@ export class BebidasFormComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     // TODO: Rever a necessidade para limpar os valores.
-    this.grupoProduto = this.grupoProdutoService.get();
+    // this.grupoProduto = this.grupoProdutoService.get();
     this.tipoProduto = this.tipoProdutoService.get();
     this.unidadeMedida = this.unidadeMedidaService.get();
 
@@ -72,6 +74,7 @@ export class BebidasFormComponent implements OnInit, OnDestroy {
     //   );
 
     this.montarFormulario();
+    this.grupoProduto$ = this.grupoProdutoService.getGrupoProdutos();
     this.produtos$ = this.produtoService.getProdutos();
 
 
@@ -82,7 +85,7 @@ export class BebidasFormComponent implements OnInit, OnDestroy {
       _id: [''],      // TODO: remover em breve
       id: [undefined],
       nomeProduto: ['', [Validators.required, Validators.minLength(5)]],
-      grupoProduto: ['Bebidas'],
+      grupoProduto: ['', [Validators.required]],
       tipoProduto: ['', [Validators.required, Validators.minLength(3)]],
       unCompra: ['', [Validators.required]],
       qtdeMinima: [0, [Validators.min(1)]],

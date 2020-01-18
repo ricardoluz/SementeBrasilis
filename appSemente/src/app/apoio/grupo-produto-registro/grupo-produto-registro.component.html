@@ -1,0 +1,67 @@
+<mat-card class="info-card mat-elevation-z8" style="margin-top: 30px; margin-left: 30px; width: 1000px;">
+
+    <mat-card-header>
+
+        <mat-card-title>Grupo de Produtos</mat-card-title>
+        <mat-card-subtitle>Inclusão / Edição</mat-card-subtitle>
+
+    </mat-card-header>
+
+    <mat-card-content style="margin-left: 30px;">
+
+        <form [formGroup]="dadosForm" #formDirective="ngForm" (ngSubmit)="onSubmit()" fxLayout="column"
+            fxLayoutAlign="start stretch" style="margin-left: 20px;">
+
+            <div fxFlex="80" fxLayout="row" fxLayoutAlign="space-between start">
+
+                <mat-form-field fxFlex="25">
+                    <input matInput type="text" #posicaoInicial formControlName="grupoProduto"
+                        placeholder="Nome do grupo de produto">
+                    <mat-error *ngIf="dadosForm.controls.grupoProduto.hasError('required')">
+                        Preenchimento é necessário.
+                    </mat-error>
+                    <mat-error *ngIf="dadosForm.controls.grupoProduto.hasError('minlength')">
+                        Deve conter {{ dadosForm.controls.grupoProduto.errors.minlength.requiredLength }}
+                        ou mais caracteres.
+                        Atual: {{ dadosForm.controls.grupoProduto.errors.minlength.actualLength}}
+                    </mat-error>
+                </mat-form-field>
+
+
+                <div fxFlex="80" fxLayout="row" fxLayoutAlign="start start">
+                    <button mat-button color="warn" type="button" (click)="clearFields()">
+                        <mat-icon>clear</mat-icon>Limpar
+                    </button>
+                    <button mat-button color="primary" type="submit" [disabled]="!dadosForm.valid">
+                        <mat-icon>done</mat-icon>Salvar
+                    </button>
+                </div>
+            </div>
+        </form>
+
+    </mat-card-content>
+
+</mat-card>
+
+
+
+<div *ngIf="(grupoProduto$ | async) as grupoProduto; else loading">
+    <mat-list class="info-card mat-elevation-z8" style="margin-top: 30px; margin-left: 60px; width: 500px;">
+        <h3 mat-subheader>Produtos</h3>
+        <mat-list-item *ngFor="let item of grupoProduto">
+            <mat-icon mat-list-icon>grain</mat-icon>
+            <h4 mat-line>{{item.grupoProduto}}</h4>
+            <button mat-icon-button color="accent" (click)="delete(item)">
+                <mat-icon>delete</mat-icon>
+            </button>
+            <button mat-icon-button color="primary" (click)="edit(item)">
+                <mat-icon>edit</mat-icon>
+            </button>
+        </mat-list-item>
+    </mat-list>
+</div>
+
+
+<ng-template #loading>
+    <span>Carregando Grupo de produtos ...</span>
+</ng-template>

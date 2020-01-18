@@ -1,4 +1,4 @@
-import { Contagem } from './../interfaces/contagem';
+
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { take } from 'rxjs/operators';

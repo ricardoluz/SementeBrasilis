@@ -34,7 +34,7 @@
           <mat-label>Grupo</mat-label>
           <!-- FIXME: Ler a lista a partir do BD. -->
           <mat-select formControlName="grupoProduto" placeholder="Grupo do produto">
-            <mat-option *ngFor="let oo of grupoProduto" [value]="oo._id">{{oo.grupoProduto}}</mat-option>
+            <mat-option *ngFor="let oo of grupoProduto$ | async" [value]="oo.grupoProduto">{{oo.grupoProduto}}</mat-option>
           </mat-select>
         </mat-form-field>
 
