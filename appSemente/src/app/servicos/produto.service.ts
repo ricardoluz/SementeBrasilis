@@ -30,9 +30,9 @@ export class ProdutoService {
     if (!grupoProduto && !tipoProduto) {
       return this.afs.collection('produtos', ref =>
         ref
-          .orderBy('grupoProduto')
-          .orderBy('tipoProduto')
-          .orderBy('nomeProduto'))
+          .orderBy('grupoProduto', 'asc')
+          .orderBy('tipoProduto', 'asc')
+          .orderBy('nomeProduto', 'asc'))
         .valueChanges() as Observable<Produto[]>;
     }
 

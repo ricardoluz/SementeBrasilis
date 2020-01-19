@@ -21,8 +21,9 @@ export class UnidadeMedidaService {
 
     this.unidadeMedida.push({ _id: null, nomeUnidade: '* Vazia *' });
     this.unidadeMedida.push({ _id: 'Caixa', nomeUnidade: 'Caixa' });
-    this.unidadeMedida.push({ _id: 'Unidade', nomeUnidade: 'Unidade' });
+    this.unidadeMedida.push({ _id: 'Pack', nomeUnidade: 'Pack' });
     this.unidadeMedida.push({ _id: 'Saco', nomeUnidade: 'Saco' });
+    this.unidadeMedida.push({ _id: 'Unidade', nomeUnidade: 'Unidade' });
 
     return this.unidadeMedida;
   }

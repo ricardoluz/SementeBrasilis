@@ -33,11 +33,11 @@
 
                     <td class="tdInfo">
                         <span class="tdInfoLabel">Estoque:</span>
-                        <!-- {{ item.controls.qTotal.value}} {{ item.controls.un1.value }} (s) -->
                         {{ item.controls.qTotal.value}} = [
                         {{ item.controls.q1.value }} {{ item.controls.un1.value }}(s)
-                        +
-                        {{ item.controls.q2.value}} {{ item.controls.un2.value }}(s)
+                        <ng-container *ngIf="item.controls.un2.value"> 
+                            + {{ item.controls.q2.value}} {{ item.controls.un2.value }}(s)
+                        </ng-container>
                         ]
                         <br><br>
                         <span class="tdInfoLabel">Mínima desejada:</span> {{ item.controls.qMinima.value}}

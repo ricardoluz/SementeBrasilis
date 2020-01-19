@@ -11,29 +11,34 @@ export class GrupoProdutoService {
   grupoProduto: GrupoProduto[] = [];
 
   private baseCollection: AngularFirestoreCollection<GrupoProduto> =
-    this.afs.collection('apoio').doc('Produtos').collection('grupoProdutos');
+    this.afs.collection('apoio').doc('produtos').collection('grupoProdutos');
+
 
   constructor(
     private afs: AngularFirestore
   ) {
   }
 
-  get(): GrupoProduto[] {
+  // get(): GrupoProduto[] {
 
-    this.grupoProduto = [];     // TODO: temporário para retirar a repetição.
+  //   this.grupoProduto = [];     // TODO: temporário para retirar a repetição.
 
-    this.grupoProduto.push({ _id: 'Bebidas', grupoProduto: 'Bebidas' });
-    // this.grupoProduto.push({ _id: 'CocaCola', grupoProduto: 'Bebidas' });
-    // this.grupoProduto.push({ _id: 'CocaCola', grupoProduto: 'Bebidas' });
+  //   this.grupoProduto.push({ _id: 'Bebidas', grupoProduto: 'Bebidas' });
+  //   // this.grupoProduto.push({ _id: 'CocaCola', grupoProduto: 'Bebidas' });
+  //   // this.grupoProduto.push({ _id: 'CocaCola', grupoProduto: 'Bebidas' });
 
-    // console.log(this.grupoProduto);
+  //   // console.log(this.grupoProduto);
 
-    return this.grupoProduto;
+  //   return this.grupoProduto;
 
-  }
+  // }
 
   getGrupoProdutos(): Observable<GrupoProduto[]> {
-    return this.baseCollection.valueChanges();
+    // return this.baseCollection.valueChanges();
+    return this.afs.collection('apoio').doc('produtos').collection('grupoProdutos', ref =>
+      ref
+        .orderBy('grupoProduto', 'asc'))
+      .valueChanges() as Observable<GrupoProduto[]>;
   }
 
   addGrupoProduto(p: GrupoProduto) {

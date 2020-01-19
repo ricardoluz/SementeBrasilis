@@ -43,7 +43,7 @@
           <mat-label>Tipo</mat-label>
           <!-- FIXME: Ler a lista a partir do BD. -->
           <mat-select formControlName="tipoProduto" placeholder="Tipo do produto">
-            <mat-option *ngFor="let oo of tipoProduto" [value]="oo._id">{{oo.tipoProduto}}</mat-option>
+            <mat-option *ngFor="let oo of tipoProduto$ | async" [value]="oo.tipoProduto">{{oo.tipoProduto}}</mat-option>
           </mat-select>
         </mat-form-field>
 

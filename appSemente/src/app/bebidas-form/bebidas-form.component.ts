@@ -41,11 +41,11 @@ export class BebidasFormComponent implements OnInit, OnDestroy {
   filterProducts$: Observable<Produto[]>;
   // bebidasTmp$: Observable<Bebida[]>;
 
-  grupoProduto: GrupoProduto[] = [];
+  // grupoProduto: GrupoProduto[] = [];
   grupoProduto$: Observable<GrupoProduto[]>;
+  tipoProduto$: Observable<TipoProduto[]>;
 
   unidadeMedida: UnidadeMedida[] = [];
-  tipoProduto: TipoProduto[] = [];
 
   private unsubscribe$: Subject<any> = new Subject();
 
@@ -63,7 +63,6 @@ export class BebidasFormComponent implements OnInit, OnDestroy {
 
     // TODO: Rever a necessidade para limpar os valores.
     // this.grupoProduto = this.grupoProdutoService.get();
-    this.tipoProduto = this.tipoProdutoService.get();
     this.unidadeMedida = this.unidadeMedidaService.get();
 
     // this.bebidaService.get()
@@ -76,6 +75,7 @@ export class BebidasFormComponent implements OnInit, OnDestroy {
     this.montarFormulario();
     this.grupoProduto$ = this.grupoProdutoService.getGrupoProdutos();
     this.produtos$ = this.produtoService.getProdutos();
+    this.tipoProduto$ = this.tipoProdutoService.getTipoProdutos();
 
 
   }

@@ -54,8 +54,8 @@ export class PedidoApresentacaoComponent implements OnInit, OnDestroy {
               // pedidoTmp += ' [ ' + iterator.qPedido + ' ] ' + iterator.unCompra + '(s)';
               // pedidoTmp += '```\n';
 
-              pedidoTmp += this.linhaWhatApp(iterator.nomeProduto);
-              pedidoTmp += this.linhaWhatApp(' [ ' + iterator.qPedido + ' ] ' + iterator.unCompra + '(s)');
+              pedidoTmp += '. ' + this.linhaWhatApp(iterator.nomeProduto);
+              pedidoTmp += this.linhaWhatApp('  [ ' + iterator.qPedido + ' ] ' + iterator.unCompra + '(s)');
               pedidoTmp += '\n';
             }
           }

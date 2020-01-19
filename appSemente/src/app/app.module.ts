@@ -36,6 +36,7 @@ import { TesteComponent } from './teste/teste.component';
 import { ListaPedidoComponent } from './pedido/lista-pedido/lista-pedido.component';
 import { GrupoProdutoRegistroComponent } from './apoio/grupo-produto-registro/grupo-produto-registro.component';
 import { ApoioComponent } from './apoio/apoio.component';
+import { TipoProdutoRegistroComponent } from './apoio/tipo-produto-registro/tipo-produto-registro.component';
 
 
 
@@ -53,6 +54,7 @@ import { ApoioComponent } from './apoio/apoio.component';
     ListaPedidoComponent,
     GrupoProdutoRegistroComponent,
     ApoioComponent,
+    TipoProdutoRegistroComponent,
   ],
   imports: [
     BrowserModule,
