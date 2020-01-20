@@ -18,7 +18,7 @@ export class TipoProdutoRegistroComponent implements OnInit {
 
   dadosForm = this.fb.group({});
   // tmp = '8xTAquHUZuJ2GYjxurl3';
-  // grupoProduto$: Observable<GrupoProduto[]>;
+  grupoProduto$: Observable<GrupoProduto[]>;
   tipoProduto$: Observable<TipoProduto[]>;
 
 
@@ -32,15 +32,21 @@ export class TipoProdutoRegistroComponent implements OnInit {
   ngOnInit() {
 
     this.montarFormulario();
-    // this.grupoProduto$ = this.grupoProdutoService.getGrupoProdutos();
-    this.tipoProduto$ = this.tipoProdutoService.getTipoProdutos();
+    this.grupoProduto$ = this.grupoProdutoService.getGrupoProdutos();
+    this.tipoProduto$ = this.tipoProdutoService.getTipoProdutos1('');
 
+  }
+
+  teste(valor){
+    // console.log(valor);
+    // alert(valor);
+    this.tipoProduto$ = this.tipoProdutoService.getTipoProdutos1(valor.value);
   }
 
   montarFormulario() {
     this.dadosForm = this.fb.group({
       id: [undefined],
-      // grupoProduto: ['Bebidas'],
+      idGrupoProduto: [''],
       tipoProduto: ['', [Validators.required, Validators.minLength(3)]]
     });
   }

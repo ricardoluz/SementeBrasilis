@@ -13,6 +13,15 @@
             fxLayoutAlign="start stretch" style="margin-left: 20px;">
 
             <div fxFlex="80" fxLayout="row" fxLayoutAlign="space-between start">
+   
+                <mat-form-field>
+                    <mat-label>Grupo</mat-label>
+                    <!-- FIXME: Ler a lista a partir do BD. -->
+                    <mat-select formControlName="idGrupoProduto" placeholder="Grupo do produto" (selectionChange)="teste($event)">
+                        <mat-option *ngFor="let oo of grupoProduto$ | async" [value]="oo.id">
+                            {{oo.grupoProduto}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
 
                 <mat-form-field fxFlex="25">
                     <input matInput type="text" #posicaoInicial formControlName="tipoProduto"

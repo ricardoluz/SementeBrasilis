@@ -91,7 +91,7 @@ export class BebidasFormComponent implements OnInit, OnDestroy {
       qtdeMinima: [0, [Validators.min(1)]],
       estoque: this.fb.group({
         unEstoque1: ['', [Validators.required]],
-        rlEstoqueCompra1: [0, [Validators.min(1)]],
+        rlEstoqueCompra1: [0, [Validators.required, Validators.min(1)]],
         unEstoque2: [''],
         rlEstoqueCompra2: [0, [Validators.min(0)]],
       }),

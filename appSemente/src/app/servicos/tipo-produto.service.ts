@@ -44,6 +44,17 @@ export class TipoProdutoService {
     //   .valueChanges() as Observable<TipoProduto[]>;
   }
 
+  getTipoProdutos1(idGrupoProduto: string): Observable<TipoProduto[]> {
+    return this.afs.collection('apoio').doc('produtos').collection('tipoProdutos', ref =>
+      ref
+        .where('idGrupoProduto', '==', idGrupoProduto)
+        .orderBy('tipoProduto', 'asc')).valueChanges() as Observable<TipoProduto[]>;
+    // return this.afs.collection('apoio').doc('Produtos').collection('grupoProdutos').doc(idGrupoProduto).collection('tipoProduto', ref =>
+    //   ref
+    //     .orderBy('tipoProduto', 'asc'))
+    //   .valueChanges() as Observable<TipoProduto[]>;
+  }
+
   // addTipoProduto(p: TipoProduto, idGrupoProduto: string) {
   addTipoProduto(p: TipoProduto) {
     p.id = this.afs.createId();
