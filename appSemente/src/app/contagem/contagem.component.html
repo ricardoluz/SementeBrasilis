@@ -1,4 +1,15 @@
-<div layout="column" fxFlex="96" class="info-card mat-elevation-z8"
+<div>
+
+    <mat-form-field>
+        <mat-label>Grupo</mat-label>
+        <mat-select placeholder="Grupo do produto"
+            (selectionChange)="funSelectGrupoProduto($event)">
+            <mat-option *ngFor="let oo of grupoProduto$ | async" [value]="oo.id">{{oo.grupoProduto}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+
+<div *ngIf="contagemForm" layout="column" fxFlex="96" class="info-card mat-elevation-z8"
     style="margin-top: 30px; margin-left: 30px; width: 300px; padding-top: 30px; padding-left: 30px; padding-right: 40px;">
     <form class="example-form" [formGroup]='contagemForm' (ngSubmit)="onSubmit()">
 

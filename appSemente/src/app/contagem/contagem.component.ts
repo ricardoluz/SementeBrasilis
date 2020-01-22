@@ -1,9 +1,10 @@
+
 import { formatDate } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { Subject, Observable } from 'rxjs';
-import { takeUntil, take, map } from 'rxjs/operators';
+import { takeUntil, take } from 'rxjs/operators';
 
 import { Bebida } from './../interfaces/bebida';
 
@@ -11,7 +12,9 @@ import { Contagem } from './../interfaces/contagem';
 import { TipoProdutoService } from './../servicos/tipo-produto.service';
 import { ProdutoService } from './../servicos/produto.service';
 import { ContagemService } from '../servicos/contagem.service';
-import { Produto } from '../interfaces/produto';
+// import { Produto } from '../interfaces/produto';
+import { GrupoProdutoService } from '../servicos/grupo-produto.service';
+import { GrupoProduto } from '../interfaces/grupo-produto';
 
 
 @Component({
@@ -24,14 +27,17 @@ import { Produto } from '../interfaces/produto';
 export class ContagemComponent implements OnInit, OnDestroy {
 
   contagemForm: FormGroup;
-
-  teste$: Observable<Produto[]>;
-
   private unsubscribe$: Subject<any> = new Subject();
+
+  grupoProduto$: Observable<GrupoProduto[]>;
+
+  // teste$: Observable<Produto[]>;
+
 
   constructor(
     private produtoService: ProdutoService,
     private contagemService: ContagemService,
+    private grupoProdutoService: GrupoProdutoService,
     private tipoProdutoService: TipoProdutoService,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
@@ -39,9 +45,14 @@ export class ContagemComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.criarFormContagem_v01();
-    // this.teste$ = this.produtoService.getPages();
+    this.grupoProduto$ = this.grupoProdutoService.getGrupoProdutos();
+    // this.criarFormContagem_v01();
 
+  }
+
+  funSelectGrupoProduto(e: any) {
+
+    this.criarFormContagem_v01(e.value);
 
   }
 
@@ -66,8 +77,6 @@ export class ContagemComponent implements OnInit, OnDestroy {
             for (const tmp of prods) {
               control.push(this.addEqp_v01(tmp));
             }
-
-            // console.log(this.contagemForm);
           }
         },
         (err) => {
@@ -76,25 +85,21 @@ export class ContagemComponent implements OnInit, OnDestroy {
       );
   }
 
-  criarFormContagem_v01() {
+  criarFormContagem_v01(idGrupoProduto: string) {
 
     // TODO: Melhorar esta solução utilzando CombineAll (rxjs)
 
     this.contagemForm = this.formBuilder.group({
-      // dataContagem: new Date().toISOString(),
       dataContagem: new Date(),
       linhaProduto: this.formBuilder.array([])
     });
 
     const control: FormArray = this.contagemForm.get(`linhaProduto`) as FormArray;
 
-    const idGrupoProdutoTmp = 'qm2vYSHfP9NNXrqXwLhY';
-    // const idTipoProdutoTmp = 'sOEsYEkM8PncU5eK1QlT';
+    // const idGrupoProduto = 'qm2vYSHfP9NNXrqXwLhY';
 
-
-    this.tipoProdutoService.getTipoProdutos_v01(idGrupoProdutoTmp)
+    this.tipoProdutoService.getTipoProdutos_v01(idGrupoProduto)
       .pipe(
-        // map((e) => { console.log(e); }),
         takeUntil(this.unsubscribe$),
         take(1))
       .subscribe(
@@ -102,9 +107,8 @@ export class ContagemComponent implements OnInit, OnDestroy {
 
           if (tipoProds) {
             tipoProds.map((e) => {
-              this.retornaProdutos(idGrupoProdutoTmp, e.id, control);
+              this.retornaProdutos(idGrupoProduto, e.id, control);
             });
-
           }
         },
         (err) => {
@@ -112,13 +116,13 @@ export class ContagemComponent implements OnInit, OnDestroy {
         }
       );
 
-
-
   }
 
   retornaProdutos(idGrupoProdutoTmp: string, idTipoProdutoTmp: string, control: FormArray) {
     this.produtoService.getProdutos(idGrupoProdutoTmp, idTipoProdutoTmp)
-      .pipe(takeUntil(this.unsubscribe$), take(1))
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        take(1))
       .subscribe(
         (prods) => {
 
