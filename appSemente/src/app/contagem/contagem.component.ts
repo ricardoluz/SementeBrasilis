@@ -2,14 +2,16 @@ import { formatDate } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
-import { Subject } from 'rxjs';
-import { takeUntil, take } from 'rxjs/operators';
+import { Subject, Observable } from 'rxjs';
+import { takeUntil, take, map } from 'rxjs/operators';
 
 import { Bebida } from './../interfaces/bebida';
 
 import { Contagem } from './../interfaces/contagem';
+import { TipoProdutoService } from './../servicos/tipo-produto.service';
 import { ProdutoService } from './../servicos/produto.service';
 import { ContagemService } from '../servicos/contagem.service';
+import { Produto } from '../interfaces/produto';
 
 
 @Component({
@@ -23,19 +25,23 @@ export class ContagemComponent implements OnInit, OnDestroy {
 
   contagemForm: FormGroup;
 
+  teste$: Observable<Produto[]>;
+
   private unsubscribe$: Subject<any> = new Subject();
 
   constructor(
     private produtoService: ProdutoService,
     private contagemService: ContagemService,
-
+    private tipoProdutoService: TipoProdutoService,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
   ) { }
 
   ngOnInit() {
 
-    this.criarFormContagem();
+    this.criarFormContagem_v01();
+    // this.teste$ = this.produtoService.getPages();
+
 
   }
 
@@ -49,6 +55,7 @@ export class ContagemComponent implements OnInit, OnDestroy {
 
     const control: FormArray = this.contagemForm.get(`linhaProduto`) as FormArray;
 
+    // this.produtoService.getProdutos()
     this.produtoService.getProdutos()
       .pipe(takeUntil(this.unsubscribe$), take(1))
       .subscribe(
@@ -60,7 +67,7 @@ export class ContagemComponent implements OnInit, OnDestroy {
               control.push(this.addEqp_v01(tmp));
             }
 
-            console.log(this.contagemForm);
+            // console.log(this.contagemForm);
           }
         },
         (err) => {
@@ -68,6 +75,67 @@ export class ContagemComponent implements OnInit, OnDestroy {
         }
       );
   }
+
+  criarFormContagem_v01() {
+
+    // TODO: Melhorar esta solução utilzando CombineAll (rxjs)
+
+    this.contagemForm = this.formBuilder.group({
+      // dataContagem: new Date().toISOString(),
+      dataContagem: new Date(),
+      linhaProduto: this.formBuilder.array([])
+    });
+
+    const control: FormArray = this.contagemForm.get(`linhaProduto`) as FormArray;
+
+    const idGrupoProdutoTmp = 'qm2vYSHfP9NNXrqXwLhY';
+    // const idTipoProdutoTmp = 'sOEsYEkM8PncU5eK1QlT';
+
+
+    this.tipoProdutoService.getTipoProdutos_v01(idGrupoProdutoTmp)
+      .pipe(
+        // map((e) => { console.log(e); }),
+        takeUntil(this.unsubscribe$),
+        take(1))
+      .subscribe(
+        (tipoProds) => {
+
+          if (tipoProds) {
+            tipoProds.map((e) => {
+              this.retornaProdutos(idGrupoProdutoTmp, e.id, control);
+            });
+
+          }
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+
+
+
+  }
+
+  retornaProdutos(idGrupoProdutoTmp: string, idTipoProdutoTmp: string, control: FormArray) {
+    this.produtoService.getProdutos(idGrupoProdutoTmp, idTipoProdutoTmp)
+      .pipe(takeUntil(this.unsubscribe$), take(1))
+      .subscribe(
+        (prods) => {
+
+          if (prods) {
+
+            for (const tmp of prods) {
+              control.push(this.addEqp_v01(tmp));
+            }
+
+          }
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+  }
+
 
   addEqp_v01(prod: Bebida) {
     const group = this.formBuilder.group({

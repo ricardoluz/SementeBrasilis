@@ -19,20 +19,6 @@ export class TipoProdutoService {
   ) {
   }
 
-  // get(): TipoProduto[] {
-
-  //   this.tipoProduto = [];    // TODO: temporário para retirar a repetição.
-
-  //   this.tipoProduto.push({ _id: 'Agua', id: '', grupoProduto: 'Bebidas', tipoProduto: 'Água' });
-  //   this.tipoProduto.push({ _id: 'CocaCola', id: '',  grupoProduto: 'Bebidas', tipoProduto: 'Coca-Cola Lata' });
-  //   this.tipoProduto.push({ _id: 'CocaCola', id: '', grupoProduto: 'Bebidas', tipoProduto: 'Coca-Cola Pet' });
-
-  //   // console.log(this.tipoProduto);
-
-  //   return this.tipoProduto;
-
-  // }
-
   // getTipoProdutos(idGrupoProduto: string): Observable<TipoProduto[]> {
   getTipoProdutos(): Observable<TipoProduto[]> {
     return this.afs.collection('apoio').doc('produtos').collection('tipoProdutos', ref =>
@@ -44,16 +30,16 @@ export class TipoProdutoService {
     //   .valueChanges() as Observable<TipoProduto[]>;
   }
 
-  getTipoProdutos1(idGrupoProduto: string): Observable<TipoProduto[]> {
+  getTipoProdutos_v01(idGrupoProduto: string): Observable<TipoProduto[]> {
     return this.afs.collection('apoio').doc('produtos').collection('tipoProdutos', ref =>
       ref
         .where('idGrupoProduto', '==', idGrupoProduto)
         .orderBy('tipoProduto', 'asc')).valueChanges() as Observable<TipoProduto[]>;
-    // return this.afs.collection('apoio').doc('Produtos').collection('grupoProdutos').doc(idGrupoProduto).collection('tipoProduto', ref =>
-    //   ref
-    //     .orderBy('tipoProduto', 'asc'))
-    //   .valueChanges() as Observable<TipoProduto[]>;
   }
+
+
+
+
 
   // addTipoProduto(p: TipoProduto, idGrupoProduto: string) {
   addTipoProduto(p: TipoProduto) {

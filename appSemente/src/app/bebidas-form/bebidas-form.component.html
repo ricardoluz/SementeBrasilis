@@ -33,8 +33,9 @@
         <mat-form-field>
           <mat-label>Grupo</mat-label>
           <!-- FIXME: Ler a lista a partir do BD. -->
-          <mat-select formControlName="grupoProduto" placeholder="Grupo do produto">
-            <mat-option *ngFor="let oo of grupoProduto$ | async" [value]="oo.grupoProduto">{{oo.grupoProduto}}</mat-option>
+          <mat-select formControlName="grupoProduto" placeholder="Grupo do produto" (selectionChange)="funSelectGrupoProduto($event)">
+            <!-- <mat-option *ngFor="let oo of grupoProduto$ | async" [value]="oo.grupoProduto">{{oo.grupoProduto}}</mat-option> -->
+            <mat-option *ngFor="let oo of grupoProduto$ | async" [value]="oo.id">{{oo.grupoProduto}}</mat-option>
           </mat-select>
         </mat-form-field>
 
@@ -43,7 +44,8 @@
           <mat-label>Tipo</mat-label>
           <!-- FIXME: Ler a lista a partir do BD. -->
           <mat-select formControlName="tipoProduto" placeholder="Tipo do produto">
-            <mat-option *ngFor="let oo of tipoProduto$ | async" [value]="oo.tipoProduto">{{oo.tipoProduto}}</mat-option>
+            <!-- <mat-option *ngFor="let oo of tipoProduto$ | async" [value]="oo.tipoProduto">{{oo.tipoProduto}}</mat-option> -->
+            <mat-option *ngFor="let oo of tipoProduto$ | async" [value]="oo.id">{{oo.tipoProduto}}</mat-option>
           </mat-select>
         </mat-form-field>
 

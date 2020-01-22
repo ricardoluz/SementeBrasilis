@@ -17,14 +17,14 @@
                 <mat-form-field>
                     <mat-label>Grupo</mat-label>
                     <!-- FIXME: Ler a lista a partir do BD. -->
-                    <mat-select formControlName="idGrupoProduto" placeholder="Grupo do produto" (selectionChange)="teste($event)">
+                    <mat-select #posicaoInicial formControlName="idGrupoProduto" placeholder="Grupo do produto" (selectionChange)="funSelectGrupoProduto($event)">
                         <mat-option *ngFor="let oo of grupoProduto$ | async" [value]="oo.id">
                             {{oo.grupoProduto}}</mat-option>
                     </mat-select>
                 </mat-form-field>
-
+                
                 <mat-form-field fxFlex="25">
-                    <input matInput type="text" #posicaoInicial formControlName="tipoProduto"
+                    <input matInput type="text"  formControlName="tipoProduto"
                         placeholder="Tipo de produto">
                     <mat-error *ngIf="dadosForm.controls.tipoProduto.hasError('required')">
                         Preenchimento é necessário.
@@ -36,7 +36,7 @@
                     </mat-error>
                 </mat-form-field>
 
-                <div fxFlex="80" fxLayout="row" fxLayoutAlign="start start">
+                <div fxFlex="50" fxLayout="row" fxLayoutAlign="start start">
                     <button mat-button color="warn" type="button" (click)="clearFields()">
                         <mat-icon>clear</mat-icon>Limpar
                     </button>

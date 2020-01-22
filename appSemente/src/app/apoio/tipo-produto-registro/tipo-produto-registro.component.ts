@@ -17,7 +17,7 @@ import { TipoProdutoService } from 'src/app/servicos/tipo-produto.service';
 export class TipoProdutoRegistroComponent implements OnInit {
 
   dadosForm = this.fb.group({});
-  // tmp = '8xTAquHUZuJ2GYjxurl3';
+
   grupoProduto$: Observable<GrupoProduto[]>;
   tipoProduto$: Observable<TipoProduto[]>;
 
@@ -33,23 +33,23 @@ export class TipoProdutoRegistroComponent implements OnInit {
 
     this.montarFormulario();
     this.grupoProduto$ = this.grupoProdutoService.getGrupoProdutos();
-    this.tipoProduto$ = this.tipoProdutoService.getTipoProdutos1('');
+    this.tipoProduto$ = this.tipoProdutoService.getTipoProdutos_v01('');
 
-  }
-
-  teste(valor){
-    // console.log(valor);
-    // alert(valor);
-    this.tipoProduto$ = this.tipoProdutoService.getTipoProdutos1(valor.value);
   }
 
   montarFormulario() {
     this.dadosForm = this.fb.group({
       id: [undefined],
-      idGrupoProduto: [''],
+      idGrupoProduto: ['', [Validators.required]],
       tipoProduto: ['', [Validators.required, Validators.minLength(3)]]
     });
   }
+
+
+  funSelectGrupoProduto(e: any) {
+    this.tipoProduto$ = this.tipoProdutoService.getTipoProdutos_v01(e.value);
+  }
+
 
   onSubmit() {
     const p: TipoProduto = this.dadosForm.value;
@@ -104,6 +104,7 @@ export class TipoProdutoRegistroComponent implements OnInit {
   clearFields() {
 
     this.montarFormulario();
+    this.tipoProduto$ = this.tipoProdutoService.getTipoProdutos_v01('');
 
   }
 

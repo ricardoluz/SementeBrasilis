@@ -74,8 +74,8 @@ export class BebidasFormComponent implements OnInit, OnDestroy {
 
     this.montarFormulario();
     this.grupoProduto$ = this.grupoProdutoService.getGrupoProdutos();
+    this.tipoProduto$ = this.tipoProdutoService.getTipoProdutos_v01('');
     this.produtos$ = this.produtoService.getProdutos();
-    this.tipoProduto$ = this.tipoProdutoService.getTipoProdutos();
 
 
   }
@@ -98,6 +98,10 @@ export class BebidasFormComponent implements OnInit, OnDestroy {
       unVenda: [''],
       qtdeVenda: [1, [Validators.min(1)]]
     });
+  }
+
+  funSelectGrupoProduto(e: any) {
+    this.tipoProduto$ = this.tipoProdutoService.getTipoProdutos_v01(e.value);
   }
 
   ngOnDestroy() {

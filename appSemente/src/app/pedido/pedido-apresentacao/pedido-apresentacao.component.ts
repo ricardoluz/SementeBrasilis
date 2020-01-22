@@ -62,7 +62,7 @@ export class PedidoApresentacaoComponent implements OnInit, OnDestroy {
           pedidoTmp += this.linhaWhatApp('. '.repeat(8));
           // console.log(pedidoTmp);
           this.pedidoString = pedidoTmp;
-          this.txtMsgWhatsApp.nativeElement.setSelectionRange(0, 0);
+          // this.txtMsgWhatsApp.nativeElement.setSelectionRange(0, 0);
           // this.txtMsgWhatsApp.nativeElement = pedidoTmp;
         },
         (err) => { console.log(err); }
@@ -72,19 +72,7 @@ export class PedidoApresentacaoComponent implements OnInit, OnDestroy {
   linhaWhatApp(texto: string) {
     return ('```' + texto + '```\n');
   }
-  // copyToCB_1() {
-  //   // if (this.txtMsgWhatsApp) {
-  //     // Select textarea text
-  //     this.txtMsgWhatsApp.nativeElement.select();
 
-  //     // Copy to the clipboard
-  //     document.execCommand('copy');
-
-
-  //     // Deselect selected textarea
-  //     this.txtMsgWhatsApp.nativeElement.setSelectionRange(0, 0);
-  //   // }
-  // }
 
   copyToCB() {
     if (this.txtMsgWhatsApp) {
