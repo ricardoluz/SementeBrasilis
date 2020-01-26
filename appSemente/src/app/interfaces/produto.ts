@@ -14,4 +14,5 @@ export interface Produto {
     };
     unVenda: string;
     qtdeVenda: number;
+    precoCompra?: number;       // TODO: Rever a obrigatoriedade.
 }

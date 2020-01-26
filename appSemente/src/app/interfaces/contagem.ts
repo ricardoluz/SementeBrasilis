@@ -11,7 +11,9 @@ export interface Contagem {
         un2: string;
         unCompra: string;
         qMinima: number;
-        qTotal: number
+        qTotal: number;
+        precoCompra: number
+
     };
 
 }

@@ -9,12 +9,12 @@ import { takeUntil, take } from 'rxjs/operators';
 import { Bebida } from './../interfaces/bebida';
 
 import { Contagem } from './../interfaces/contagem';
-import { TipoProdutoService } from './../servicos/tipo-produto.service';
-import { ProdutoService } from './../servicos/produto.service';
-import { ContagemService } from '../servicos/contagem.service';
-// import { Produto } from '../interfaces/produto';
-import { GrupoProdutoService } from '../servicos/grupo-produto.service';
 import { GrupoProduto } from '../interfaces/grupo-produto';
+import { ContagemService } from '../servicos/contagem.service';
+import { GrupoProdutoService } from '../servicos/grupo-produto.service';
+import { ProdutoService } from './../servicos/produto.service';
+import { TipoProdutoService } from './../servicos/tipo-produto.service';
+import { Produto } from '../interfaces/produto';
 
 
 @Component({
@@ -30,8 +30,6 @@ export class ContagemComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subject<any> = new Subject();
 
   grupoProduto$: Observable<GrupoProduto[]>;
-
-  // teste$: Observable<Produto[]>;
 
 
   constructor(
@@ -141,7 +139,7 @@ export class ContagemComponent implements OnInit, OnDestroy {
   }
 
 
-  addEqp_v01(prod: Bebida) {
+  addEqp_v01(prod: Produto) {
     const group = this.formBuilder.group({
       nomeProduto: [prod.nomeProduto],
       q1: [0, [Validators.required, Validators.min(0)]],
@@ -152,6 +150,7 @@ export class ContagemComponent implements OnInit, OnDestroy {
       rel2: [prod.estoque.rlEstoqueCompra2],
       unCompra: [prod.unCompra],
       qMinima: [prod.qtdeMinima],
+      precoCompra: [prod.precoCompra],
       qTotal: [0]
     });
     return group;

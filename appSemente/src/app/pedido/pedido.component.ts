@@ -34,19 +34,21 @@ export class PedidoComponent implements OnInit, OnDestroy {
 
   }
 
-  ngOnInit() {
+  async ngOnInit() {
 
     const idContagem = this.route.snapshot.paramMap.get('id');
-    this.criarPedido(idContagem);
+    await this.criarPedido(idContagem);
+    this.totalPedido();
 
   }
 
-  criarPedido(idContagemTmp: string) {
+  async criarPedido(idContagemTmp: string) {
 
     // Criar uma casca do formBuilder para o formulário.
     this.pedidoForm = this.formBuilder.group({
       dataContagem: new Date(),
       dataPedido: new Date(),
+      totalPedido: 0,
       linhaProduto: this.formBuilder.array([])
     });
 
@@ -66,8 +68,8 @@ export class PedidoComponent implements OnInit, OnDestroy {
             for (const iterator of tmp) {
               control.push(this.addEqp_v01(iterator));
             }
-            // this.pedidoForm.patchValue(prods[0]);
-            // console.log(this.pedidoForm);
+
+            return;
           }
         },
         (err) => {
@@ -78,6 +80,9 @@ export class PedidoComponent implements OnInit, OnDestroy {
 
   addEqp_v01(prod: any) {
 
+    const qtdeSugestao = this.arredPedido(prod.qMinima - prod.qTotal, 0);
+    const valorCompraCalculado = qtdeSugestao * prod.precoCompra;
+
     const group = this.formBuilder.group({
       nomeProduto: [prod.nomeProduto],
       q1: [prod.q1],
@@ -86,19 +91,27 @@ export class PedidoComponent implements OnInit, OnDestroy {
       un2: [prod.un2],
       unCompra: [prod.unCompra],
       qMinima: [prod.qMinima],
+      precoCompra: [prod.precoCompra],
       qTotal: [prod.qTotal],
-      qSugestao: [this.arredPedido(prod.qMinima - prod.qTotal, 0)],
-      qPedido: [this.arredPedido(prod.qMinima - prod.qTotal, 0), [Validators.required, Validators.min(0)]]
+      // qSugestao: [this.arredPedido(prod.qMinima - prod.qTotal, 0)],
+      valorCompra: valorCompraCalculado,
+      qSugestao: [qtdeSugestao],
+      // qPedido: [this.arredPedido(prod.qMinima - prod.qTotal, 0), [Validators.required, Validators.min(0)]]
+      qPedido: [qtdeSugestao, [Validators.required, Validators.min(0)]]
     });
 
     return group;
   }
 
-  // gravarPedido() {
 
-    // this.addPedido(this.pedidoForm.value);
+  totalPedido() {
 
-  // }
+    let total = 0;
+    for (const iterator of this.pedidoForm.get('linhaProduto').value) {
+      total += iterator.qPedido * iterator.precoCompra;
+    }
+    return total;
+  }
 
   gravarPedido() {
     const p = this.pedidoForm.value;

@@ -2,7 +2,7 @@
 
 <!-- <div layout="row" layout-align="center center"> -->
 
-<mat-card class="info-card mat-elevation-z8" style="margin-top: 30px; margin-left: 30px; width: 1000px;">
+<mat-card class="info-card mat-elevation-z8" style="margin-top: 30px; margin-left: 30px; width: 1200px;">
 
   <mat-card-header>
 
@@ -16,7 +16,7 @@
     <form [formGroup]="bebidaForm" #formDirective="ngForm" (ngSubmit)="onSubmit()" fxLayout="column"
       fxLayoutAlign="start stretch" style="margin-left: 20px;">
 
-      <div fxFlex="80" fxLayout="row" fxLayoutAlign="space-between start">
+      <div fxFlex="70" fxLayout="row" fxLayoutAlign="space-between start">
 
         <mat-form-field fxFlex="25">
           <input matInput type="text" #posicaoInicial formControlName="nomeProduto" placeholder="Nome do produto">
@@ -60,16 +60,23 @@
 
         <mat-form-field fxFlex="12">
           <input matInput type="number" formControlName="qtdeMinima" placeholder="Qtde Mínima">
-          <!-- <mat-error *ngIf="bebidaForm.controls.qtdeMinima.hasError('min')">
+          <mat-error *ngIf="bebidaForm.controls.qtdeMinima.hasError('min')">
             Deve ser maior que [{{ bebidaForm.controls.qtdeMinima.errors.min.min}}]
-          </mat-error> -->
+          </mat-error>
+        </mat-form-field>
+        
+        <mat-form-field fxFlex="12">
+          <input matInput type="number" formControlName="precoCompra" placeholder="Preço Compra">
+          <mat-error *ngIf="bebidaForm.controls.precoCompra.hasError('min')">
+            Deve ser maior que [{{ bebidaForm.controls.precoCompra.errors.min.min}}]
+          </mat-error>
         </mat-form-field>
 
       </div>
 
       <div fxLayout="row" fxLayoutAlign="start start">
 
-        <div class="teste" formGroupName="estoque" fxFlex="24" fxLayout="column" fxLayoutAlign="start start">
+        <div class="teste" formGroupName="estoque" fxLayout="column" fxLayoutAlign="start start">
           <mat-form-field>
             <mat-label>Unidade de Estoque</mat-label>
             <mat-select formControlName="unEstoque1" placeholder="Unidade">
@@ -80,13 +87,13 @@
           <mat-form-field>
             <input matInput type="number" formControlName="rlEstoqueCompra1" placeholder="Relação com Unidade Comprada">
             <mat-error *ngIf="bebidaForm.get('estoque')['controls'].rlEstoqueCompra1.hasError('min')">
-              Deve ser maior ou igual a[{{ bebidaForm.get('estoque')['controls'].rlEstoqueCompra1.errors.min.min}}]
+              Deve ser maior ou igual a [{{ bebidaForm.get('estoque')['controls'].rlEstoqueCompra1.errors.min.min}}]
             </mat-error>
           </mat-form-field>
         </div>
 
         <!-- FIXME: Ler a lista a partir do BD. -->
-        <div class="teste" formGroupName="estoque" fxFlex="24" fxLayout="column" fxLayoutAlign="start start">
+        <div class="teste" formGroupName="estoque" fxLayout="column" fxLayoutAlign="start start">
 
           <!-- <app-lista formGroupName="estoque" [nomeControle]="unEstoque2" [nomeCurso]="unidadeMedida"></app-lista> -->
 

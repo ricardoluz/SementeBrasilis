@@ -1,7 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef, COMPILER_OPTIONS, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material';
-import { takeUntil } from 'rxjs/operators';
 import { FormBuilder, Validators, FormGroup, NgForm } from '@angular/forms';
 
 import { Bebida } from '../interfaces/bebida';
@@ -50,7 +49,6 @@ export class BebidasFormComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subject<any> = new Subject();
 
   constructor(
-    private bebidaService: BebidasService,
     private produtoService: ProdutoService,
     private grupoProdutoService: GrupoProdutoService,
     private tipoProdutoService: TipoProdutoService,
@@ -88,10 +86,11 @@ export class BebidasFormComponent implements OnInit, OnDestroy {
       grupoProduto: ['', [Validators.required]],
       tipoProduto: ['', [Validators.required, Validators.minLength(3)]],
       unCompra: ['', [Validators.required]],
-      qtdeMinima: [0, [Validators.min(1)]],
+      qtdeMinima: [1, [Validators.min(1)]],
+      precoCompra: [1.00, [Validators.min(0.01)]],
       estoque: this.fb.group({
         unEstoque1: ['', [Validators.required]],
-        rlEstoqueCompra1: [0, [Validators.required, Validators.min(1)]],
+        rlEstoqueCompra1: [0, [Validators.required, Validators.min(0.01)]],
         unEstoque2: [''],
         rlEstoqueCompra2: [0, [Validators.min(0)]],
       }),
@@ -144,7 +143,7 @@ export class BebidasFormComponent implements OnInit, OnDestroy {
 
 
   edit(p: Produto) {
-    this.bebidaForm.setValue(p);
+    this.bebidaForm.patchValue(p);
   }
 
   delete(p: Produto) {

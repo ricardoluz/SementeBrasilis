@@ -12,6 +12,8 @@ export interface Pedido {
         un2: string;
         unCompra: string;
         qMinima: number
-        qPedido: number
+        qPedido: number,
+        precoCompra: number,
+        valorCompra: number
     };
 }
