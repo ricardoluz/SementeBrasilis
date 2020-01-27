@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { GrupoProduto } from '../interfaces/grupo-produto';
-import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestoreCollection, AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -19,19 +19,6 @@ export class GrupoProdutoService {
   ) {
   }
 
-  // get(): GrupoProduto[] {
-
-  //   this.grupoProduto = [];     // TODO: temporário para retirar a repetição.
-
-  //   this.grupoProduto.push({ _id: 'Bebidas', grupoProduto: 'Bebidas' });
-  //   // this.grupoProduto.push({ _id: 'CocaCola', grupoProduto: 'Bebidas' });
-  //   // this.grupoProduto.push({ _id: 'CocaCola', grupoProduto: 'Bebidas' });
-
-  //   // console.log(this.grupoProduto);
-
-  //   return this.grupoProduto;
-
-  // }
 
   getGrupoProdutos(): Observable<GrupoProduto[]> {
     // return this.baseCollection.valueChanges();
@@ -41,17 +28,25 @@ export class GrupoProdutoService {
       .valueChanges() as Observable<GrupoProduto[]>;
   }
 
+
+  getNomeGrupoProduto(idGrupoProduto): Observable<GrupoProduto> {
+
+    return this.baseCollection.doc(idGrupoProduto).valueChanges() as Observable<GrupoProduto>;
+
+  }
+
+
   addGrupoProduto(p: GrupoProduto) {
-    p.id = this.afs.createId();
-    return this.baseCollection.doc(p.id).set(p);
-  }
+  p.id = this.afs.createId();
+  return this.baseCollection.doc(p.id).set(p);
+}
 
-  deleteGrupoProduto(p: GrupoProduto) {
-    return this.baseCollection.doc(p.id).delete();
-  }
+deleteGrupoProduto(p: GrupoProduto) {
+  return this.baseCollection.doc(p.id).delete();
+}
 
-  updateGrupoProduto(p: GrupoProduto) {
-    return this.baseCollection.doc(p.id).set(p);
-  }
+updateGrupoProduto(p: GrupoProduto) {
+  return this.baseCollection.doc(p.id).set(p);
+}
 
 }

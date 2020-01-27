@@ -1,3 +1,4 @@
+import { getTestBed } from '@angular/core/testing';
 
 import { formatDate } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -6,16 +7,14 @@ import { MatSnackBar } from '@angular/material';
 import { Subject, Observable } from 'rxjs';
 import { takeUntil, take } from 'rxjs/operators';
 
-import { Bebida } from './../interfaces/bebida';
-
 import { Contagem } from './../interfaces/contagem';
 import { GrupoProduto } from '../interfaces/grupo-produto';
+import { Produto } from '../interfaces/produto';
+
 import { ContagemService } from '../servicos/contagem.service';
 import { GrupoProdutoService } from '../servicos/grupo-produto.service';
 import { ProdutoService } from './../servicos/produto.service';
 import { TipoProdutoService } from './../servicos/tipo-produto.service';
-import { Produto } from '../interfaces/produto';
-
 
 @Component({
   selector: 'app-contagem',
@@ -23,14 +22,13 @@ import { Produto } from '../interfaces/produto';
   styleUrls: ['./contagem.component.css']
 })
 
-
 export class ContagemComponent implements OnInit, OnDestroy {
 
-  contagemForm: FormGroup;
+  private contagemForm: FormGroup;
   private unsubscribe$: Subject<any> = new Subject();
 
   grupoProduto$: Observable<GrupoProduto[]>;
-
+  private nomeGrupoProduto: string;
 
   constructor(
     private produtoService: ProdutoService,
@@ -44,44 +42,16 @@ export class ContagemComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.grupoProduto$ = this.grupoProdutoService.getGrupoProdutos();
-    // this.criarFormContagem_v01();
 
   }
 
   funSelectGrupoProduto(e: any) {
 
     this.criarFormContagem_v01(e.value);
+    this.retornaNomeGrupo(e.value);
 
   }
 
-  criarFormContagem() {
-
-    this.contagemForm = this.formBuilder.group({
-      // dataContagem: new Date().toISOString(),
-      dataContagem: new Date(),
-      linhaProduto: this.formBuilder.array([])
-    });
-
-    const control: FormArray = this.contagemForm.get(`linhaProduto`) as FormArray;
-
-    // this.produtoService.getProdutos()
-    this.produtoService.getProdutos()
-      .pipe(takeUntil(this.unsubscribe$), take(1))
-      .subscribe(
-        (prods) => {
-
-          if (prods) {
-
-            for (const tmp of prods) {
-              control.push(this.addEqp_v01(tmp));
-            }
-          }
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
-  }
 
   criarFormContagem_v01(idGrupoProduto: string) {
 
@@ -89,12 +59,13 @@ export class ContagemComponent implements OnInit, OnDestroy {
 
     this.contagemForm = this.formBuilder.group({
       dataContagem: new Date(),
+      nomeGrupoProduto: '',   // Será atualizado no submit. TODO: Rever esta solução.
       linhaProduto: this.formBuilder.array([])
     });
 
-    const control: FormArray = this.contagemForm.get(`linhaProduto`) as FormArray;
+    console.log(this.nomeGrupoProduto);
 
-    // const idGrupoProduto = 'qm2vYSHfP9NNXrqXwLhY';
+    const control: FormArray = this.contagemForm.get(`linhaProduto`) as FormArray;
 
     this.tipoProdutoService.getTipoProdutos_v01(idGrupoProduto)
       .pipe(
@@ -114,6 +85,19 @@ export class ContagemComponent implements OnInit, OnDestroy {
         }
       );
 
+  }
+
+  retornaNomeGrupo(idGrupoProduto: string) {
+
+    this.grupoProdutoService.getNomeGrupoProduto(idGrupoProduto)
+      .pipe(takeUntil(this.unsubscribe$), take(1))
+      .subscribe(success => {
+        this.nomeGrupoProduto = success.grupoProduto;
+        console.log(this.nomeGrupoProduto);
+      }, (err) => {
+        console.log(err);
+        return '** Erro ***';
+      });
   }
 
   retornaProdutos(idGrupoProdutoTmp: string, idTipoProdutoTmp: string, control: FormArray) {
@@ -157,6 +141,10 @@ export class ContagemComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+
+    this.contagemForm.get('nomeGrupoProduto').setValue(this.nomeGrupoProduto);
+    // this.contagemForm.controls.get('aa').value('ss');  //get('nomeGrupoProduto').value('xxxx');
+
 
     // Atualizar a quantidade Total no formBuilder.
     for (const iterator of this.contagemForm.get('linhaProduto').value) {
