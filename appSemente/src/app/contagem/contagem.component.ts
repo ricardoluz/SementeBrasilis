@@ -24,7 +24,7 @@ import { TipoProdutoService } from './../servicos/tipo-produto.service';
 
 export class ContagemComponent implements OnInit, OnDestroy {
 
-  private contagemForm: FormGroup;
+  contagemForm: FormGroup;
   private unsubscribe$: Subject<any> = new Subject();
 
   grupoProduto$: Observable<GrupoProduto[]>;

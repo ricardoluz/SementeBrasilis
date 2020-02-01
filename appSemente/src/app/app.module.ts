@@ -37,6 +37,9 @@ import { ListaPedidoComponent } from './pedido/lista-pedido/lista-pedido.compone
 import { GrupoProdutoRegistroComponent } from './apoio/grupo-produto-registro/grupo-produto-registro.component';
 import { ApoioComponent } from './apoio/apoio.component';
 import { TipoProdutoRegistroComponent } from './apoio/tipo-produto-registro/tipo-produto-registro.component';
+import { UploadArquivosComponent } from './upload-arquivos/upload-arquivos.component';
+import { AngularFireStorageModule } from 'angularfire2/storage';
+import { DownloadArquivosComponent } from './download-arquivos/download-arquivos.component';
 
 
 
@@ -55,6 +58,8 @@ import { TipoProdutoRegistroComponent } from './apoio/tipo-produto-registro/tipo
     GrupoProdutoRegistroComponent,
     ApoioComponent,
     TipoProdutoRegistroComponent,
+    UploadArquivosComponent,
+    DownloadArquivosComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,7 +72,8 @@ import { TipoProdutoRegistroComponent } from './apoio/tipo-produto-registro/tipo
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireDatabaseModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    AngularFireStorageModule
   ],
   providers: [
     DatePipe,

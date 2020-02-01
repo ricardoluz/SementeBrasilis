@@ -13,6 +13,8 @@ import { ListaPedidoComponent } from './pedido/lista-pedido/lista-pedido.compone
 import { ApoioComponent } from './apoio/apoio.component';
 import { GrupoProdutoRegistroComponent } from './apoio/grupo-produto-registro/grupo-produto-registro.component';
 import { TipoProdutoRegistroComponent } from './apoio/tipo-produto-registro/tipo-produto-registro.component';
+import { UploadArquivosComponent } from './upload-arquivos/upload-arquivos.component';
+import { DownloadArquivosComponent } from './download-arquivos/download-arquivos.component';
 // import { TesteComponent } from './teste/teste.component';
 
 
@@ -30,6 +32,10 @@ const appRoutes: Routes = [
   { path: 'listaPedido', component: ListaPedidoComponent },
   { path: 'pedido/:id', component: PedidoComponent },
   { path: 'pedidoApresentacao/:id', component: PedidoApresentacaoComponent },
+
+  { path: 'uploadArquivo', component: UploadArquivosComponent },
+  { path: 'downloadArquivo', component: DownloadArquivosComponent },
+
   { path: '', pathMatch: 'full', redirectTo: 'inicial' },
   { path: '**', component: PageNotFoundComponent }
 ];
