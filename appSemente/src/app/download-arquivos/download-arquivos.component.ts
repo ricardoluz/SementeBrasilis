@@ -65,41 +65,54 @@ export class DownloadArquivosComponent implements OnInit {
 
     // Create a reference under which you want to list
     // const listRef = storageRef.child('NFCe/2020_01/33200107157694000114650000000736471039594214-procNFe.xml');
-    const listRef = storageRef.child('NFCe/');
+    const listRef = storageRef.child('NFCe/2020_01');
 
     listRef.listAll().then((res) => {
       res.prefixes.forEach((folderRef) => {
-        console.log(folderRef);
+        console.log(folderRef.fullPath);
 
         // All the prefixes under listRef.
         // You may call listAll() recursively on them.
       });
       res.items.forEach((itemRef) => {
-        console.log(itemRef);
-        console.log(itemRef.location);
         // All the items under listRef.
+
+        // console.log(itemRef.fullPath);
+        // console.log(itemRef.name);
+        this.getUrl(itemRef);
       });
     }).catch((error) => {
       console.log(error);
     });
 
 
-    return 0;
+    // return 0;
+
+
+
+    // const query = {
+    //   delimiter: 'NFCe/'
+    // };
+    // const storageRefX = firebase.storage().  .bucket().getFiles(query, function (err, files, nextQuery, apiResponse) {
+
+    //   console.log(files);
+    // }
+
+    // const ref = this.afStorage.ref('NFCe/2020_01/33200107157694000114650000000736471039594214-procNFe.xml');
+    // this.meta = ref.getMetadata();
+    // console.log(ref);
+
+  }
+
+  getUrl(listRef: firebase.storage.Reference) {
 
     // Get the download URL
-
     listRef.getDownloadURL()
       .then((url) => {
-        // Insert url into an <img> tag to "download"
-        console.log('p1');
-        console.log(url);
-        console.log('p2');
 
         this.loadXML(url);
 
-
       }).catch((error) => {
-
 
         console.log(error);
         console.log('p3');
@@ -123,20 +136,6 @@ export class DownloadArquivosComponent implements OnInit {
             break;
         }
       });
-
-
-    // const query = {
-    //   delimiter: 'NFCe/'
-    // };
-    // const storageRefX = firebase.storage().  .bucket().getFiles(query, function (err, files, nextQuery, apiResponse) {
-
-    //   console.log(files);
-    // }
-
-    // const ref = this.afStorage.ref('NFCe/2020_01/33200107157694000114650000000736471039594214-procNFe.xml');
-    // this.meta = ref.getMetadata();
-    // console.log(ref);
-
   }
 
   loadXML(nomeArquivo) {
@@ -206,7 +205,7 @@ export class DownloadArquivosComponent implements OnInit {
       )
     };
 
-    this.http.get(nomeArquivo,  { responseType: 'text' }
+    this.http.get(nomeArquivo, { responseType: 'text' }
     )
       .subscribe((data) => {
 
