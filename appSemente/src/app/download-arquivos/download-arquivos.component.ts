@@ -28,17 +28,6 @@ export class DownloadArquivosComponent implements OnInit {
 
   downloadArquivos() {
 
-    // TODO: Retirar a configuraçao do códigov fonte.
-
-    const firebaseConfig = {
-      apiKey: 'AIzaSyC0HceU8atIBs31f5QmF49he113OqPj2h0',
-      authDomain: 'sementebrasilis-v01.firebaseapp.com',
-      databaseURL: 'https://sementebrasilis-v01.firebaseio.com',
-      storageBucket: 'sementebrasilis-v01.appspot.com',
-    };
-
-    firebase.initializeApp(firebaseConfig);
-
     const storageRef = firebase.storage().ref();
 
     // Create a reference under which you want to list

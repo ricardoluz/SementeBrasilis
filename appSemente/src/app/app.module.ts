@@ -22,7 +22,7 @@ import { RoutesComponent } from './testes/routes/routes.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AngularFireModule} from '@angular/fire';
+import { AngularFireModule, FirebaseApp} from '@angular/fire';
 import { AngularFireDatabaseModule} from '@angular/fire/database';
 import { AngularFirestoreModule} from '@angular/fire/firestore';
 
@@ -41,6 +41,9 @@ import { UploadArquivosComponent } from './upload-arquivos/upload-arquivos.compo
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { DownloadArquivosComponent } from './download-arquivos/download-arquivos.component';
 
+import * as firebase from 'firebase';
+
+firebase.initializeApp(environment.firebaseConfig);
 
 
 @NgModule({
