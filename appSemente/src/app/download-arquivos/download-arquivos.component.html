@@ -1,4 +1,10 @@
 <!-- <pre><code>{{ meta | async }}</code></pre> -->
 <!-- <pre>{{ meta }}</pre> -->
-<pre>{{ nf | json }}</pre>
+<!-- <pre>{{ nf | json }}</pre> -->
 ok
+<input type="file" #csvReader name="Upload CSV" id="txtFileUpload" multiple (change)="uploadListener($event)"
+    accept=".xml" />
+<br>
+<!-- <pre>{{ nf | json }}</pre> -->
+
+<pre>{{ listaNFCe | json }} </pre>

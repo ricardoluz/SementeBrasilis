@@ -29,6 +29,8 @@
     "firebase-tools": "^7.12.1",
     "hammerjs": "^2.0.8",
     "rxjs": "~6.4.0",
+    "stream": "0.0.2",
+    "timers": "^0.1.1",
     "tslib": "^1.10.0",
     "xml2js": "^0.4.23",
     "zone.js": "~0.9.1"
