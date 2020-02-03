@@ -21,9 +21,7 @@ export class UploadArquivosComponent implements OnInit {
   uploadArquivos($event) {
 
     const input = $event.target;
-    const nomePasta = '/NFCe/2020_01/';
-
-    // console.log(input.file.lenght);
+    const nomePasta = '/NFCe/2020_01_Teste/';
 
     let i = 0;
     for (const iterator of input.files) {
