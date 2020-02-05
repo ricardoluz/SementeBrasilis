@@ -1,11 +1,10 @@
-import { getTestBed } from '@angular/core/testing';
-
 import { formatDate } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { Subject, Observable } from 'rxjs';
 import { takeUntil, take } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 import { Contagem } from './../interfaces/contagem';
 import { GrupoProduto } from '../interfaces/grupo-produto';
@@ -15,6 +14,7 @@ import { ContagemService } from '../servicos/contagem.service';
 import { GrupoProdutoService } from '../servicos/grupo-produto.service';
 import { ProdutoService } from './../servicos/produto.service';
 import { TipoProdutoService } from './../servicos/tipo-produto.service';
+import { isArray } from 'util';
 
 @Component({
   selector: 'app-contagem',
@@ -24,7 +24,10 @@ import { TipoProdutoService } from './../servicos/tipo-produto.service';
 
 export class ContagemComponent implements OnInit, OnDestroy {
 
+  blnInclusaoContagem: boolean;
+
   contagemForm: FormGroup;
+
   private unsubscribe$: Subject<any> = new Subject();
 
   grupoProduto$: Observable<GrupoProduto[]>;
@@ -37,11 +40,24 @@ export class ContagemComponent implements OnInit, OnDestroy {
     private tipoProdutoService: TipoProdutoService,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
 
-    this.grupoProduto$ = this.grupoProdutoService.getGrupoProdutos();
+    const idContagem = this.route.snapshot.paramMap.get('id');
+
+    if (idContagem == null) {
+
+      this.blnInclusaoContagem = true;
+      this.grupoProduto$ = this.grupoProdutoService.getGrupoProdutos();
+
+    } else {
+
+      this.blnInclusaoContagem = false;
+      this.lerFormContagem(idContagem);
+
+    }
 
   }
 
@@ -57,13 +73,14 @@ export class ContagemComponent implements OnInit, OnDestroy {
 
     // TODO: Melhorar esta solução utilzando CombineAll (rxjs)
 
-    this.contagemForm = this.formBuilder.group({
-      dataContagem: new Date(),
-      nomeGrupoProduto: '',   // Será atualizado no submit. TODO: Rever esta solução.
-      linhaProduto: this.formBuilder.array([])
-    });
+    // this.contagemForm = this.formBuilder.group({
+    //   dataContagem: new Date(),
+    //   nomeGrupoProduto: '',   // Será atualizado no submit. TODO: Rever esta solução.
+    //   linhaProduto: this.formBuilder.array([])
+    // });
+    this.criarHeaderForm();
 
-    console.log(this.nomeGrupoProduto);
+    // console.log(this.nomeGrupoProduto);
 
     const control: FormArray = this.contagemForm.get(`linhaProduto`) as FormArray;
 
@@ -82,6 +99,51 @@ export class ContagemComponent implements OnInit, OnDestroy {
         },
         (err) => {
           console.log(err);
+        }
+      );
+
+  }
+
+
+  criarHeaderForm() {
+    this.contagemForm = this.formBuilder.group({
+      id: null,
+      dataContagem: new Date(),
+      nomeGrupoProduto: '',   // Será atualizado no submit. TODO: Rever esta solução.
+      linhaProduto: this.formBuilder.array([])
+    });
+  }
+
+
+  lerFormContagem(idContagem) {
+
+    // alert(idContagem);
+    this.criarHeaderForm();
+
+    // TODO: Solução temporária : Estudar o texto :
+    // https://ultimatecourses.com/blog/angular-2-form-controls-patch-value-set-value#patchvalue
+    // Para melhorar este modo de leitura do formulário
+
+    this.contagemService.getContagemById(idContagem)
+      .subscribe(
+        (retorno) => {
+
+          // this.contagemLida = retorno;
+
+          this.contagemForm.get('id').setValue(idContagem);
+          this.contagemForm.get('dataContagem').setValue(retorno.dataContagem);
+          this.contagemForm.get('nomeGrupoProduto').setValue(retorno.nomeGrupoProduto);
+
+          const control: FormArray = this.contagemForm.get(`linhaProduto`) as FormArray;
+
+          // tslint:disable-next-line: forin
+          for (const i in retorno.linhaProduto) {
+            // console.log(retorno.linhaProduto[i]);
+            control.push(this.addEqp_v01_update(retorno.linhaProduto[i]));
+          }
+
+          console.log(this.contagemForm);
+
         }
       );
 
@@ -140,6 +202,24 @@ export class ContagemComponent implements OnInit, OnDestroy {
     return group;
   }
 
+  addEqp_v01_update(prodContagem) {
+    // TODO: Tipificar prodContagem
+    const group = this.formBuilder.group({
+      nomeProduto: [prodContagem.nomeProduto],
+      q1: [prodContagem.q1, [Validators.required, Validators.min(0)]],
+      un1: [prodContagem.un1],
+      rel1: [prodContagem.rel1],
+      q2: [prodContagem.q2, [Validators.required, Validators.min(0)]],
+      un2: [prodContagem.un2],
+      rel2: [prodContagem.rel2],
+      unCompra: [prodContagem.unCompra],
+      qMinima: [prodContagem.qMinima],
+      precoCompra: [prodContagem.precoCompra],
+      qTotal: [prodContagem.qTotal]
+    });
+    return group;
+  }
+
   onSubmit() {
 
     this.contagemForm.get('nomeGrupoProduto').setValue(this.nomeGrupoProduto);
@@ -158,6 +238,7 @@ export class ContagemComponent implements OnInit, OnDestroy {
 
     const p: Contagem = this.contagemForm.value;
     if (!p.id) {
+      console.log(this.contagemForm);
       this.addContagem(p);
     } else {
       this.updateContagem(p);

@@ -28,6 +28,7 @@ const appRoutes: Routes = [
   // { path: 'teste', component: TesteComponent },
   { path: 'produtos', component: BebidasFormComponent },
   { path: 'contagem', component: ContagemComponent },
+  { path: 'contagem/:id', component: ContagemComponent },
   { path: 'listaContagem', component: ContagemListaComponent },
   { path: 'listaPedido', component: ListaPedidoComponent },
   { path: 'pedido/:id', component: PedidoComponent },

@@ -9,12 +9,10 @@
         <button mat-icon-button color="accent" (click)="delete(item)">
             <mat-icon>delete</mat-icon>
         </button>
-        <button mat-icon-button color="primary" (click)="edit(item)"> 
+        <!-- <button mat-icon-button color="primary" (click)="edit(item)"> 
             <mat-icon>edit</mat-icon>
-        </button>
-        <!-- <button mat-icon-button color="primary" (click)="edit(item)">
-            (<mat-icon>format_list_numbered_rtl</mat-icon>Pedido)
         </button> -->
+        <a mat-button style="width: 170px;" routerLink="/contagem/{{ item.id }}"><mat-icon>edit</mat-icon></a>
         <a mat-button style="width: 170px;" routerLink="/pedido/{{ item.id }}">(<mat-icon>format_list_numbered_rtl</mat-icon>Pedido)</a>
     </mat-list-item>
 </mat-list>

@@ -1,5 +1,4 @@
-<div>
-
+<div *ngIf="blnInclusaoContagem">
     <mat-form-field>
         <mat-label>Grupo</mat-label>
         <mat-select placeholder="Grupo do produto"
@@ -8,6 +7,7 @@
         </mat-select>
     </mat-form-field>
 </div>
+
 
 <div *ngIf="contagemForm" layout="column" fxFlex="96" class="info-card mat-elevation-z8"
     style="margin-top: 30px; margin-left: 30px; width: 300px; padding-top: 30px; padding-left: 30px; padding-right: 40px;">
@@ -56,9 +56,9 @@
 
                 </tr>
             </ng-container>
-            <!-- </tbody> -->
-        </table>
 
+        </table>
+    
         <br>
         <!-- <button mat-raised-button type="submit" (click)= salvarContagem()>Salvar Contagem </button> -->
         <button mat-button color="primary" type="submit" [disabled]="!contagemForm.valid">
