@@ -44,7 +44,8 @@ export class ContagemService {
   }
 
   updateContagem(p: Contagem) {
-    return this.contagemCollection.doc(p.id).set(p);
+    // return this.contagemCollection.doc(p.id).set(p);
+    return this.contagemCollection.doc(p.id).update(p);
   }
 
   deleteContagem(p: Contagem) {

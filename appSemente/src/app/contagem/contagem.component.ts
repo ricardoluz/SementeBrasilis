@@ -128,10 +128,19 @@ export class ContagemComponent implements OnInit, OnDestroy {
       .subscribe(
         (retorno) => {
 
-          // this.contagemLida = retorno;
+
 
           this.contagemForm.get('id').setValue(idContagem);
-          this.contagemForm.get('dataContagem').setValue(retorno.dataContagem);
+
+
+          const teste = { nanoseconds: 0, seconds: 120 };
+          Object.assign(teste, retorno.dataContagem);
+          const testeTmp = teste.seconds * 1000;
+
+          const testeDate = new Date(formatDate(testeTmp, 'yyyy/MM/dd hh:mm:ss', 'pt-br'));
+          // console.log(testeDate.toDateString());
+          this.contagemForm.get('dataContagem').setValue(testeDate);
+
           this.contagemForm.get('nomeGrupoProduto').setValue(retorno.nomeGrupoProduto);
 
           const control: FormArray = this.contagemForm.get(`linhaProduto`) as FormArray;
@@ -222,10 +231,7 @@ export class ContagemComponent implements OnInit, OnDestroy {
 
   onSubmit() {
 
-    this.contagemForm.get('nomeGrupoProduto').setValue(this.nomeGrupoProduto);
-    // this.contagemForm.controls.get('aa').value('ss');  //get('nomeGrupoProduto').value('xxxx');
-
-
+    console.log('submit')
     // Atualizar a quantidade Total no formBuilder.
     for (const iterator of this.contagemForm.get('linhaProduto').value) {
       iterator.qTotal = iterator.q1 / iterator.rel1;
@@ -233,14 +239,16 @@ export class ContagemComponent implements OnInit, OnDestroy {
         iterator.qTotal = iterator.qTotal + iterator.q2 / iterator.rel2;
       }
       iterator.qTotal = this.arred(iterator.qTotal, 2);
-      // iterator.qTotal = this.arred(iterator.q1 / iterator.rel1 + iterator.q2 / iterator.rel2, 2);
     }
 
     const p: Contagem = this.contagemForm.value;
     if (!p.id) {
-      console.log(this.contagemForm);
+      // Atualizar a contagem com o nomeGrupoProduto
+      p.nomeGrupoProduto = this.nomeGrupoProduto;
       this.addContagem(p);
     } else {
+      console.log('edicao');
+      console.log(p);
       this.updateContagem(p);
     }
   }

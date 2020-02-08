@@ -55,7 +55,7 @@ export class ContagemListaComponent implements OnInit, OnDestroy {
       .subscribe(
 
         sucess => {
-          this.notify('Contegem : ' + formatDate(item.dataContagem, 'shortDate', 'pt-br') + ' - foi apagada.');
+          this.notify('Contagem : ' + formatDate(item.dataContagem, 'shortDate', 'pt-br') + ' - foi apagada.');
 
           const i = this.contagemLista.findIndex(d2 => {
             return d2._id === item._id;
