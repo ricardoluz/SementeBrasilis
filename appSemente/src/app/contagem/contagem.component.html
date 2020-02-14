@@ -1,8 +1,7 @@
 <div *ngIf="blnInclusaoContagem">
     <mat-form-field>
         <mat-label>Grupo</mat-label>
-        <mat-select placeholder="Grupo do produto"
-            (selectionChange)="funSelectGrupoProduto($event)">
+        <mat-select placeholder="Grupo do produto" (selectionChange)="funSelectGrupoProduto($event)">
             <mat-option *ngFor="let oo of grupoProduto$ | async" [value]="oo.id">{{oo.grupoProduto}}</mat-option>
         </mat-select>
     </mat-form-field>
@@ -58,9 +57,12 @@
             </ng-container>
 
         </table>
-    
+
         <br>
-        <!-- <button mat-raised-button type="submit" (click)= salvarContagem()>Salvar Contagem </button> -->
+
+        <!-- <a mat-button routerLink="/contagem">
+            <mat-icon>chevron_left</mat-icon>Lista Pedido
+        </a> -->
         <button mat-button color="primary" type="submit" [disabled]="!contagemForm.valid">
             <mat-icon>done</mat-icon>Salvar Contagem
         </button>

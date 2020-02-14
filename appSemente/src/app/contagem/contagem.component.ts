@@ -1,10 +1,11 @@
+import { NotificacaoService } from './../servicos/utilidades/notificacao.service';
 import { formatDate } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { Subject, Observable } from 'rxjs';
 import { takeUntil, take } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Contagem } from './../interfaces/contagem';
 import { GrupoProduto } from '../interfaces/grupo-produto';
@@ -14,6 +15,7 @@ import { ContagemService } from '../servicos/contagem.service';
 import { GrupoProdutoService } from '../servicos/grupo-produto.service';
 import { ProdutoService } from './../servicos/produto.service';
 import { TipoProdutoService } from './../servicos/tipo-produto.service';
+import { ConversoesService } from '../servicos/utilidades/conversoes.service';
 import { isArray } from 'util';
 
 @Component({
@@ -38,9 +40,12 @@ export class ContagemComponent implements OnInit, OnDestroy {
     private contagemService: ContagemService,
     private grupoProdutoService: GrupoProdutoService,
     private tipoProdutoService: TipoProdutoService,
+    private conversoesService: ConversoesService,
+    private notificacaoService: NotificacaoService,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -58,7 +63,12 @@ export class ContagemComponent implements OnInit, OnDestroy {
       this.lerFormContagem(idContagem);
 
     }
+  }
 
+  ngOnDestroy(): void {
+    // console.log('OnDestroy');
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   funSelectGrupoProduto(e: any) {
@@ -128,18 +138,15 @@ export class ContagemComponent implements OnInit, OnDestroy {
       .subscribe(
         (retorno) => {
 
-
-
           this.contagemForm.get('id').setValue(idContagem);
 
+          // const teste = { nanoseconds: 0, seconds: 120 };
+          // Object.assign(teste, retorno.dataContagem);
+          // const testeTmp = teste.seconds * 1000;
 
-          const teste = { nanoseconds: 0, seconds: 120 };
-          Object.assign(teste, retorno.dataContagem);
-          const testeTmp = teste.seconds * 1000;
+          // const testeDate = new Date(formatDate(testeTmp, 'yyyy/MM/dd hh:mm:ss', 'pt-br'));
 
-          const testeDate = new Date(formatDate(testeTmp, 'yyyy/MM/dd hh:mm:ss', 'pt-br'));
-          // console.log(testeDate.toDateString());
-          this.contagemForm.get('dataContagem').setValue(testeDate);
+          this.contagemForm.get('dataContagem').setValue(this.conversoesService.objectTimeStampToDate(retorno.dataContagem));
 
           this.contagemForm.get('nomeGrupoProduto').setValue(retorno.nomeGrupoProduto);
 
@@ -147,11 +154,10 @@ export class ContagemComponent implements OnInit, OnDestroy {
 
           // tslint:disable-next-line: forin
           for (const i in retorno.linhaProduto) {
-            // console.log(retorno.linhaProduto[i]);
             control.push(this.addEqp_v01_update(retorno.linhaProduto[i]));
           }
 
-          console.log(this.contagemForm);
+          // console.log(this.contagemForm);
 
         }
       );
@@ -231,7 +237,6 @@ export class ContagemComponent implements OnInit, OnDestroy {
 
   onSubmit() {
 
-    console.log('submit')
     // Atualizar a quantidade Total no formBuilder.
     for (const iterator of this.contagemForm.get('linhaProduto').value) {
       iterator.qTotal = iterator.q1 / iterator.rel1;
@@ -243,13 +248,19 @@ export class ContagemComponent implements OnInit, OnDestroy {
 
     const p: Contagem = this.contagemForm.value;
     if (!p.id) {
+
       // Atualizar a contagem com o nomeGrupoProduto
       p.nomeGrupoProduto = this.nomeGrupoProduto;
+
       this.addContagem(p);
+      // FIXME: Solução temporária para evitar a inclusao de outra contagem.
+      this.router.navigate(['/listaContagem']);
+
     } else {
-      console.log('edicao');
-      console.log(p);
+
       this.updateContagem(p);
+      this.router.navigate(['/listaContagem']);
+
     }
   }
 
@@ -261,7 +272,7 @@ export class ContagemComponent implements OnInit, OnDestroy {
         // this.clearFields();
       })
       .catch((c) => {
-        const notifyTmp: string = 'Erro ao adicionar a Contagem.' + formatDate(p.dataContagem, 'shortDate', 'pt-br');
+        const notifyTmp: string = 'Erro ao adicionar a Contagem de ' + formatDate(p.dataContagem, 'shortDate', 'pt-br');
         this.notify(notifyTmp);
         // this.snackBar.open('Erro ao adicionar a Contagem.', 'OK', { duration: 2000 });
       });
@@ -270,14 +281,14 @@ export class ContagemComponent implements OnInit, OnDestroy {
   updateContagem(p: Contagem) {
     this.contagemService.updateContagem(p)
       .then(() => {
-        this.snackBar.open('Contagem atualizada', 'OK', { duration: 2000 });
+        const notifyTmp: string = 'Contagem ' + formatDate(p.dataContagem, 'shortDate', 'pt-br') + ' atualizada.';
+        this.notify(notifyTmp);
         // this.clearFields();
       })
       .catch((e) => {
         console.log(e);
         const notifyTmp: string = 'Erro ao adicionar a Contagem.' + formatDate(p.dataContagem, 'shortDate', 'pt-br');
         this.notify(notifyTmp);
-        // this.snackBar.open('Error updating the product', 'OK', { duration: 2000 });
       });
 
   }
@@ -309,19 +320,14 @@ export class ContagemComponent implements OnInit, OnDestroy {
 
 
   notify(msg: string) {
-    this.snackBar.open(msg, 'OK', { duration: 3000 });
+    this.notificacaoService.notificacao(msg);
   }
+
 
   arred(numero: number, numCasaDecimais: number) {
     let numTmp = numero * Math.pow(10, numCasaDecimais);
     numTmp = Math.round(numTmp) / Math.pow(10, numCasaDecimais);
     return numTmp;
-  }
-
-  ngOnDestroy(): void {
-    console.log('OnDestroy');
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
   }
 
 }

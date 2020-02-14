@@ -40,7 +40,7 @@ export class ContagemListaComponent implements OnInit, OnDestroy {
   delete(p: Contagem) {
     this.contagemService.deleteContagem(p)
       .then(() => {
-        this.snackBar.open('Produto removido', 'OK', { duration: 2000 });
+        this.snackBar.open('Contagem removida', 'OK', { duration: 2000 });
       })
       .catch((e) => {
         console.log(e);

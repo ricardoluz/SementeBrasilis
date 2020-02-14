@@ -21,13 +21,23 @@ export class UploadArquivosComponent implements OnInit {
   uploadArquivos($event) {
 
     const input = $event.target;
-    const nomePasta = '/NFCe/2020_01_Teste/';
+    // const nomePasta = '/NFCe/2020_01_Teste/';
 
     let i = 0;
     for (const iterator of input.files) {
 
       console.log(iterator.name);
-      const nomeArquivo = nomePasta + iterator.name;
+      // const nomeArquivo = iterator.name;
+
+      // FIXME: Bug do milênio. rsss
+      const nomeArquivo = '/NFCe/20'
+        .concat(iterator.name.substring(2, 4))
+        .concat('_')
+        .concat(iterator.name.substring(4, 6))
+        .concat('/')
+        .concat(iterator.name);
+
+      // console.log(nomeArquivo);
 
       this.afStorage.upload(nomeArquivo, iterator);
 

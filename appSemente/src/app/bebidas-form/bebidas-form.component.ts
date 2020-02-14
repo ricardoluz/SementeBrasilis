@@ -1,10 +1,8 @@
+import { NotificacaoService } from './../servicos/utilidades/notificacao.service';
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
-import { MatSnackBar } from '@angular/material';
+// import { MatSnackBar } from '@angular/material';
 import { FormBuilder, Validators, FormGroup, NgForm } from '@angular/forms';
-
-import { Bebida } from '../interfaces/bebida';
-import { BebidasService } from './../servicos/bebidas.service';
 
 import { Produto } from '../interfaces/produto';
 import { ProdutoService } from './../servicos/produto.service';
@@ -29,8 +27,6 @@ export class BebidasFormComponent implements OnInit, OnDestroy {
   @ViewChild('formDirective', { static: false }) private formDirective: NgForm;
   @ViewChild('posicaoInicial', { static: false }) private frmPosicaoInicial: ElementRef;
 
-  // blnEdicao = false;
-
 
   bebidaForm = this.fb.group({});
 
@@ -38,9 +34,8 @@ export class BebidasFormComponent implements OnInit, OnDestroy {
 
   produtos$: Observable<Produto[]>;
   filterProducts$: Observable<Produto[]>;
-  // bebidasTmp$: Observable<Bebida[]>;
 
-  // grupoProduto: GrupoProduto[] = [];
+
   grupoProduto$: Observable<GrupoProduto[]>;
   tipoProduto$: Observable<TipoProduto[]>;
 
@@ -53,30 +48,28 @@ export class BebidasFormComponent implements OnInit, OnDestroy {
     private grupoProdutoService: GrupoProdutoService,
     private tipoProdutoService: TipoProdutoService,
     private unidadeMedidaService: UnidadeMedidaService,
+    private notificacaoService: NotificacaoService,
     private fb: FormBuilder,
-    private snackBar: MatSnackBar
+    // private snackBar: MatSnackBar
   ) { }
 
   ngOnInit() {
 
-    // TODO: Rever a necessidade para limpar os valores.
-    // this.grupoProduto = this.grupoProdutoService.get();
+    // TODO: Criar uma tabela para as unidades de medida.
     this.unidadeMedida = this.unidadeMedidaService.get();
-
-    // this.bebidaService.get()
-    //   .pipe(takeUntil(this.unsubscribe$))
-    //   .subscribe(
-    //     (retorno) => { this.bebidas = retorno; },
-    //     (err) => { console.log(err); }
-    //   );
 
     this.montarFormulario();
     this.grupoProduto$ = this.grupoProdutoService.getGrupoProdutos();
     this.tipoProduto$ = this.tipoProdutoService.getTipoProdutos_v01('');
     this.produtos$ = this.produtoService.getProdutos();
-
-
   }
+
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
 
   montarFormulario() {
     this.bebidaForm = this.fb.group({
@@ -103,10 +96,6 @@ export class BebidasFormComponent implements OnInit, OnDestroy {
     this.tipoProduto$ = this.tipoProdutoService.getTipoProdutos_v01(e.value);
   }
 
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
 
   onSubmit() {
     const p: Produto = this.bebidaForm.value;
@@ -120,23 +109,23 @@ export class BebidasFormComponent implements OnInit, OnDestroy {
   addProduct(p: Produto) {
     this.produtoService.addProduto(p)
       .then(() => {
-        this.snackBar.open('Produto adicionado.', 'OK', { duration: 2000 });
+        this.notificacaoService.notificacao('Produto adicionado', 2000);
         this.clearFields();
       })
       .catch(() => {
-        this.snackBar.open('Error on submiting the product.', 'OK', { duration: 2000 });
+        this.notificacaoService.notificacao('Erro ao adicionar o produto.', 2000);
       });
   }
 
   updateProduct(p: Produto) {
     this.produtoService.updateProduct(p)
       .then(() => {
-        this.snackBar.open('Produto atualizado', 'OK', { duration: 2000 });
+        this.notificacaoService.notificacao('Produto atualizado', 2000);
         this.clearFields();
       })
       .catch((e) => {
         console.log(e);
-        this.snackBar.open('Error updating the product', 'OK', { duration: 2000 });
+        this.notificacaoService.notificacao('Erro ao atualizar o produto.', 2000);
       });
 
   }
@@ -146,14 +135,15 @@ export class BebidasFormComponent implements OnInit, OnDestroy {
     this.bebidaForm.patchValue(p);
   }
 
+
   delete(p: Produto) {
     this.produtoService.deleteProduct(p)
       .then(() => {
-        this.snackBar.open('Produto removido', 'OK', { duration: 2000 });
+        this.notificacaoService.notificacao('Produto removido', 2000);
       })
       .catch((e) => {
         console.log(e);
-        this.snackBar.open('Error when trying to remove the product', 'OK', { duration: 2000 });
+        this.notificacaoService.notificacao('Erro ao remover o produto', 2000);
       });
   }
 
@@ -214,45 +204,7 @@ export class BebidasFormComponent implements OnInit, OnDestroy {
   //   }
   // }
 
-  // edit_old_2020_01_12(prmEdicao: Bebida) {
-  //   this.blnEdicao = true;
-  //   // console.log(prmEdicao);
-  //   this.bebidaForm.patchValue(prmEdicao);
-  //   this.frmPosicaoInicial.nativeElement.focus();
-  // }
 
-
-  // delete_old_2020_01_12(beb: Bebida) {
-
-  //   // TODO: Limpar o formulário caso o produto editado seja apagado.
-  //   // this.clearFields();
-
-  //   this.bebidaService.del(beb)
-  //     .pipe(
-  //       takeUntil(this.unsubscribe$)
-  //     )
-  //     .subscribe(
-
-  //       sucess => {
-  //         this.notify(beb.nomeProduto + ' - foi apagada.');
-
-  //         const i = this.bebidas.findIndex(d2 => {
-  //           return d2._id === beb._id;
-  //         });
-  //         if (i >= 0) {
-  //           this.bebidas.splice(i, 1);
-  //         }
-
-  //       },
-
-  //       error => {
-  //         this.notify('Erro ao apagar : ' + beb.nomeProduto);
-  //         console.log(error.message);
-  //       }
-  //     );
-
-  //   // this.blnEdicao = false;
-  // }
 
   clearFields() {
 
@@ -266,8 +218,8 @@ export class BebidasFormComponent implements OnInit, OnDestroy {
 
   }
 
-  notify(msg: string) {
-    this.snackBar.open(msg, 'OK', { duration: 3000 });
-  }
+  // notify(msg: string) {
+  //   this.snackBar.open(msg, 'OK', { duration: 3000 });
+  // }
 
 }

@@ -14,6 +14,16 @@ import { MaterialModule } from './material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
 
+import { environment } from 'src/environments/environment';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AngularFireModule, FirebaseApp} from '@angular/fire';
+import { AngularFireDatabaseModule} from '@angular/fire/database';
+import { AngularFirestoreModule} from '@angular/fire/firestore';
+
+import * as firebase from 'firebase';
+firebase.initializeApp(environment.firebaseConfig);
+
 import { DatePipe } from '@angular/common';
 
 import { BebidasFormComponent } from './bebidas-form/bebidas-form.component';
@@ -21,18 +31,13 @@ import { ContagemComponent } from './contagem/contagem.component';
 import { RoutesComponent } from './testes/routes/routes.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AngularFireModule, FirebaseApp} from '@angular/fire';
-import { AngularFireDatabaseModule} from '@angular/fire/database';
-import { AngularFirestoreModule} from '@angular/fire/firestore';
 
 import { PedidoComponent } from './pedido/pedido.component';
 import { ContagemListaComponent } from './contagem-lista/contagem-lista.component';
 import { PedidoApresentacaoComponent } from './pedido/pedido-apresentacao/pedido-apresentacao.component';
-// import { from } from 'rxjs';
 
-import { environment } from 'src/environments/environment';
-import { TesteComponent } from './teste/teste.component';
+
+// import { TesteComponent } from './teste/teste.component';
 import { ListaPedidoComponent } from './pedido/lista-pedido/lista-pedido.component';
 import { GrupoProdutoRegistroComponent } from './apoio/grupo-produto-registro/grupo-produto-registro.component';
 import { ApoioComponent } from './apoio/apoio.component';
@@ -41,9 +46,7 @@ import { UploadArquivosComponent } from './upload-arquivos/upload-arquivos.compo
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { DownloadArquivosComponent } from './download-arquivos/download-arquivos.component';
 
-import * as firebase from 'firebase';
 
-firebase.initializeApp(environment.firebaseConfig);
 
 
 @NgModule({
@@ -56,7 +59,7 @@ firebase.initializeApp(environment.firebaseConfig);
     PedidoComponent,
     ContagemListaComponent,
     PedidoApresentacaoComponent,
-    TesteComponent,
+    // TesteComponent,
     ListaPedidoComponent,
     GrupoProdutoRegistroComponent,
     ApoioComponent,
