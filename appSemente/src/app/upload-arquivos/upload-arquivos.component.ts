@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import * as xml2js from 'xml2js';
 import { NFCEs } from '../interfaces/nfces';
 import { NfceService } from '../servicos/nfce.service';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-upload-arquivos',
@@ -112,9 +113,13 @@ export class UploadArquivosComponent implements OnInit {
         )
         .subscribe(
           success => {
-            // console.log(up);
+            console.log(up);
 
             console.log(up.metadata.fullPath);
+            console.log(up.state);
+
+            this.getUrl(up.metadata.fullPath);
+            // this.teste(up.metadata.fullPath);
             // console.log('ok');
             // console.log(success);
             // this.loadXML(success);
@@ -125,7 +130,55 @@ export class UploadArquivosComponent implements OnInit {
     });
   }
 
+  getUrl(nomeArquivo: string) {
 
+    const refArquivo = firebase.storage().ref(nomeArquivo);
+
+    // Get the download URL
+    refArquivo.getDownloadURL()
+      .then((url) => {
+
+        console.log(url);
+        this.loadXML(url);
+        // this.loadXML_v02(url);
+
+      }).catch((error) => {
+
+        console.log(error);
+
+        // A full list of error codes is available at
+        // https://firebase.google.com/docs/storage/web/handle-errors
+        switch (error.code) {
+          case 'storage/object-not-found':
+            // File doesn't exist
+            break;
+
+          case 'storage/unauthorized':
+            // User doesn't have permission to access the object
+            break;
+
+          case 'storage/canceled':
+            // User canceled the upload
+            break;
+          case 'storage/unknown':
+            // Unknown error occurred, inspect the server response
+            break;
+        }
+      });
+  }
+
+  teste(nomeArquivo) {
+    const storageRef = firebase.storage().ref(nomeArquivo);
+    console.log(storageRef);
+
+    const test = storageRef.getDownloadURL().then(
+      (url) => {
+        console.log(url);
+      }
+    );
+    // console.log(test);
+    // const listRef = storageRef.child('NFCe/2020_01_Teste');
+  }
 
   loadXML(nomeArquivo) {
 
