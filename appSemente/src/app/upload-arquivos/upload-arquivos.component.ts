@@ -14,8 +14,17 @@ import * as firebase from 'firebase';
 })
 export class UploadArquivosComponent implements OnInit {
 
+  constructor(
+    private afStorage: AngularFireStorage,
+    private http: HttpClient,
+    private nfceService: NfceService
+  ) { }
+
   @ViewChild('xmlFiles', { static: false }) xmlFiles: any;
   @ViewChild('nf', { static: false }) nf: any;
+  @ViewChild('dataInicio', { static: false }) dataInicio: string;
+  @ViewChild('dataFim', { static: false }) dataFim: string;
+
 
   refArquivo: AngularFireStorageReference;
   task: AngularFireUploadTask;
@@ -23,16 +32,12 @@ export class UploadArquivosComponent implements OnInit {
   private nfceTmp: NFCEs;
   private nfceLida: any;
 
-  constructor(
-    private afStorage: AngularFireStorage,
-    private http: HttpClient,
-    private nfceService: NfceService
-  ) { }
 
   ngOnInit() {
   }
-
   async uploadArquivos($event) {
+
+    this.dataInicio = Date();
 
     const input = $event.target;
     // const nomePasta = '/NFCe/2020_01_Teste/';
@@ -57,7 +62,13 @@ export class UploadArquivosComponent implements OnInit {
       await this.upload(nomeArquivo, iterator);
 
       i += 1;
+      console.log(i);
     }
+
+    this.dataFim = Date();
+
+    console.log(this.dataInicio);
+    // console.log(this.dataFim);
 
     // alert('Envio ...');
 
@@ -80,49 +91,16 @@ export class UploadArquivosComponent implements OnInit {
     this.task = this.refArquivo.put(refArquivo);
 
 
-
-    // tslint:disable-next-line: deprecation
-    // console.log((await this.task).downloadURL);
-    // console.log(this.task.snapshotChanges());
-
-    // this.afStorage.upload(nomeArquivo, refArquivo).then(
-    //   teste => {
-    //     console.log(teste);
-    //     const arq = this.afStorage.ref(nomeArquivo);
-    //     console.log(arq);
-    //   }
-
-    // );
-
-
     this.task.then(up => {
-      // tslint:disable-next-line: deprecation
-      // console.log(up);
-      // console.log(up.metadata);
-
       console.log('....');
       // map(up);
       this.refArquivo.getDownloadURL()
-        .pipe(
-          map(arq => {
-            // console.log(up.metadata);
-            // console.log(arq);
-            // console.log('....');
-          })
-
-        )
         .subscribe(
           success => {
-            console.log(up);
-
-            console.log(up.metadata.fullPath);
-            console.log(up.state);
-
+            // console.log(up);
+            // console.log(up.metadata.fullPath);
+            // console.log(up.state);
             this.getUrl(up.metadata.fullPath);
-            // this.teste(up.metadata.fullPath);
-            // console.log('ok');
-            // console.log(success);
-            // this.loadXML(success);
           },
           error => { console.log(error); }
         );
@@ -167,18 +145,6 @@ export class UploadArquivosComponent implements OnInit {
       });
   }
 
-  teste(nomeArquivo) {
-    const storageRef = firebase.storage().ref(nomeArquivo);
-    console.log(storageRef);
-
-    const test = storageRef.getDownloadURL().then(
-      (url) => {
-        console.log(url);
-      }
-    );
-    // console.log(test);
-    // const listRef = storageRef.child('NFCe/2020_01_Teste');
-  }
 
   loadXML(nomeArquivo) {
 
@@ -217,8 +183,8 @@ export class UploadArquivosComponent implements OnInit {
             tmpParcial = {
               codProduto: iterator.PROD[0].CPROD[0],
               descricaoProduto: iterator.PROD[0].XPROD[0],
-              qtdeComprada: iterator.PROD[0].QCOM[0],
-              valorUnitario: iterator.PROD[0].VUNCOM[0]
+              qtdeComprada: parseInt(iterator.PROD[0].QCOM[0], 10),
+              valorUnitario: parseFloat(iterator.PROD[0].VUNCOM[0])
             };
             tmp.push(tmpParcial);
 
@@ -238,6 +204,7 @@ export class UploadArquivosComponent implements OnInit {
 
     this.nfceService.addDadosNFCE(p, id)
       .then(() => {
+        console.log(Date());
 
       })
       .catch((err) => {
