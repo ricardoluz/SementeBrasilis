@@ -43,10 +43,30 @@ export class VendasProdutoPeriodoComponent implements OnInit {
 
           // console.log(retorno[0].produtos);
 
-          for (const iterator of retorno) {
-            console.log(iterator.idNFCE);
-            
-          }
+          retorno.map(
+            (x) => {
+              console.log(x.idNFCE);
+              console.log(x.produtos);
+
+              const teste: any = [];
+              Object.assign(teste, x.produtos);
+              // console.log(teste);
+
+              // x.produtos.map(
+              //   (z) => {
+              //     console.log(z.codProduto);
+              //   }
+              // );
+
+              for (const iterator of teste) {
+                console.log(iterator.codProduto);
+              }
+            }
+          )
+
+          // for (const iterator of retorno) {
+          //   console.log(iterator.idNFCE);
+          // }
 
         }
       )
