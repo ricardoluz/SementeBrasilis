@@ -45,6 +45,7 @@ import { TipoProdutoRegistroComponent } from './apoio/tipo-produto-registro/tipo
 import { UploadArquivosComponent } from './upload-arquivos/upload-arquivos.component';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { DownloadArquivosComponent } from './download-arquivos/download-arquivos.component';
+import { VendasProdutoPeriodoComponent } from './vendas-produto-periodo/vendas-produto-periodo.component';
 
 
 
@@ -66,6 +67,7 @@ import { DownloadArquivosComponent } from './download-arquivos/download-arquivos
     TipoProdutoRegistroComponent,
     UploadArquivosComponent,
     DownloadArquivosComponent,
+    VendasProdutoPeriodoComponent,
   ],
   imports: [
     BrowserModule,

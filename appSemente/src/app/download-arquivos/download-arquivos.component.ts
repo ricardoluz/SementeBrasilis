@@ -30,8 +30,12 @@ export class DownloadArquivosComponent implements OnInit {
 
 
   ngOnInit() {
-    this.downloadArquivos();
+    // this.downloadArquivos();
   }
+
+
+
+
 
   downloadArquivos() {
 

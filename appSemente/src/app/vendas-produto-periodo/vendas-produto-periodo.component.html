@@ -1,0 +1,20 @@
+<h2>Vendas de produtos no período</h2>
+<mat-list *ngIf="(vendas$ | async) as Vendas" class="info-card mat-elevation-z8"
+    style="margin-top: 30px; margin-left: 60px; width: 500px; padding-right: 40px;">
+    <h3 mat-subheader>Lista</h3>
+    <mat-list-item *ngFor="let item of Vendas">
+        <mat-icon mat-list-icon>folder</mat-icon>
+        <!-- <h4 mat-line>{{ item.dataPedido.toDate() | date: 'dd/MM/yyyy HH:mm  ' }}</h4> -->
+        {{ item.idNFCE }}<br/> {{ item.dataEmissao}}
+        <!-- <button mat-icon-button color="accent" (click)="delete(item)">
+            <mat-icon>delete</mat-icon>
+        </button>
+        <button mat-icon-button color="primary" (click)="enviarPedido(item)">
+            <mat-icon>share</mat-icon>
+        </button> -->
+        <!-- <button mat-icon-button color="primary" (click)="edit(item)">
+            (<mat-icon>format_list_numbered_rtl</mat-icon>Pedido)
+        </button> -->
+        <!-- <a mat-button routerLink="/pedido/{{ item.id }}">(<mat-icon>format_list_numbered_rtl</mat-icon>Pedido)</a> -->
+    </mat-list-item>
+</mat-list>

@@ -15,6 +15,7 @@ import { GrupoProdutoRegistroComponent } from './apoio/grupo-produto-registro/gr
 import { TipoProdutoRegistroComponent } from './apoio/tipo-produto-registro/tipo-produto-registro.component';
 import { UploadArquivosComponent } from './upload-arquivos/upload-arquivos.component';
 import { DownloadArquivosComponent } from './download-arquivos/download-arquivos.component';
+import { VendasProdutoPeriodoComponent } from './vendas-produto-periodo/vendas-produto-periodo.component';
 // import { TesteComponent } from './teste/teste.component';
 
 
@@ -35,7 +36,7 @@ const appRoutes: Routes = [
   { path: 'pedidoApresentacao/:id', component: PedidoApresentacaoComponent },
 
   { path: 'uploadArquivo', component: UploadArquivosComponent },
-  { path: 'downloadArquivo', component: DownloadArquivosComponent },
+  { path: 'vendasPeriodo', component: VendasProdutoPeriodoComponent },
 
   { path: '', pathMatch: 'full', redirectTo: 'inicial' },
   { path: '**', component: PageNotFoundComponent }
